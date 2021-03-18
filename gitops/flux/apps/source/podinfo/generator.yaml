@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: generator
+  namespace: podinfo
+  labels:
+    app: generator
+spec:
+  selector:
+    matchLabels:
+      app: generator
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: generator
+    spec:
+      containers:
+        - image: buoyantio/slow_cooker:1.2.0
+          name: default
+          env:
+            - name: QPS
+              value: "5"
+            - name: CONCURRENCY
+              value: "10"
+            - name: SERVICE
+              value: frontend
+            - name: PORT
+              value: "8080"
+          command: ["/bin/sh", "-c"]
+          args:
+            - |-
+              sed -e "s/\${SERVICE}/$SERVICE/" -e "s/\${PORT}/$PORT/" /tmp/urls | slow_cooker -qps ${QPS} -concurrency ${CONCURRENCY} @-
+          resources:
+            requests:
+              cpu: 10m
+              memory: 10Mi
+          securityContext:
+            runAsUser: 1337
+          volumeMounts:
+            - name: cfg
+              mountPath: /tmp/
+      volumes:
+        - name: cfg
+          configMap:
+            name: generator
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: generator
+  namespace: podinfo
+data:
+  urls: |-
+    http://${SERVICE}:${PORT}
+    http://${SERVICE}:${PORT}/healthz
+    http://${SERVICE}:${PORT}/readyz
+    http://${SERVICE}:${PORT}/configs
+    http://${SERVICE}:${PORT}/env
+    http://${SERVICE}:${PORT}/headers
