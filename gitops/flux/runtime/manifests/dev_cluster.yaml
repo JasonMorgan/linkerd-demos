@@ -9,7 +9,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: runtime
+    name: gitops
   validation: client
   healthChecks:
     - apiVersion: apps/v1

@@ -6,9 +6,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./podinfo
+  path: ./gitops/flux/apps/manifests
   prune: true
   sourceRef:
     kind: GitRepository
-    name: apps
+    name: gitops
   validation: client
