@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30s
-  path: ./gitops/flux/runtime/linkerd
+  path: ./gitops/flux/runtime/source/linkerd
   prune: true
   sourceRef:
     kind: GitRepository
@@ -42,7 +42,7 @@ spec:
   dependsOn:
   - name: linkerd
   interval: 30s
-  path: ./gitops/flux/runtime/linkerd-viz
+  path: ./gitops/flux/runtime/source/linkerd-viz
   prune: true
   sourceRef:
     kind: GitRepository
@@ -83,7 +83,7 @@ spec:
   dependsOn:
   - name: linkerd-viz
   interval: 30s
-  path: ./gitops/flux/runtime/flagger
+  path: ./gitops/flux/runtime/source/flagger
   prune: true
   sourceRef:
     kind: GitRepository
