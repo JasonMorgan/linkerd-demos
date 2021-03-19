@@ -4,8 +4,7 @@ metadata:
   name: podinfo
 spec:
   template:
-    metadata:
-      annotations:
+    replicas: 3
     spec:
       containers:
         - name: podinfod
