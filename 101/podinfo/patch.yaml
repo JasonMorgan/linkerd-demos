@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podinfo
+spec:
+  template:
+    metadata:
+      annotations:
+    spec:
+      containers:
+        - name: podinfod
+          securityContext:
+            runAsUser: 1337
+          env:
+          - name: PODINFO_UI_COLOR
+            value: '#008000' # #008000 #1919FF
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podinfo
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: podinfo
