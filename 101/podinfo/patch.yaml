@@ -4,8 +4,8 @@ metadata:
   name: podinfo
 spec:
   template:
-    replicas: 3
     spec:
+      replicas: 3
       containers:
         - name: podinfod
           securityContext:
