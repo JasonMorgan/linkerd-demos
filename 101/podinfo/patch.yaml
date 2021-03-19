@@ -3,9 +3,9 @@ kind: Deployment
 metadata:
   name: podinfo
 spec:
+  replicas: 3
   template:
     spec:
-      replicas: 3
       containers:
         - name: podinfod
           securityContext:
