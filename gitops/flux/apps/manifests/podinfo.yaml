@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./gitops/flux/apps/manifests
+  path: ./gitops/flux/apps/source/podinfo
   prune: true
   sourceRef:
     kind: GitRepository

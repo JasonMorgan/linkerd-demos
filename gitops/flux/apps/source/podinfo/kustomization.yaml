@@ -7,6 +7,7 @@ resources:
   - ns.yaml
   - canary.yaml
   - generator.yaml
+  - ingress.yaml
 
 patchesStrategicMerge:
   - patch.yaml
