@@ -1,4 +1,3 @@
-## Create Certs
 #!/bin/env bash
 
 source ../demo-magic.sh
@@ -25,7 +24,7 @@ step certificate create "identity.linkerd.${domain}" \
     --not-after 8760h --no-password --insecure > /dev/null 2>&1
 
 k3d cluster delete helm > /dev/null 2>&1 || true
-k3d cluster create helm > /dev/null 2>&1
+k3d cluster create helm -p "8081:80@loadbalancer" > /dev/null 2>&1
 helm repo update > /dev/null 2>&1
 clear
 
@@ -57,5 +56,13 @@ wait
 clear
 
 pe "linkerd viz check"
+wait
+clear
+
+pe "kubectl apply -k https://github.com/JasonMorgan/linkerd-demos/101/podinfo?ref=main"
+wait
+clear
+
+pe "curl -sL https://run.linkerd.io/emojivoto.yml | linkerd inject - | kubectl apply -f -"
 wait
 clear
