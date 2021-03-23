@@ -42,7 +42,7 @@ pe "helm install linkerd2 \
   --set-file identityTrustAnchorsPEM=\$CA_DIR/ca.crt \
   --set-file identity.issuer.tls.crtPEM=\$CA_DIR/cluster-issuer.crt \
   --set-file identity.issuer.tls.keyPEM=\$CA_DIR/cluster-issuer.key \
-  --set identity.issuer.crtExpiry=$(date -d '+8760 hour' +"%Y-%m-%dT%H:%M:%SZ") \
+  --set identity.issuer.crtExpiry=\$(date -d '+8760 hour' +"%Y-%m-%dT%H:%M:%SZ") \
   linkerd/linkerd2"
 wait
 clear
