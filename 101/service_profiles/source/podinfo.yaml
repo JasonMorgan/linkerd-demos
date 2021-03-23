@@ -1,0 +1,214 @@
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  creationTimestamp: null
+  name: podinfo.podinfo.svc.cluster.local
+  namespace: podinfo
+spec:
+  routes:
+  - condition:
+      method: GET
+      pathRegex: /
+    name: GET /
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: POST
+      pathRegex: /api/echo
+    name: POST /api/echo
+    responseClasses:
+    - condition:
+        status:
+          max: 202
+          min: 202
+  - condition:
+      method: GET
+      pathRegex: /api/info
+    name: GET /api/info
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: DELETE
+      pathRegex: /cache/[^/]*
+    name: DELETE /cache/{key}
+    responseClasses:
+    - condition:
+        status:
+          max: 202
+          min: 202
+  - condition:
+      method: GET
+      pathRegex: /cache/[^/]*
+    name: GET /cache/{key}
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: POST
+      pathRegex: /cache/[^/]*
+    name: POST /cache/{key}
+    responseClasses:
+    - condition:
+        status:
+          max: 202
+          min: 202
+  - condition:
+      method: GET
+      pathRegex: /chunked/[^/]*
+    name: GET /chunked/{seconds}
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: GET
+      pathRegex: /delay/[^/]*
+    name: GET /delay/{seconds}
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: GET
+      pathRegex: /env
+    name: GET /env
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: GET
+      pathRegex: /headers
+    name: GET /headers
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: GET
+      pathRegex: /healthz
+    name: GET /healthz
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: GET
+      pathRegex: /metrics
+    name: GET /metrics
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: GET
+      pathRegex: /panic
+    name: GET /panic
+  - condition:
+      method: GET
+      pathRegex: /readyz
+    name: GET /readyz
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: POST
+      pathRegex: /readyz/disable
+    name: POST /readyz/disable
+    responseClasses:
+    - condition:
+        status:
+          max: 202
+          min: 202
+  - condition:
+      method: POST
+      pathRegex: /readyz/enable
+    name: POST /readyz/enable
+    responseClasses:
+    - condition:
+        status:
+          max: 202
+          min: 202
+  - condition:
+      method: GET
+      pathRegex: /status/[^/]*
+    name: GET /status/{code}
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: POST
+      pathRegex: /store
+    name: POST /store
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: GET
+      pathRegex: /store/[^/]*
+    name: GET /store/{hash}
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: POST
+      pathRegex: /token
+    name: POST /token
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: POST
+      pathRegex: /token/validate
+    name: POST /token/validate
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+    - condition:
+        status:
+          max: 401
+          min: 401
+  - condition:
+      method: GET
+      pathRegex: /version
+    name: GET /version
+    responseClasses:
+    - condition:
+        status:
+          max: 200
+          min: 200
+  - condition:
+      method: POST
+      pathRegex: /ws/echo
+    name: POST /ws/echo
+    responseClasses:
+    - condition:
+        status:
+          max: 202
+          min: 202
