@@ -2,8 +2,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: default
-  namespace: apps-ns
+  name: books
+  namespace: booksapp
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
@@ -14,6 +14,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: frontend
+            name: webapp
             port:
-              number: 8080
+              number: 7000
