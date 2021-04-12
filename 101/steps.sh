@@ -1,8 +1,8 @@
 #!/bin/env bash
 # shellcheck source=demo-magic.sh
 source demo-magic.sh
-k3d cluster delete jetstack > /dev/null 2>&1 || true
-k3d cluster create jetstack -p "8085:80@loadbalancer" > /dev/null 2>&1
+k3d cluster delete engBetter > /dev/null 2>&1 || true
+k3d cluster create engBetter -p "8085:80@loadbalancer" > /dev/null 2>&1
 clear
 rm /home/jason/.linkerd2/bin/linkerd-stable-2.10.0 > /dev/null 2>&1
 
