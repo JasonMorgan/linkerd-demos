@@ -1,0 +1,9 @@
+---
+apiVersion: getambassador.io/v2
+kind: Module
+metadata:
+  name: ambassador
+  namespace: ambassador
+spec:
+  config:
+    add_linkerd_headers: true

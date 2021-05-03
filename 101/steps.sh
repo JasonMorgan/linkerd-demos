@@ -1,10 +1,10 @@
 #!/bin/env bash
 # shellcheck source=demo-magic.sh
 source demo-magic.sh
-k3d cluster delete engBetter > /dev/null 2>&1 || true
-k3d cluster create engBetter -p "8085:80@loadbalancer" > /dev/null 2>&1
+k3d cluster delete oracle > /dev/null 2>&1 || true
+k3d cluster create oracle -p "8085:80@loadbalancer" > /dev/null 2>&1
 clear
-rm /home/jason/.linkerd2/bin/linkerd-stable-2.10.0 > /dev/null 2>&1
+rm /home/jason/.linkerd2/bin/linkerd-stable-2.10.1 > /dev/null 2>&1
 
 kubectl apply -k https://github.com/JasonMorgan/linkerd-demos/101/podinfo?ref=main > /dev/null 2>&1
 
