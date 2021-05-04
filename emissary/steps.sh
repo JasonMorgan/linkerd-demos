@@ -13,11 +13,34 @@ pe "kubectl create namespace ambassador && helm install ambassador --namespace a
 wait
 clear
 
-pe "k get deploy -n ambassador ambassador -o yaml | linkerd inject --ingress - | k apply -f -"
+pe "curl -sL https://run.linkerd.io/install | sh"
 wait
 clear
 
-pe "k apply -f emissary/linkerd-module.yaml"
+pe "export PATH=\$PATH:\$HOME/.linkerd2/bin"
+clear
+
+pe "linkerd version"
+wait
+clear
+
+pe "linkerd check --pre"
+wait
+clear
+
+pe "linkerd install | kubectl apply -f - && linkerd check"
+wait
+clear
+
+pe "linkerd viz install | kubectl apply -f - && linkerd viz check"
+wait
+clear
+
+pe "kubectl get deploy -n ambassador ambassador -o yaml | linkerd inject --ingress - | kubectl apply -f -"
+wait
+clear
+
+pe "kubectl apply -f emissary/linkerd-module.yaml"
 wait
 clear
 

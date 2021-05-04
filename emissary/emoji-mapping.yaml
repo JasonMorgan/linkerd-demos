@@ -1,0 +1,9 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: emoji
+spec:
+  prefix: /
+  service: web-svc.emojivoto.svc.cluster.local
+  rewrite: ""

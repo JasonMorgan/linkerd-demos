@@ -1,0 +1,9 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: linkerd-viz
+spec:
+  prefix: /dashboard/
+  host_rewrite: web.linkerd-viz.svc.cluster.local:8084
+  service: web.linkerd-viz.svc.cluster.local:8084
