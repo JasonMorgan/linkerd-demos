@@ -4,6 +4,10 @@ kind: Mapping
 metadata:
   name: linkerd-viz
 spec:
-  prefix: /dashboard/
+  prefix: /
+  # host: linkerd.59s.io
   host_rewrite: web.linkerd-viz.svc.cluster.local:8084
   service: web.linkerd-viz.svc.cluster.local:8084
+  rewrite: ""
+  allow_upgrade:
+  - websocket
