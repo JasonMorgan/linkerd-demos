@@ -1,8 +1,8 @@
 #!/bin/env bash
 # shellcheck source=demo-magic.sh
 source demo-magic.sh
-k3d cluster delete oracle > /dev/null 2>&1 || true
-k3d cluster create oracle -p "8085:80@loadbalancer" > /dev/null 2>&1
+k3d cluster delete 101 > /dev/null 2>&1 || true
+k3d cluster create 101 -p "8085:80@loadbalancer" > /dev/null 2>&1
 clear
 rm /home/jason/.linkerd2/bin/linkerd-stable-2.10.1 > /dev/null 2>&1
 
@@ -39,6 +39,10 @@ pe "linkerd check"
 wait
 clear
 
+pe "kubectl get pods -n linkerd"
+wait
+clear
+
 pe "linkerd viz install | kubectl apply -f -"
 wait
 clear
@@ -47,9 +51,13 @@ pe "linkerd viz check"
 wait
 clear
 
-# pe "linkerd viz dashboard &"
-# wait
-# clear
+pe "kubectl get pods -n linkerd-viz"
+wait
+clear
+
+pe "linkerd viz dashboard"
+wait
+clear
 
 pe "curl -sL https://run.linkerd.io/emojivoto.yml | kubectl apply -f -"
 wait

@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  strategy:
+    canary:
+      # Reference to a Service which the controller will update to point to the canary ReplicaSet
+      canaryService: rollouts-demo-canary
+      # Reference to a Service which the controller will update to point to the stable ReplicaSet
+      stableService: rollouts-demo-stable
+      trafficRouting:
+        smi: {}

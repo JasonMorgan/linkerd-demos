@@ -13,9 +13,9 @@ pe "flux install"
 wait
 clear
 
-pe "kubectl get crd | grep flux"
-wait
-clear
+# pe "kubectl get crd | grep flux"
+# wait
+# clear
 
 pe "linkerd check --pre"
 wait
