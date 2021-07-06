@@ -1,0 +1,260 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    linkerd.io/inject: enabled
+  name: rollout-demo
+---
+apiVersion: v1
+data:
+  nginx.conf: |-
+    pid /tmp/pid;
+    error_log stderr;
+    events {}
+    http {
+      client_body_temp_path /tmp/client_temp;
+      proxy_temp_path       /tmp/proxy_temp_path;
+      fastcgi_temp_path     /tmp/fastcgi_temp;
+      uwsgi_temp_path       /tmp/uwsgi_temp;
+      scgi_temp_path        /tmp/scgi_temp;
+      server {
+        listen 8080;
+        set $east "east";
+        set $west "west";
+        location / {
+          proxy_pass http://rollout-demo:80/;
+          proxy_http_version 1.1;
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: frontend
+  namespace: rollout-demo
+---
+apiVersion: v1
+data:
+  urls: |-
+    http://${SERVICE}:${PORT}/
+kind: ConfigMap
+metadata:
+  name: generator
+  namespace: rollout-demo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: rollout-demo
+spec:
+  ports:
+  - name: service
+    port: 8080
+  selector:
+    app: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-demo
+  namespace: rollout-demo
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: rollout-demo
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-demo-stable
+  namespace: rollout-demo
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: rollout-demo
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-demo-canary
+  namespace: rollout-demo
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: rollout-demo
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+  namespace: rollout-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - image: nginx:alpine
+        name: nginx
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        securityContext:
+          runAsUser: 1337
+        volumeMounts:
+        - mountPath: /etc/nginx/nginx.conf
+          name: cfg
+          subPath: nginx.conf
+        - mountPath: /etc/nginx/conf.d
+          name: nginx-conf-d
+        - mountPath: /tmp
+          name: nginx-tmp
+      volumes:
+      - configMap:
+          name: frontend
+        name: cfg
+      - emptyDir: {}
+        name: nginx-conf-d
+      - emptyDir: {}
+        name: nginx-tmp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: generator
+  name: generator
+  namespace: rollout-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: generator
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: generator
+    spec:
+      containers:
+      - args:
+        - sed -e "s/\${SERVICE}/$SERVICE/" -e "s/\${PORT}/$PORT/" /tmp/urls | slow_cooker -qps ${QPS} -concurrency ${CONCURRENCY} @-
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: QPS
+          value: "5"
+        - name: CONCURRENCY
+          value: "10"
+        - name: SERVICE
+          value: frontend
+        - name: PORT
+          value: "8080"
+        image: buoyantio/slow_cooker:1.2.0
+        name: default
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        securityContext:
+          runAsUser: 1337
+        volumeMounts:
+        - mountPath: /tmp/
+          name: cfg
+      volumes:
+      - configMap:
+          name: generator
+        name: cfg
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollout-demo
+  namespace: rollout-demo
+spec:
+  replicas: 1
+  strategy:
+    canary:
+      canaryService: rollout-demo-canary
+      stableService: rollout-demo-stable
+      trafficRouting:
+        smi: 
+          rootService: rollout-demo
+      steps:
+      - setWeight: 10
+      - pause: {}
+      - setWeight: 50
+      - pause: {}
+      - setWeight: 80
+      - pause: {}
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: rollout-demo
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: rollout-demo
+    spec:
+      containers:
+      - name: rollout-demo
+        image: argoproj/rollouts-demo:red
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    ingress.kubernetes.io/custom-request-headers: l5d-dst-override:rollout-demo.rollout-demo.svc.cluster.local:80
+    ingress.kubernetes.io/ssl-redirect: "false"
+  name: test
+  namespace: rollout-demo
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: rollout-demo
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

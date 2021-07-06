@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: rollouts-demo
 spec:
-  replicas: 5
+  replicas: 3
   strategy:
     canary:
       steps:
@@ -21,12 +21,14 @@ spec:
       app: rollouts-demo
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: rollouts-demo
     spec:
       containers:
       - name: rollouts-demo
-        image: argoproj/rollouts-demo:blue
+        image: argoproj/rollouts-demo:green
         ports:
         - name: http
           containerPort: 8080

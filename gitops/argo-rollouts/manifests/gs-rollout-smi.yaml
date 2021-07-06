@@ -3,11 +3,40 @@ kind: Rollout
 metadata:
   name: rollouts-demo
 spec:
+  replicas: 1
   strategy:
     canary:
-      # Reference to a Service which the controller will update to point to the canary ReplicaSet
       canaryService: rollouts-demo-canary
-      # Reference to a Service which the controller will update to point to the stable ReplicaSet
       stableService: rollouts-demo-stable
       trafficRouting:
-        smi: {}
+        smi: 
+          rootService: rollout-demo
+      steps:
+      - setWeight: 10
+      - pause: {}
+      - setWeight: 50
+      - pause: {}
+      - setWeight: 80
+      - pause: {}
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
