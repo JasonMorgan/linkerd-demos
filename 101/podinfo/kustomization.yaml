@@ -5,8 +5,10 @@ bases:
 resources:
   - frontend.yaml
   - ns.yaml
-  - ingress.yaml
+  # - ingress.yaml
   - generator.yaml
+  - canary.yaml
+  - mapping.yaml
 
 patchesStrategicMerge:
   - patch.yaml

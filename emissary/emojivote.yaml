@@ -5,5 +5,17 @@ metadata:
   name: emoji
 spec:
   prefix: /
-  service: web-svc.emojivoto.svc.cluster.local
+  service: web-svc.emojivoto
   rewrite: ""
+# ---
+# apiVersion: getambassador.io/v2
+# kind: Host
+# metadata:
+#   name: localhost
+# spec:
+#   hostname: localhost
+#   acmeProvider:
+#     authority: none
+#   requestPolicy:
+#     insecure:
+#       action: Route

@@ -6,4 +6,4 @@ metadata:
   namespace: ambassador
 spec:
   config:
-    add_linkerd_headers: true
+    # add_linkerd_headers: true
