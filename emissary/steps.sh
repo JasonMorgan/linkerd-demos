@@ -7,7 +7,7 @@ pe "helm repo add datawire https://www.getambassador.io"
 wait
 clear
 
-pe "kubectl create namespace ambassador && helm install ambassador --namespace ambassador datawire/ambassador --set replicaCount=1 --set service.type=ClusterIP && kubectl -n ambassador wait --for condition=available --timeout=90s deploy -lproduct=aes"
+pe "kubectl create namespace ambassador && helm install ambassador --namespace ambassador datawire/ambassador --set replicaCount=1 && kubectl -n ambassador wait --for condition=available --timeout=90s deploy -lproduct=aes"
 wait
 clear
 
@@ -34,15 +34,11 @@ pe "linkerd viz install | kubectl apply -f - && linkerd viz check"
 wait
 clear
 
-pe "kubectl get deploy -n ambassador ambassador -o yaml | linkerd inject  --skip-inbound-ports \"80,443\" --ingress - | kubectl apply -f -"
+pe "kubectl get deploy -n ambassador ambassador -o yaml | linkerd inject  --skip-inbound-ports \"80,443\" - | kubectl apply -f -"
 wait
 clear
 
-pe "bat -l yaml linkerd-module.yaml"
-wait
-clear
-
-pe "kubectl apply -f linkerd-module.yaml"
+pe "bat -l yaml ../101/podinfo/mapping.yaml"
 wait
 clear
 
@@ -50,11 +46,7 @@ pe "curl -sL https://run.linkerd.io/emojivoto.yml | linkerd inject - | kubectl a
 wait
 clear
 
-pe "bat -l yaml emojivote.yaml"
-wait
-clear
-
-pe "kubectl apply -f emojivote.yaml"
+pe "kubectl apply -k ../101/podinfo/"
 wait
 clear
 
