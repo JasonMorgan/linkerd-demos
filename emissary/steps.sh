@@ -34,7 +34,7 @@ pe "linkerd viz install | kubectl apply -f - && linkerd viz check"
 wait
 clear
 
-pe "kubectl get deploy -n ambassador ambassador -o yaml | linkerd inject  --skip-inbound-ports \"80,443\" - | kubectl apply -f -"
+pe "kubectl get deploy -n ambassador ambassador -o yaml | linkerd inject --skip-inbound-ports \"80,443\" - | kubectl apply -f -"
 wait
 clear
 

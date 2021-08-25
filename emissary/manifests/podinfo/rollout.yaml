@@ -1,0 +1,299 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    linkerd.io/inject: enabled
+  name: podinfo
+---
+apiVersion: v1
+data:
+  nginx.conf: |-
+    pid /tmp/pid;
+    error_log stderr;
+    events {}
+    http {
+      client_body_temp_path /tmp/client_temp;
+      proxy_temp_path       /tmp/proxy_temp_path;
+      fastcgi_temp_path     /tmp/fastcgi_temp;
+      uwsgi_temp_path       /tmp/uwsgi_temp;
+      scgi_temp_path        /tmp/scgi_temp;
+      server {
+        listen 8080;
+        set $east "east";
+        set $west "west";
+        location / {
+          proxy_pass http://podinfo:9898;
+          proxy_http_version 1.1;
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: frontend
+  namespace: podinfo
+---
+apiVersion: v1
+data:
+  urls: |-
+    http://${SERVICE}:${PORT}
+    http://${SERVICE}:${PORT}/healthz
+    http://${SERVICE}:${PORT}/readyz
+    http://${SERVICE}:${PORT}/configs
+    http://${SERVICE}:${PORT}/env
+    http://${SERVICE}:${PORT}/headers
+kind: ConfigMap
+metadata:
+  name: generator
+  namespace: podinfo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: podinfo
+spec:
+  ports:
+  - name: service
+    port: 8080
+  selector:
+    app: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podinfo
+  namespace: podinfo
+spec:
+  ports:
+  - name: http
+    port: 9898
+    protocol: TCP
+    targetPort: http
+  - name: grpc
+    port: 9999
+    protocol: TCP
+    targetPort: grpc
+  selector:
+    app: podinfo
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podinfo-stable
+  namespace: podinfo
+spec:
+  ports:
+  - name: http
+    port: 9898
+    protocol: TCP
+    targetPort: http
+  - name: grpc
+    port: 9999
+    protocol: TCP
+    targetPort: grpc
+  selector:
+    app: podinfo
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podinfo-canary
+  namespace: podinfo
+spec:
+  ports:
+  - name: http
+    port: 9898
+    protocol: TCP
+    targetPort: http
+  - name: grpc
+    port: 9999
+    protocol: TCP
+    targetPort: grpc
+  selector:
+    app: podinfo
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+  namespace: podinfo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - image: nginx:alpine
+        name: nginx
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        securityContext:
+          runAsUser: 1337
+        volumeMounts:
+        - mountPath: /etc/nginx/nginx.conf
+          name: cfg
+          subPath: nginx.conf
+        - mountPath: /etc/nginx/conf.d
+          name: nginx-conf-d
+        - mountPath: /tmp
+          name: nginx-tmp
+      volumes:
+      - configMap:
+          name: frontend
+        name: cfg
+      - emptyDir: {}
+        name: nginx-conf-d
+      - emptyDir: {}
+        name: nginx-tmp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: generator
+  name: generator
+  namespace: podinfo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: generator
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: generator
+    spec:
+      containers:
+      - args:
+        - sed -e "s/\${SERVICE}/$SERVICE/" -e "s/\${PORT}/$PORT/" /tmp/urls | slow_cooker -qps ${QPS} -concurrency ${CONCURRENCY} @-
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: QPS
+          value: "5"
+        - name: CONCURRENCY
+          value: "10"
+        - name: SERVICE
+          value: frontend
+        - name: PORT
+          value: "8080"
+        image: buoyantio/slow_cooker:1.2.0
+        name: default
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        securityContext:
+          runAsUser: 1337
+        volumeMounts:
+        - mountPath: /tmp/
+          name: cfg
+      volumes:
+      - configMap:
+          name: generator
+        name: cfg
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: podinfo
+  namespace: podinfo
+spec:
+  replicas: 3
+  strategy:
+    canary:
+      canaryService: podinfo-canary
+      stableService: podinfo-stable
+      trafficRouting:
+        smi: 
+          rootService: podinfo
+      steps:
+      - setWeight: 10
+      - pause: {}
+      - setWeight: 30
+      - pause: {}
+      - setWeight: 50
+      - pause: {}
+      - setWeight: 80
+      - pause: {}
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: podinfo
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: podinfo
+    spec:
+      containers:
+      - command:
+        - ./podinfo
+        - --port=9898
+        - --port-metrics=9797
+        - --grpc-port=9999
+        - --grpc-service-name=podinfo
+        - --level=info
+        - --random-delay=false
+        - --random-error=false
+        env:
+        - name: PODINFO_UI_COLOR
+          value: '#008000' # #008000 - green #1919FF - blue
+        image: ghcr.io/stefanprodan/podinfo:5.1.3
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - podcli
+            - check
+            - http
+            - localhost:9898/healthz
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+        name: podinfod
+        ports:
+        - containerPort: 9898
+          name: http
+          protocol: TCP
+        - containerPort: 9797
+          name: http-metrics
+          protocol: TCP
+        - containerPort: 9999
+          name: grpc
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - podcli
+            - check
+            - http
+            - localhost:9898/readyz
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        securityContext:
+          runAsUser: 1337

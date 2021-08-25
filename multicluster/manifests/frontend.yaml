@@ -27,7 +27,7 @@ data:
       set $east "east";
       set $west "west";
       location / {
-        proxy_pass http://podinfo-lon:9898;
+        proxy_pass http://podinfo-eu-west-1:9898;
         proxy_http_version 1.1;
       }
     }
@@ -91,24 +91,97 @@ spec:
     port: 8080
   selector:
     app: frontend
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     ingress.kubernetes.io/ssl-redirect: "false"
+#     kubernetes.io/ingress.class: traefik
+#     ingress.kubernetes.io/custom-request-headers: l5d-dst-override:frontend.podinfo.svc.cluster.local:8080
+#   name: frontend
+#   namespace: podinfo
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - backend:
+#           service:
+#             name: frontend
+#             port:
+#               number: 8080
+#         path: /
+#         pathType: Prefix
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: getambassador.io/v2
+kind: Mapping
 metadata:
-  annotations:
-    ingress.kubernetes.io/ssl-redirect: "false"
-    kubernetes.io/ingress.class: traefik
-    ingress.kubernetes.io/custom-request-headers: l5d-dst-override:frontend.podinfo.svc.cluster.local:8080
-  name: frontend
+  name: podinfo
   namespace: podinfo
 spec:
-  rules:
-  - http:
-      paths:
-      - backend:
-          service:
-            name: frontend
-            port:
-              number: 8080
-        path: /
-        pathType: Prefix
+  prefix: /
+  service: frontend.podinfo:8080
+  rewrite: ""
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: generator
+  name: generator
+  namespace: podinfo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: generator
+  template:
+    metadata:
+      annotations: null
+      labels:
+        app: generator
+    spec:
+      containers:
+      - args:
+        - sed -e "s/\${SERVICE}/$SERVICE/" -e "s/\${PORT}/$PORT/" /tmp/urls | slow_cooker -qps ${QPS} -concurrency ${CONCURRENCY} @-
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: QPS
+          value: "5"
+        - name: CONCURRENCY
+          value: "5"
+        - name: SERVICE
+          value: frontend
+        - name: PORT
+          value: "8080"
+        image: buoyantio/slow_cooker:1.2.0
+        name: default
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        securityContext:
+          runAsUser: 1337
+        volumeMounts:
+        - mountPath: /tmp/
+          name: cfg
+      volumes:
+      - configMap:
+          name: generator
+        name: cfg
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: generator
+data:
+  urls: |-
+    http://${SERVICE}:${PORT}
+    http://${SERVICE}:${PORT}/healthz
+    http://${SERVICE}:${PORT}/readyz
+    http://${SERVICE}:${PORT}/configs
+    http://${SERVICE}:${PORT}/env
+    http://${SERVICE}:${PORT}/headers
+    http://${SERVICE}:${PORT}/delay/2

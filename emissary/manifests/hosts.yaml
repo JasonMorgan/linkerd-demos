@@ -1,0 +1,45 @@
+---
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: podinfo
+spec:
+  hostname: "podinfo.civo.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com
+---
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: booksapp
+spec:
+  hostname: "booksapp.civo.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com
+---
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: qotm
+spec:
+  hostname: "qotm.civo.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com
+---
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: emojivoto
+spec:
+  hostname: "emojivoto.civo.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com
+---
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: dashboard
+spec:
+  hostname: "dashboard.civo.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com

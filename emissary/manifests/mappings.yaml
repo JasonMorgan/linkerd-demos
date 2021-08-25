@@ -1,0 +1,47 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: emojivoto
+  namespace: emojivoto
+spec:
+  prefix: /
+  service: web-svc.emojivoto:80
+  rewrite: ""
+  host: emojivoto.civo.59s.io
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: booksapp
+  namespace: booksapp
+spec:
+  prefix: /
+  service: webapp.booksapp:7000
+  rewrite: ""
+  host: booksapp.civo.59s.io
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: dashboard
+  namespace: linkerd-viz
+spec:
+  prefix: /
+  service: web.linkerd-viz:8084
+  host_rewrite: web.linkerd-viz.svc.cluster.local:8084
+  rewrite: ""
+  host: dashboard.civo.59s.io
+  allow_upgrade:
+  - websocket
+  remove_request_headers:
+  - Origin
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: quote-backend
+spec:
+  prefix: /
+  service: quote
+  host: qotm.civo.59s.io

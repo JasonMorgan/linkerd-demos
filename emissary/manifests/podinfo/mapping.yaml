@@ -1,0 +1,11 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: podinfo
+  namespace: podinfo
+spec:
+  prefix: /
+  service: podinfo.podinfo:9898
+  rewrite: ""
+  host: podinfo.civo.59s.io
