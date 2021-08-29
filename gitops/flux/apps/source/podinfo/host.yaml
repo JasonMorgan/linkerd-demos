@@ -1,0 +1,9 @@
+---
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: podinfo
+spec:
+  hostname: "podinfo.s1p.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com

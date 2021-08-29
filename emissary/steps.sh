@@ -3,6 +3,8 @@ source ../demo-magic.sh
 k3d cluster delete emissary > /dev/null 2>&1 || true
 k3d cluster create emissary -p "8080:80@loadbalancer" -p "8443:443@loadbalancer"  --k3s-server-arg '--no-deploy=traefik' > /dev/null 2>&1
 
+clear
+
 pe "helm repo add datawire https://www.getambassador.io"
 wait
 clear

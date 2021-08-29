@@ -1,0 +1,11 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: emojivoto
+  namespace: emojivoto
+spec:
+  prefix: /
+  service: web-svc.emojivoto:80
+  rewrite: ""
+  host: emojivoto.s1p.59s.io
