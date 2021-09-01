@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: ambassador
 resources:
   - aes-crds.yaml
-  - aes.yaml
+  # - aes.yaml
