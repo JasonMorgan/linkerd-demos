@@ -42,15 +42,8 @@ clear
 
 
 
-### THis looks good as it shows the live install
+### This looks good as it shows the live install
 
-pe "linkerd check"
-wait
-clear
-
-pe "linkerd viz check"
-wait
-clear
 
 pe "kubectl apply -f apps/manifests/apps.yaml"
 wait
@@ -59,3 +52,8 @@ clear
 pe "bat -l yaml apps/manifests/apps.yaml"
 wait
 clear
+
+pe "linkerd check"
+wait
+clear
+
