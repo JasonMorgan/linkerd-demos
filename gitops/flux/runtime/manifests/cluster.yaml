@@ -77,11 +77,28 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: ambassador
+  name: ambassador-crds
   namespace: flux-system
 spec:
   dependsOn:
   - name: linkerd-viz
+  interval: 30s
+  path: ./gitops/flux/runtime/source/ambassador-crds
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: gitops
+  validation: client
+  healthChecks:
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: ambassador
+  namespace: flux-system
+spec:
+  dependsOn:
+  - name: ambassador-crds
   interval: 30s
   path: ./gitops/flux/runtime/source/ambassador
   prune: true
