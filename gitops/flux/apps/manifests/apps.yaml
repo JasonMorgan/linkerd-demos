@@ -9,6 +9,8 @@ spec:
   path: ./gitops/flux/apps/source/podinfo
   dependsOn:
     - name: flagger
+    - name: linkerd-viz
+    - name: ambassador
   prune: true
   sourceRef:
     kind: GitRepository
@@ -31,13 +33,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: podinfo
+  name: emojivoto
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./gitops/flux/apps/source/podinfo
+  path: ./gitops/flux/apps/source/emojivoto
   dependsOn:
     - name: flagger
+    - name: linkerd-viz
+    - name: ambassador
   prune: true
   sourceRef:
     kind: GitRepository
@@ -46,27 +50,33 @@ spec:
   healthChecks:
     - apiVersion: apps/v1
       kind: Deployment
-      name: podinfo
-      namespace: podinfo
+      name: emoji
+      namespace: emojivoto
     - apiVersion: apps/v1
       kind: Deployment
-      name: generator
-      namespace: podinfo
+      name: vote-bot
+      namespace: emojivoto
     - apiVersion: apps/v1
       kind: Deployment
-      name: frontend
-      namespace: podinfo
+      name: web
+      namespace: emojivoto
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: voting
+      namespace: emojivoto
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: podinfo
+  name: booksapp
   namespace: flux-system
 spec:
   interval: 1m0s
   path: ./gitops/flux/apps/source/podinfo
   dependsOn:
     - name: flagger
+    - name: linkerd-viz
+    - name: ambassador
   prune: true
   sourceRef:
     kind: GitRepository
@@ -75,13 +85,17 @@ spec:
   healthChecks:
     - apiVersion: apps/v1
       kind: Deployment
-      name: podinfo
-      namespace: podinfo
+      name: traffic
+      namespace: booksapp
     - apiVersion: apps/v1
       kind: Deployment
-      name: generator
-      namespace: podinfo
+      name: webapp
+      namespace: booksapp
     - apiVersion: apps/v1
       kind: Deployment
-      name: frontend
-      namespace: podinfo
+      name: authors
+      namespace: booksapp
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: books
+      namespace: booksapp
