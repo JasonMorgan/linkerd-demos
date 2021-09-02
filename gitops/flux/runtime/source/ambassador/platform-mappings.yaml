@@ -1,0 +1,25 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: linkerd-viz
+spec:
+  prefix: /
+  host: "dashboard.s1p.59s.io"
+  # host_regex: true
+  host_rewrite: web.linkerd-viz.svc.cluster.local:8084
+  service: web.linkerd-viz.svc.cluster.local:8084
+  rewrite: ""
+  allow_upgrade:
+  - websocket
+  remove_request_headers:
+  - Origin
+---
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: dashboard
+spec:
+  hostname: "dashboard.s1p.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com
