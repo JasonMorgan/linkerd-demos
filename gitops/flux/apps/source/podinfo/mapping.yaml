@@ -6,6 +6,6 @@ metadata:
   namespace: podinfo
 spec:
   prefix: /
-  service: podinfo.podinfo:9898
+  service: frontend.podinfo:8080
   rewrite: ""
   host: podinfo.s1p.59s.io
