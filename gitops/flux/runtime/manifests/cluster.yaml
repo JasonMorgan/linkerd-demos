@@ -89,7 +89,6 @@ spec:
     kind: GitRepository
     name: gitops
   validation: client
-  healthChecks:
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
