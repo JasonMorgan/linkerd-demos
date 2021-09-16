@@ -4,6 +4,6 @@ kind: Host
 metadata:
   name: podinfo
 spec:
-  hostname: "podinfo.s1p.59s.io"
+  hostname: "podinfo.civo.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com

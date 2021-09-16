@@ -8,4 +8,4 @@ spec:
   prefix: /
   service: frontend.podinfo:8080
   rewrite: ""
-  host: podinfo.s1p.59s.io
+  host: podinfo.civo.59s.io

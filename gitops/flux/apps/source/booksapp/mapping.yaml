@@ -8,4 +8,4 @@ spec:
   prefix: /
   service: webapp.booksapp:7000
   rewrite: ""
-  host: booksapp.s1p.59s.io
+  host: booksapp.civo.59s.io

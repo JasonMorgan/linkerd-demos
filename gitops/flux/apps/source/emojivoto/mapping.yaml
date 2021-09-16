@@ -8,4 +8,4 @@ spec:
   prefix: /
   service: web-svc.emojivoto:80
   rewrite: ""
-  host: emojivoto.s1p.59s.io
+  host: emojivoto.civo.59s.io

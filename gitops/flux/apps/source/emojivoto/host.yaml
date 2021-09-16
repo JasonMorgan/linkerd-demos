@@ -4,6 +4,6 @@ kind: Host
 metadata:
   name: emojivoto
 spec:
-  hostname: "emojivoto.s1p.59s.io"
+  hostname: "emojivoto.civo.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com

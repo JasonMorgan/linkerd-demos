@@ -20,6 +20,6 @@ kind: Host
 metadata:
   name: dashboard
 spec:
-  hostname: "dashboard.s1p.59s.io"
+  hostname: "dashboard.civo.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
