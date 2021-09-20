@@ -5,6 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   timeout: 3m
+  interval: 40m
   releaseName: ambassador-edge-stack
   targetNamespace: ambassador
   chart:
@@ -14,6 +15,7 @@ spec:
         kind: HelmRepository
         name: ambassador
         namespace: flux-system
+      interval: 40m
   postRenderers:
     - kustomize:
         patchesStrategicMerge:
