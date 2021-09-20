@@ -8,6 +8,7 @@ spec:
   interval: 40m
   releaseName: ambassador-edge-stack
   targetNamespace: ambassador
+  storageNamespace: ambassador
   chart:
     spec:
       chart: ambassador
@@ -22,7 +23,7 @@ spec:
           - kind: Deployment
             apiVersion: apps/v1
             metadata:
-              name: ambassador
+              name: ambassador-edge-stack
               namespace: ambassador
               annotations:
                 config.linkerd.io/skip-inbound-ports: 80,443
