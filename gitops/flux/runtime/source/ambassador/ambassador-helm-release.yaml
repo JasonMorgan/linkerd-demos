@@ -14,7 +14,6 @@ spec:
         kind: HelmRepository
         name: ambassador
         namespace: flux-system
-      interval: 40m
   postRenderers:
     - kustomize:
         patchesStrategicMerge:
