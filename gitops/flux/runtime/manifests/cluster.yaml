@@ -92,15 +92,15 @@ spec:
   healthChecks:
     - apiVersion: apps/v1
       kind: Deployment
-      name: ambassador
+      name: ambassador-edge-stack
       namespace: ambassador
     - apiVersion: apps/v1
       kind: Deployment
-      name: ambassador-redis
+      name: ambassador-edge-stack-redis
       namespace: ambassador
     - apiVersion: apps/v1
       kind: Deployment
-      name: ambassador-agent
+      name: ambassador-edge-stack-agent
       namespace: ambassador
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
