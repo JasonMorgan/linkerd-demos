@@ -1,0 +1,17 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: ambassador-edge-stack
+  namespace: flux-system
+spec:
+  timeout: 3m
+  releaseName: ambassador-edge-stack
+  targetNamespace: ambassador
+  chart:
+    spec:
+      chart: ambassador
+      sourceRef:
+        kind: HelmRepository
+        name: ambassador
+        namespace: flux-system
+      interval: 40m
