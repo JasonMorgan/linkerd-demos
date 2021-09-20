@@ -15,16 +15,16 @@ spec:
         name: ambassador
         namespace: flux-system
       interval: 40m
-    postRenderers:
-      - kustomize:
-          patchesStrategicMerge:
-            - kind: Deployment
-              apiVersion: apps/v1
-              metadata:
-                name: ambassador
-                annotations:
-                  config.linkerd.io/skip-inbound-ports: 80,443
-                  linkerd.io/inject: enabled
+  postRenderers:
+    - kustomize:
+        patchesStrategicMerge:
+          - kind: Deployment
+            apiVersion: apps/v1
+            metadata:
+              name: ambassador
+              annotations:
+                config.linkerd.io/skip-inbound-ports: 80,443
+                linkerd.io/inject: enabled
   install:
     crds: CreateReplace
   upgrade:
