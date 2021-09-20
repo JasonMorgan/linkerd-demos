@@ -8,6 +8,7 @@ spec:
   interval: 40m
   releaseName: ambassador-edge-stack
   targetNamespace: ambassador
+  storageNamespace: ambassador
   chart:
     spec:
       chart: ambassador
