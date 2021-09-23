@@ -8,9 +8,7 @@ spec:
   interval: 1m0s
   path: ./gitops/flux/apps/source/podinfo
   dependsOn:
-    - name: flagger
-    - name: linkerd-viz
-    - name: ambassador
+    - name: finalizers
   prune: true
   sourceRef:
     kind: GitRepository
@@ -39,9 +37,7 @@ spec:
   interval: 1m0s
   path: ./gitops/flux/apps/source/emojivoto
   dependsOn:
-    - name: flagger
-    - name: linkerd-viz
-    - name: ambassador
+    - name: finalizers
   prune: true
   sourceRef:
     kind: GitRepository
@@ -74,9 +70,7 @@ spec:
   interval: 1m0s
   path: ./gitops/flux/apps/source/booksapp
   dependsOn:
-    - name: flagger
-    - name: linkerd-viz
-    - name: ambassador
+    - name: finalizers
   prune: true
   sourceRef:
     kind: GitRepository

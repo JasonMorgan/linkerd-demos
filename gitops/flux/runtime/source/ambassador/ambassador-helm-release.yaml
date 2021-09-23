@@ -25,11 +25,12 @@ spec:
             metadata:
               name: ambassador-edge-stack
               namespace: ambassador
-            template:
-              metadata:
-                annotations:
-                  config.linkerd.io/skip-inbound-ports: 80,443
-                  linkerd.io/inject: enabled
+            spec:
+              template:
+                metadata:
+                  annotations:
+                    config.linkerd.io/skip-inbound-ports: 80,443
+                    linkerd.io/inject: enabled
   install:
     crds: CreateReplace
   upgrade:
