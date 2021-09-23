@@ -1,0 +1,8 @@
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: dashboard
+spec:
+  hostname: "dashboard.civo.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com

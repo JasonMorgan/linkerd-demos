@@ -123,3 +123,22 @@ spec:
       kind: Deployment
       name: flagger
       namespace: linkerd-viz
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: finalizers
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./gitops/flux/apps/source/finalizers
+  dependsOn:
+    - name: flagger
+    - name: linkerd-viz
+    - name: ambassador
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: gitops
+  validation: client
+  healthChecks:
