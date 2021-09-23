@@ -4,7 +4,7 @@ metadata:
   name: linkerd
   namespace: flux-system
 spec:
-  interval: 30s
+  interval: 1m0s
   path: ./gitops/flux/runtime/source/linkerd
   prune: true
   sourceRef:
@@ -41,7 +41,7 @@ metadata:
 spec:
   dependsOn:
   - name: linkerd
-  interval: 30s
+  interval: 1m0s
   path: ./gitops/flux/runtime/source/linkerd-viz
   prune: true
   sourceRef:
@@ -82,7 +82,7 @@ metadata:
 spec:
   dependsOn:
   - name: linkerd-viz
-  interval: 30s
+  interval: 3m0s
   path: ./gitops/flux/runtime/source/ambassador
   prune: true
   sourceRef:
@@ -90,17 +90,9 @@ spec:
     name: gitops
   validation: client
   healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
       name: ambassador-edge-stack
-      namespace: ambassador
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: ambassador-edge-stack-redis
-      namespace: ambassador
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: ambassador-edge-stack-agent
       namespace: ambassador
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
@@ -111,7 +103,7 @@ metadata:
 spec:
   dependsOn:
   - name: linkerd-viz
-  interval: 30s
+  interval: 1m0s
   path: ./gitops/flux/runtime/source/flagger
   prune: true
   sourceRef:
