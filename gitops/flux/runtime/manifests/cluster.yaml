@@ -131,7 +131,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./gitops/flux/apps/source/finalizers
+  path: ./gitops/flux/runtime/source/finalizers
   dependsOn:
     - name: flagger
     - name: linkerd-viz
