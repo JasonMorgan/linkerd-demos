@@ -22,10 +22,11 @@ spec:
         patchesStrategicMerge:
           - kind: Deployment
             apiVersion: apps/v1
+            metadata:
+              name: ambassador-edge-stack
+              namespace: ambassador
             template:
               metadata:
-                name: ambassador-edge-stack
-                namespace: ambassador
                 annotations:
                   config.linkerd.io/skip-inbound-ports: 80,443
                   linkerd.io/inject: enabled
