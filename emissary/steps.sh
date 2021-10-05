@@ -44,9 +44,9 @@ pe "bat -l yaml ../101/podinfo/mapping.yaml"
 wait
 clear
 
-pe "curl -sL https://run.linkerd.io/emojivoto.yml | linkerd inject - | kubectl apply -f -"
-wait
-clear
+# pe "curl -sL https://run.linkerd.io/emojivoto.yml | linkerd inject - | kubectl apply -f -"
+# wait
+# clear
 
 pe "kubectl apply -k ../101/podinfo/"
 wait
