@@ -1,20 +1,20 @@
 #!/bin/env bash
 # shellcheck source=demo-magic.sh
 . ../demo-magic.sh
-clear
-# civo kubernetes delete smc
-# civo kubernetes create smc -n 3 -s g3.k3s.small --region NYC1 -w
-# civo kubernetes config smc -sy
-# linkerd install | k apply -f - && linkerd check
-# linkerd viz install | k apply -f - && linkerd viz check
-# curl -sL https://run.linkerd.io/emojivoto.yml | linkerd inject - | kubectl apply -f -
-# k create ns booksapp
-# curl -sL https://run.linkerd.io/booksapp.yml | linkerd inject - | k apply -n booksapp -f -
-# kustomize build ~/git_repos/jasonmorgan/linkerd-demos/101/podinfo | linkerd inject - | k apply -f -
-# k apply -f ~/git_repos/jasonmorgan/linkerd-demos/101/service_profiles/source/booksapp.yaml 
-# linkerd viz dashboard
-kubectl delete sp -n emojivoto --all
+
+k3d cluster delete tap &>/dev/null
+k3d cluster create tap -p "8080:80@loadbalancer" -p "8443:443@loadbalancer"  --k3s-server-arg '--no-deploy=traefik' > /dev/null 2>&1
+kubectl ns default
+curl -sL https://run.linkerd.io/install | sh
+linkerd install | kubectl apply -f - && linkerd check
+linkerd viz install | kubectl apply -f - && linkerd viz check
+curl -sL https://run.linkerd.io/emojivoto.yml | linkerd inject - | kubectl apply -f -
+kubectl create ns booksapp
+curl -sL https://run.linkerd.io/booksapp.yml | linkerd inject - | kubectl apply -n booksapp -f -
 kubectl apply -f ~/git_repos/jasonmorgan/linkerd-demos/101/service_profiles/source/booksapp.yaml 
+
+kubectl apply -f ~/git_repos/jasonmorgan/linkerd-demos/101/service_profiles/source/booksapp.yaml 
+
 clear
 
 pe "kubectl get nodes"
