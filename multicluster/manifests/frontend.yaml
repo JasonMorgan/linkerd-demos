@@ -27,7 +27,7 @@ data:
       set $east "east";
       set $west "west";
       location / {
-        proxy_pass http://podinfo-eu-west-1:9898;
+        proxy_pass http://podinfo-lon:9898;
         proxy_http_version 1.1;
       }
     }
