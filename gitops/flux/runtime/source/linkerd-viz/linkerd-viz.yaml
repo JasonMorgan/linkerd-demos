@@ -10,6 +10,7 @@ metadata:
     linkerd.io/extension: viz
   annotations:
     linkerd.io/inject: enabled
+    config.linkerd.io/proxy-await: "enabled"
 ---
 ###
 ### Metrics API RBAC
@@ -37,6 +38,9 @@ rules:
 - apiGroups: ["split.smi-spec.io"]
   resources: ["trafficsplits"]
   verbs: ["list", "get", "watch"]
+- apiGroups: ["policy.linkerd.io"]
+  resources: ["servers", "serverauthorizations"]
+  verbs: ["list", "get"]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -223,11 +227,11 @@ metadata:
     component: tap
     namespace: linkerd-viz
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
 type: kubernetes.io/tls
 data:
-  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKakNDQWc2Z0F3SUJBZ0lSQVBCSEdVYVZSR01RcHl1SUZ1YThkL013RFFZSktvWklodmNOQVFFTEJRQXcKSGpFY01Cb0dBMVVFQXhNVGRHRndMbXhwYm10bGNtUXRkbWw2TG5OMll6QWVGdzB5TVRBMk1ETXhPREkzTVRkYQpGdzB5TWpBMk1ETXhPREkzTVRkYU1CNHhIREFhQmdOVkJBTVRFM1JoY0M1c2FXNXJaWEprTFhacGVpNXpkbU13CmdnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUNvanNpR0ZCRnNOaU5nRE1ueVdtS1UKVnhmZ1VQV21zcndlSnRtemtyY3FTVWt3dDJJTFZjNWFPVFRpUkhPbXg4djhWaUxSM1hydndMVkV2MStsM2gwWgpxOHBmMWo1eHg0TnphbUxzdmlhdExHV29xRStYbVNQeEZWUEZmR3p4WEdmQmNibmVKM20zUjR1RTAva3R3MjRtCnoxNUFSREN4WTB5UXphR1diMHI1OEl6d3N0OU4zWld3ZFJsOXZpUEJEaXhkQVFyc005NjkwS3FmU2JyYjJGODYKVVVrRUlKcDVpT1FhZ0dTTjFsTUhuWkZjQkNJcnd2TkxkV0ErVklZOHJwcis3WTZIYUY3MzdrUTZzc3c5OWhlNApNeW9FU2dYZXlWbWR6RmtWSk55Tkw2WGtpamE1d3UwV2E1ZVJsaFd2T1FBcC84RDFVdm9sakwvdEZqZGVkMGFWCkFnTUJBQUdqWHpCZE1BNEdBMVVkRHdFQi93UUVBd0lGb0RBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUkKS3dZQkJRVUhBd0l3REFZRFZSMFRBUUgvQkFJd0FEQWVCZ05WSFJFRUZ6QVZnaE4wWVhBdWJHbHVhMlZ5WkMxMgphWG91YzNaak1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQ25yQUFpdWxONlh5TmloM0FSUU4rZ1NmOHE1TGsrClpQc3VoM04vT0JWRytueHJzN250bEVxbCtLNHdrTG5iL2RyMVhIc01TMk5mUVQ2akpYVWNoYnpybm9BRkRXUXgKUXl3Q0MzcnlzdjNBSHNoMmtkR1Uxc2c4VlRsaitXakkzRFpDZXlQTmhCSWk4R1JMbXZRYkNvMDZEN3lKbmIrNApxZ1V6ZFdVWjNyaXBXWk0zMGpWcXowNFVVVU52ZXpvN05wTTZQRU1GV1I5WDFjM3NoZGRzZEpPNjNBOUZiVGJvCnRtemlsV3dWUkNNZFNNOVJVcHlCaDZ5RzhPVnZqNnliMitWWWFqUEdxZE1Sd3o1TlR0K1NObU90aDFaMzVnUUMKNTBCYWFlQUROQWFUTUNkK3RPRk5qcVUzdkZ6TlF6d3o1Q21zMmNmSzRnWVNneGp4ZzBZaFgrMVgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ==
-  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBcUk3SWhoUVJiRFlqWUF6SjhscGlsRmNYNEZEMXBySzhIaWJaczVLM0trbEpNTGRpCkMxWE9XamswNGtSenBzZkwvRllpMGQxNjc4QzFSTDlmcGQ0ZEdhdktYOVkrY2NlRGMycGk3TDRtclN4bHFLaFAKbDVrajhSVlR4WHhzOFZ4bndYRzUzaWQ1dDBlTGhOUDVMY051SnM5ZVFFUXdzV05Na00yaGxtOUsrZkNNOExMZgpUZDJWc0hVWmZiNGp3UTRzWFFFSzdEUGV2ZENxbjBtNjI5aGZPbEZKQkNDYWVZamtHb0JramRaVEI1MlJYQVFpCks4THpTM1ZnUGxTR1BLNmEvdTJPaDJoZTkrNUVPckxNUGZZWHVETXFCRW9GM3NsWm5jeFpGU1RjalMrbDVJbzIKdWNMdEZtdVhrWllWcnprQUtmL0E5Vkw2Sll5LzdSWTNYbmRHbFFJREFRQUJBb0lCQVFDSCswQ3NZaTQ0RldqdQppUUsyZ05KOGg5S2NSZFFYMnFQRzAyTFg2dW5YdEczV1htczdaOHJrb0xnWVBrN3E0czZlME1LZ2VrUStmVUgvCnAwQTdxUGZqQ09Objg0aEc5RVVJN0cvSVBCTXBxK0tMY05WZElNK05JNzZFV0wvdTY3Uk1yRG5kamcwMG5nUmgKY1R6Wi9ZcTB4cUJyeWxkYUZCamx6TzZxVlRpd2IxOGZVOVRkTUJYQ0tzT2RyV2xvVWk5cHlOaXA4VUZsY0RSWgp5alk1OXhiRFJ3b25SQ3pOWDhWRTZ2aWY2NWUyT2NiWHp0RVZZakpUaXFkOWRORkRjaE41QXh2VlVPN3FUM1hsCmN3eUIxMk9zOG41SVY2V0IyUDZTMFZ4ME1QV2hKcmQwWXZodG44QURqcWdGSVUwdHR2ZDhWTXZXblBaeUx5Zi8KcHcraGxxZ2hBb0dCQU52ZC9WU2UxTU1IYUpnNHBobllhR0tnbGsvZHVaZ2cvQlkvTGtvbkxtTm91SWJUdFVmTApHWm00dmM3M1htSVFKMVROUXZJalYyVXlFeGNlK2E2azZHd2pwZkZvZDlUdkRNMjJIa2xsdFlPTEpHZ1p4WjQ0CkcwazZ1bk5BcGJSVG9rSlZrMFhXK2dvSUovTmoxZU9tcUEzYmtJVzhNSmJhYUlsNEpOYVVSSFZOQW9HQkFNUkMKS1NTWE1wckRiT1pvSzBWSEN6cUtKRFhEUy9TejBtK0VzZnlnMHl6M3hGYk5aM1F6SUZIWEM4clhIMUlHWDI0Mgp6b0lvR1kyRTlvY0FtMWtwcmpoeXRhd3RaaHhqRXo5RVBZQkU4MEo1eXR5NkZWSXdaeEdtMHUrdmhyZGdrblNjCmcrYkNLSndUWTMweE1scHBIVXpDQXRRU2w5cVc0RzhUTHVKaDB0SnBBb0dBSkYrVE8xNlRZRGhuaTFkRDAxN0QKMWgwdkFNTnpvc0ZDTXdQOHluTzA3dWt5TGN2MFg0NHdEQWhPRG1GS0Vmc09KcTlXZGV4MjF0enozNDFXVFJnbgpBMHphZFJlTlM0TElvWGVSaHg3MmFtNm9kVGhlUXhDUkl3bytNamJ0c3VsckhJSS92UHdWblhjLzlMbjlkbzNwCm0zRkpkWFp1cTJZeWlSdUJMS2FXdExrQ2dZQWJEQ012YjhjQm5UMDg0ODVTMWQrdVNhdUQzVTV5Z3ZYVmVLd3UKN05zdHIxZlh2cWNyVklCM3h2TlJHU1N2NFVEMXA0ZitXQmh0Y0kycFBXUXJmWnNOSElIOUlLU1o5TzJLSXBWMwpRQWxtZC9LRlNQLzNPOFI0b2swZnkwajlyTW1DV0srMDliMHpCVmtJditiNG50UHk2Q29Mb0NSZGM3MnFrVEk4CjhNNWxRUUtCZ1FDakRtbFg4OHA1L0RuRWJhY2hBOXYrOThMZkM4MHFndVFuaW1Gc1RhL2hla2NCU3JCQ3IxcW8KT2FlZ3Jja2taVkZPSXpqK2VFeFptc1JMc3hMeTNkWjZXR3dCcUkrc2NQTWZ5QkRxelY0U2JYSE5LVWlOZitKYwoybWRqdGk2SlB6UDJXRERzRUtIdlpQTXpMU2ZJcU5pbVFCRWU1YVBsUGVDRTg5QlhYVEljREE9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQ==
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKVENDQWcyZ0F3SUJBZ0lRY0NBczFrSG9WUnZJNlFydG9RMUpkREFOQmdrcWhraUc5dzBCQVFzRkFEQWUKTVJ3d0dnWURWUVFERXhOMFlYQXViR2x1YTJWeVpDMTJhWG91YzNaak1CNFhEVEl4TVRFeE1URTFORGswT0ZvWApEVEl5TVRFeE1URTFORGswT0Zvd0hqRWNNQm9HQTFVRUF4TVRkR0Z3TG14cGJtdGxjbVF0ZG1sNkxuTjJZekNDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTXRXUXpaQzVXUG1HM01oOUZ4OUg1Q3UKRHNUZFQxdElNTTBuZ0JOMUdjL0srSzhneGhYUkpMMUhmcHJRdHNPVjNzZFgzMU1qVjQ2R0FGK1BpRk9ycEpBWgpzL2ZuMTJndlBmVlpMYTlRbFo3bTc1eEo5U1JuNjlNQmdBa0FEdmJoNjc4YW5yV2FVdHoyMklNaHRSOFAzZGVGCk9nS01PUDlGdjI0YnZZdXk5SGxqVnJRN253dzRCUml2MnovRDlkWlUvVU5WRTJ1cW1TeTg4QlN4SXd1SlZrTjIKOSs4UVpNRXJ5L0xUejZCdG55UTdVMytCSGd5NmMxbU83UmpVbXE2b2t3dmFPekNnbS9JOXY1V0FjMHd3OWNRbwpxRmpXcGVPNWdnRXpDRndhTklpRnpzZ0dXK1ZWYitkbXRrdjV4RlcyRmZqdDNXRlRiU2VpTFg0OEF0b3ZFbThDCkF3RUFBYU5mTUYwd0RnWURWUjBQQVFIL0JBUURBZ1dnTUIwR0ExVWRKUVFXTUJRR0NDc0dBUVVGQndNQkJnZ3IKQmdFRkJRY0RBakFNQmdOVkhSTUJBZjhFQWpBQU1CNEdBMVVkRVFRWE1CV0NFM1JoY0M1c2FXNXJaWEprTFhacAplaTV6ZG1Nd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFCZU1ucUxvNzF5VUgzY1AwTFliOHlVTDVpSG5UOWFHCnNPMTZoTHpYSDNHUVlzU0RPTzhXdEozL1NUQXFuSXdhdllXanBWUkU2MXoyRlF0MkI0ejA4ZS9xSnBNNk1PNy8KWDNRMWc5dy9lc2VuNC9UdXdwTm5OMWZHZUFTeCtiV0NUVmtzMWQ0aUordDJBaXRMN3RFLzdPTlpqZmhlRE4yNApMRmRvM0MyYnVRUFNuK2NrMmxscGtzTlFncFdVTkt1RTg1UGVyTkFqL0M5K3ZvZmh5M1g3S1VlbWlzVXRDd2xkCmNJNi95OGtsS3VCR0c4MXRaTExrSEQxT1ZCU3VUV29PWWpyeU45aVFsRE9MbWdYWGVxRGNsN2NNWE1RQk1BaUkKRkFHWGZBYUl5bGEvVGlHYkkrU0ZoUGN6ZndoUDArb1hUMVMxaHVzREFCRzRZU0k0eUhIdWE3RT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ==
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcFFJQkFBS0NBUUVBeTFaRE5rTGxZK1liY3lIMFhIMGZrSzRPeE4xUFcwZ3d6U2VBRTNVWno4cjRyeURHCkZkRWt2VWQrbXRDMnc1WGV4MWZmVXlOWGpvWUFYNCtJVTZ1a2tCbXo5K2ZYYUM4OTlWa3RyMUNWbnVidm5FbjEKSkdmcjB3R0FDUUFPOXVIcnZ4cWV0WnBTM1BiWWd5RzFIdy9kMTRVNkFvdzQvMFcvYmh1OWk3TDBlV05XdER1ZgpERGdGR0svYlA4UDExbFQ5UTFVVGE2cVpMTHp3RkxFakM0bFdRM2IzN3hCa3dTdkw4dFBQb0cyZkpEdFRmNEVlCkRMcHpXWTd0R05TYXJxaVRDOW83TUtDYjhqMi9sWUJ6VEREMXhDaW9XTmFsNDdtQ0FUTUlYQm8waUlYT3lBWmIKNVZWdjUyYTJTL25FVmJZVitPM2RZVk50SjZJdGZqd0MyaThTYndJREFRQUJBb0lCQUNYY2d4bFliWFFqaFpyegppSmVzS0xOODVYMGNwRWtmOFE1U081UGo2eEY0L3NORk8vMFYrMXhQTXJETENpenkvQTlzT2tZMXYzam5WS3gyCmduRHA5Zk5yQmNxMFhiU2xqMGplK1JXNjBKRk0rUExHQnFKbncwNS82Z0pEQTRaTzNPR3hxRG15YVptQlVTRmgKcG1NSlJrcDZJU29XU0Fxb1J4UE9rSVd4cGJud1ExM2F4WW4wcnIyUmxxWlFHVmptWEExMHlLY2ticUVZL2hMZgplWE5aWExRYUhYaFVCRGdTUkU4UzlaUlY5Um9NdHN1K09aaVBZemwwQjluWHFITU9LQlg2bks4YmtUcnl4bC9VClc5T1FZODlDU2QreUZLb3FJdXRYTFFEaUhKYTVCMjdxMld1QzdpN3NqMnJwdUtCYm1uRGpqTFNYaWVHUis4TFAKcDJHSDd5a0NnWUVBNG5RSFlvZlIwbnVpQW1QaE1qQm9sYWViSE1XYUw5eS9SSEVmY0FyQ0tXN25kdVFmR2VoOQpVM3VDREgyd3JjU0tZN2RhUFBnQVBHOVhScDhPU3BISC9teFdudHJDT2YwSDl5R2hNQi9xRU9QcndmaWQ2bnRwCndmTkFsZUFGb1k1TVp4dytXdnpEeGhJM20vN0JoQ2t3YzB2TlArUUdiam84TEhmajQxRFRGczBDZ1lFQTVkNGIKSGUrekJ2TzY2aXNRVU1xSmVLcnJFbHplVnpKclVqdExkT082RC84R1ZjRkJpMS9RZ3Jlbmw2UWtrVFZjU3JhOQpSRUFuTTdyQ1A1NzYwTjBSc0NvNjNVL0NPUFNFaDRMN2NaUXpHb0VUM1ArellxODVETDNlemQyVjlaUmh3NlJECjJtMHFta3B3RzVlbCtrV21QWHlsZXU5YS85NThVWENCNklHWE5pc0NnWUVBbG1oc2swUVUyQkduM0tDTWJiSjcKZEpNYlVuUG80a3RqZXNrTUVYWUQybE5BUjlaaTFlbDJmR0YzVW1hVldBVkh5YzE1a1M5RHNPQmUvcGdjZk9qeApCZ3JkU2F1US84VVJhbEthNWdUOGlYVnBISy9ONjNWSEhEdytOSTNVRDZjZEZndExXMUd4a3JoODJRN1BaOEdYCjNheUdTaDVoS3d0ZzlrUTNSNzlpUlMwQ2dZRUFnS1pSR08wWmptK0VraUJ0N2ptY3ZPc3p5MEFzdERLa3ZBNHgKaWdjV0VIUFQwTlRyWVJ6TDd3em9nRWMrckFKb1YreDBleWxJaDN3ajBVV2g3Smw5bDlIYXhoZ29oSVhkVXBadApNY0VXNU9PUEFXWWV1TUdHdFduaXMrY3JVWm10S2JqYXZQblNHUzVHRmp0R2lvN0ducTBQVklGM3RiS0ljMi83ClZPeUtlNmNDZ1lFQTI0RkNaREpQY01Halh2RUR3aHVOakR1UDYxSWRFditJM01Nek5YWjJpZm05SEJiSnEvL0cKNUNMMVlkVjJsWXdLL3NVbEVGditKUkJ2a05MdUQyOEd5TEFFbHdFQjdzdTJCbmV1c3FqMlNqbW4yRzBKSkNweAphQkV0WVFIanFEeUxXcVhCeUNKQzlNY043Q3B5c2p1YzAzelNIN29sN3J3ayt3NmcyS2pKNWpVPQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQ==
 ---
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
@@ -244,7 +248,7 @@ spec:
   service:
     name: tap
     namespace: linkerd-viz
-  caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKakNDQWc2Z0F3SUJBZ0lSQVBCSEdVYVZSR01RcHl1SUZ1YThkL013RFFZSktvWklodmNOQVFFTEJRQXcKSGpFY01Cb0dBMVVFQXhNVGRHRndMbXhwYm10bGNtUXRkbWw2TG5OMll6QWVGdzB5TVRBMk1ETXhPREkzTVRkYQpGdzB5TWpBMk1ETXhPREkzTVRkYU1CNHhIREFhQmdOVkJBTVRFM1JoY0M1c2FXNXJaWEprTFhacGVpNXpkbU13CmdnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUNvanNpR0ZCRnNOaU5nRE1ueVdtS1UKVnhmZ1VQV21zcndlSnRtemtyY3FTVWt3dDJJTFZjNWFPVFRpUkhPbXg4djhWaUxSM1hydndMVkV2MStsM2gwWgpxOHBmMWo1eHg0TnphbUxzdmlhdExHV29xRStYbVNQeEZWUEZmR3p4WEdmQmNibmVKM20zUjR1RTAva3R3MjRtCnoxNUFSREN4WTB5UXphR1diMHI1OEl6d3N0OU4zWld3ZFJsOXZpUEJEaXhkQVFyc005NjkwS3FmU2JyYjJGODYKVVVrRUlKcDVpT1FhZ0dTTjFsTUhuWkZjQkNJcnd2TkxkV0ErVklZOHJwcis3WTZIYUY3MzdrUTZzc3c5OWhlNApNeW9FU2dYZXlWbWR6RmtWSk55Tkw2WGtpamE1d3UwV2E1ZVJsaFd2T1FBcC84RDFVdm9sakwvdEZqZGVkMGFWCkFnTUJBQUdqWHpCZE1BNEdBMVVkRHdFQi93UUVBd0lGb0RBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUkKS3dZQkJRVUhBd0l3REFZRFZSMFRBUUgvQkFJd0FEQWVCZ05WSFJFRUZ6QVZnaE4wWVhBdWJHbHVhMlZ5WkMxMgphWG91YzNaak1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQ25yQUFpdWxONlh5TmloM0FSUU4rZ1NmOHE1TGsrClpQc3VoM04vT0JWRytueHJzN250bEVxbCtLNHdrTG5iL2RyMVhIc01TMk5mUVQ2akpYVWNoYnpybm9BRkRXUXgKUXl3Q0MzcnlzdjNBSHNoMmtkR1Uxc2c4VlRsaitXakkzRFpDZXlQTmhCSWk4R1JMbXZRYkNvMDZEN3lKbmIrNApxZ1V6ZFdVWjNyaXBXWk0zMGpWcXowNFVVVU52ZXpvN05wTTZQRU1GV1I5WDFjM3NoZGRzZEpPNjNBOUZiVGJvCnRtemlsV3dWUkNNZFNNOVJVcHlCaDZ5RzhPVnZqNnliMitWWWFqUEdxZE1Sd3o1TlR0K1NObU90aDFaMzVnUUMKNTBCYWFlQUROQWFUTUNkK3RPRk5qcVUzdkZ6TlF6d3o1Q21zMmNmSzRnWVNneGp4ZzBZaFgrMVgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ==
+  caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKVENDQWcyZ0F3SUJBZ0lRY0NBczFrSG9WUnZJNlFydG9RMUpkREFOQmdrcWhraUc5dzBCQVFzRkFEQWUKTVJ3d0dnWURWUVFERXhOMFlYQXViR2x1YTJWeVpDMTJhWG91YzNaak1CNFhEVEl4TVRFeE1URTFORGswT0ZvWApEVEl5TVRFeE1URTFORGswT0Zvd0hqRWNNQm9HQTFVRUF4TVRkR0Z3TG14cGJtdGxjbVF0ZG1sNkxuTjJZekNDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTXRXUXpaQzVXUG1HM01oOUZ4OUg1Q3UKRHNUZFQxdElNTTBuZ0JOMUdjL0srSzhneGhYUkpMMUhmcHJRdHNPVjNzZFgzMU1qVjQ2R0FGK1BpRk9ycEpBWgpzL2ZuMTJndlBmVlpMYTlRbFo3bTc1eEo5U1JuNjlNQmdBa0FEdmJoNjc4YW5yV2FVdHoyMklNaHRSOFAzZGVGCk9nS01PUDlGdjI0YnZZdXk5SGxqVnJRN253dzRCUml2MnovRDlkWlUvVU5WRTJ1cW1TeTg4QlN4SXd1SlZrTjIKOSs4UVpNRXJ5L0xUejZCdG55UTdVMytCSGd5NmMxbU83UmpVbXE2b2t3dmFPekNnbS9JOXY1V0FjMHd3OWNRbwpxRmpXcGVPNWdnRXpDRndhTklpRnpzZ0dXK1ZWYitkbXRrdjV4RlcyRmZqdDNXRlRiU2VpTFg0OEF0b3ZFbThDCkF3RUFBYU5mTUYwd0RnWURWUjBQQVFIL0JBUURBZ1dnTUIwR0ExVWRKUVFXTUJRR0NDc0dBUVVGQndNQkJnZ3IKQmdFRkJRY0RBakFNQmdOVkhSTUJBZjhFQWpBQU1CNEdBMVVkRVFRWE1CV0NFM1JoY0M1c2FXNXJaWEprTFhacAplaTV6ZG1Nd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFCZU1ucUxvNzF5VUgzY1AwTFliOHlVTDVpSG5UOWFHCnNPMTZoTHpYSDNHUVlzU0RPTzhXdEozL1NUQXFuSXdhdllXanBWUkU2MXoyRlF0MkI0ejA4ZS9xSnBNNk1PNy8KWDNRMWc5dy9lc2VuNC9UdXdwTm5OMWZHZUFTeCtiV0NUVmtzMWQ0aUordDJBaXRMN3RFLzdPTlpqZmhlRE4yNApMRmRvM0MyYnVRUFNuK2NrMmxscGtzTlFncFdVTkt1RTg1UGVyTkFqL0M5K3ZvZmh5M1g3S1VlbWlzVXRDd2xkCmNJNi95OGtsS3VCR0c4MXRaTExrSEQxT1ZCU3VUV29PWWpyeU45aVFsRE9MbWdYWGVxRGNsN2NNWE1RQk1BaUkKRkFHWGZBYUl5bGEvVGlHYkkrU0ZoUGN6ZndoUDArb1hUMVMxaHVzREFCRzRZU0k0eUhIdWE3RT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ==
 ---
 ###
 ### Web RBAC
@@ -308,11 +312,11 @@ rules:
 - apiGroups: ["admissionregistration.k8s.io"]
   resources: ["mutatingwebhookconfigurations", "validatingwebhookconfigurations"]
   verbs: ["list"]
-- apiGroups: ["policy"]
-  resources: ["podsecuritypolicies"]
-  verbs: ["list"]
 - apiGroups: ["linkerd.io"]
   resources: ["serviceprofiles"]
+  verbs: ["list"]
+- apiGroups: [""]
+  resources: ["nodes"]
   verbs: ["list"]
 - apiGroups: ["apiregistration.k8s.io"]
   resources: ["apiservices"]
@@ -388,31 +392,71 @@ metadata:
     component: web
     namespace: linkerd-viz
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
 metadata:
-  name: viz-psp
   namespace: linkerd-viz
+  name: admin
   labels:
     linkerd.io/extension: viz
-    namespace: linkerd-viz
-roleRef:
-  kind: Role
-  name: psp
-  apiGroup: rbac.authorization.k8s.io
-subjects:
-- kind: ServiceAccount
-  name: tap
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  podSelector:
+    matchLabels:
+      linkerd.io/extension: viz
+  port: admin-http
+  proxyProtocol: HTTP/1
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
   namespace: linkerd-viz
-- kind: ServiceAccount
-  name: web
+  name: admin
+  labels:
+    linkerd.io/extension: viz
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  server:
+    name: admin
+  client:
+    # for kubelet probes and prometheus scraping
+    unauthenticated: true
+
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
   namespace: linkerd-viz
-- kind: ServiceAccount
-  name: grafana
+  name: proxy-admin
+  labels:
+    linkerd.io/extension: viz
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  podSelector:
+    matchLabels:
+      linkerd.io/extension: viz
+  port: linkerd-admin
+  proxyProtocol: HTTP/1
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
   namespace: linkerd-viz
-- kind: ServiceAccount
-  name: prometheus
-  namespace: linkerd-viz
+  name: proxy-admin
+  labels:
+    linkerd.io/extension: viz
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  server:
+    name: proxy-admin
+  client:
+    # for kubelet probes
+    unauthenticated: true
+
 ---
 ###
 ### Metrics API
@@ -426,7 +470,7 @@ metadata:
     linkerd.io/extension: viz
     component: metrics-api
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
 spec:
   type: ClusterIP
   selector:
@@ -441,12 +485,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
   labels:
     linkerd.io/extension: viz
     app.kubernetes.io/name: metrics-api
     app.kubernetes.io/part-of: Linkerd
-    app.kubernetes.io/version: stable-2.10.2
+    app.kubernetes.io/version: stable-2.11.1
     component: metrics-api
   name: metrics-api
   namespace: linkerd-viz
@@ -459,8 +503,8 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0d5b035f4d141dc2c13e1f89046de78fe0fb1208075734c3977400b866f2db51
-        linkerd.io/created-by: linkerd/helm stable-2.10.2
+        checksum/config: 951a7b61ff59229914ca604c671353e5fdc0eda710bde2bfbb50c9225225babe
+        linkerd.io/created-by: linkerd/helm stable-2.11.1
       labels:
         linkerd.io/extension: viz
         component: metrics-api
@@ -471,9 +515,10 @@ spec:
       - args:
         - -controller-namespace=linkerd
         - -log-level=info
+        - -log-format=plain
         - -cluster-domain=cluster.local
         - -prometheus-url=http://prometheus.linkerd-viz.svc.cluster.local:9090
-        image: cr.l5d.io/linkerd/metrics-api:stable-2.10.2
+        image: cr.l5d.io/linkerd/metrics-api:stable-2.11.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -496,6 +541,43 @@ spec:
           runAsUser: 2103
       serviceAccountName: metrics-api
 ---
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  namespace: linkerd-viz
+  name: metrics-api
+  labels:
+    linkerd.io/extension: viz
+    component: metrics-api
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  podSelector:
+    matchLabels:
+      linkerd.io/extension: viz
+      component: metrics-api
+  port: http
+  proxyProtocol: HTTP/1
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
+  namespace: linkerd-viz
+  name: metrics-api
+  labels:
+    linkerd.io/extension: viz
+    component: metrics-api
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  server:
+    name: metrics-api
+  client:
+    meshTLS:
+      serviceAccounts:
+      - name: web
+      - name: prometheus
+---
 ###
 ### Grafana
 ###
@@ -509,7 +591,7 @@ metadata:
     component: grafana
     namespace: linkerd-viz
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
 data:
   grafana.ini: |-
     instance_name = grafana
@@ -526,6 +608,11 @@ data:
     check_for_updates = false
     [panels]
     disable_sanitize_html = true
+    [log]
+    mode = console
+    [log.console]
+    format = text
+    level = info
   datasources.yaml: |-
     apiVersion: 1
     datasources:
@@ -563,7 +650,7 @@ metadata:
     component: grafana
     namespace: linkerd-viz
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
 spec:
   type: ClusterIP
   selector:
@@ -578,12 +665,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
   labels:
     linkerd.io/extension: viz
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: Linkerd
-    app.kubernetes.io/version: stable-2.10.2
+    app.kubernetes.io/version: stable-2.11.1
     component: grafana
     namespace: linkerd-viz
   name: grafana
@@ -598,7 +685,7 @@ spec:
   template:
     metadata:
       annotations:
-        linkerd.io/created-by: linkerd/helm stable-2.10.2
+        linkerd.io/created-by: linkerd/helm stable-2.11.1
       labels:
         linkerd.io/extension: viz
         component: grafana
@@ -614,7 +701,7 @@ spec:
         # see https://github.com/grafana/grafana/issues/20096
         - name: GODEBUG
           value: netdns=go
-        image: cr.l5d.io/linkerd/grafana:stable-2.10.2
+        image: cr.l5d.io/linkerd/grafana:stable-2.11.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -653,6 +740,41 @@ spec:
           name: grafana-config
         name: grafana-config
 ---
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  namespace: linkerd-viz
+  name: grafana
+  labels:
+    linkerd.io/extension: viz
+    component: grafana
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  podSelector:
+    matchLabels:
+      linkerd.io/extension: viz
+      component: grafana
+  port: http
+  proxyProtocol: HTTP/1
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
+  namespace: linkerd-viz
+  name: grafana
+  labels:
+    linkerd.io/extension: viz
+    component: grafana
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  server:
+    name: grafana
+  client:
+    # web, prometheus and the kubelet probes
+    unauthenticated: true
+---
 ###
 ### Prometheus
 ###
@@ -666,7 +788,7 @@ metadata:
     component: prometheus
     namespace: linkerd-viz
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
 data:
   prometheus.yml: |-
     global:
@@ -811,7 +933,7 @@ metadata:
     component: prometheus
     namespace: linkerd-viz
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
 spec:
   type: ClusterIP
   selector:
@@ -826,12 +948,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
   labels:
     linkerd.io/extension: viz
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: Linkerd
-    app.kubernetes.io/version: stable-2.10.2
+    app.kubernetes.io/version: stable-2.11.1
     component: prometheus
     namespace: linkerd-viz
   name: prometheus
@@ -846,7 +968,7 @@ spec:
   template:
     metadata:
       annotations:
-        linkerd.io/created-by: linkerd/helm stable-2.10.2
+        linkerd.io/created-by: linkerd/helm stable-2.11.1
       labels:
         linkerd.io/extension: viz
         component: prometheus
@@ -859,6 +981,7 @@ spec:
       containers:
       - args:
         - --log.level=info
+        - --log.format=logfmt
         - --config.file=/etc/prometheus/prometheus.yml
         - --storage.tsdb.path=/data
         - --storage.tsdb.retention.time=6h
@@ -913,7 +1036,7 @@ metadata:
     component: tap
     namespace: linkerd-viz
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
 spec:
   type: ClusterIP
   selector:
@@ -931,12 +1054,12 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
   labels:
     linkerd.io/extension: viz
     app.kubernetes.io/name: tap
     app.kubernetes.io/part-of: Linkerd
-    app.kubernetes.io/version: stable-2.10.2
+    app.kubernetes.io/version: stable-2.11.1
     component: tap
     namespace: linkerd-viz
   name: tap
@@ -951,8 +1074,8 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: dd026ee78a73fcef72ff79bae97ca91b1c1d043e3c4209a2a6cc90d871fb6063
-        linkerd.io/created-by: linkerd/helm stable-2.10.2
+        checksum/config: 8bd88dc0862722b00ad702b3a33ff6f80b24e367ecdb9b1077a4bca1c7daf6d8
+        linkerd.io/created-by: linkerd/helm stable-2.11.1
       labels:
         linkerd.io/extension: viz
         component: tap
@@ -965,8 +1088,9 @@ spec:
         - api
         - -api-namespace=linkerd
         - -log-level=info
+        - -log-format=plain
         - -identity-trust-domain=cluster.local
-        image: cr.l5d.io/linkerd/tap:stable-2.10.2
+        image: cr.l5d.io/linkerd/tap:stable-2.11.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -998,6 +1122,41 @@ spec:
       - name: tls
         secret:
           secretName: tap-k8s-tls
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  namespace: linkerd-viz
+  name: tap-api
+  labels:
+    linkerd.io/extension: viz
+    component: tap
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  podSelector:
+    matchLabels:
+      linkerd.io/extension: viz
+      component: tap
+  port: apiserver
+  proxyProtocol: TLS
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
+  namespace: linkerd-viz
+  name: tap
+  labels:
+    linkerd.io/extension: viz
+    component: tap
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  server:
+    name: tap-api
+  client:
+    # traffic coming from kube-api
+    unauthenticated: true
 ---
 ###
 ### Tap Injector RBAC
@@ -1040,13 +1199,13 @@ metadata:
   name: tap-injector-k8s-tls
   namespace: linkerd-viz
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
   labels:
     linkerd.io/extension: viz
 type: kubernetes.io/tls
 data:
-  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURRVENDQWltZ0F3SUJBZ0lSQUp4Z1Y3WlZEakI5RldZc3lLNlB2cW93RFFZSktvWklodmNOQVFFTEJRQXcKSnpFbE1DTUdBMVVFQXhNY2RHRndMV2x1YW1WamRHOXlMbXhwYm10bGNtUXRkbWw2TG5OMll6QWVGdzB5TVRBMgpNRE14T0RJM01UaGFGdzB5TWpBMk1ETXhPREkzTVRoYU1DY3hKVEFqQmdOVkJBTVRISFJoY0MxcGJtcGxZM1J2CmNpNXNhVzVyWlhKa0xYWnBlaTV6ZG1Nd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUIKQVFEZW1SMDR3UEd4TDFmdDhvVnBoRWxsT254ZEUwcWJ6amJaTG1rWkZudjJwWExTOEh4cTBhYis1NHFseG43ZQoxd2FwU3czbjZCcUJPRmR2Y1JaZkpGeVRINUpXdGJxZXJvV2owSUovMGdKRm4rclpTL1drRnBpRWdxUzdaTVhtClE1Nm5FV2pqazRaSkJ4QXRYbm02UGZhMzRkeGZYZTlVdVJTUFRIK3k3SGJCb3hnS3dtWFJlVmg0djhYRjBzaUwKTWplWGVtdmlGT2h3OG4reXB3TUtQbHpKbTI1cXdSKzEvb2R6VWVoUldVcFQzcnFESzg1a3pZQ1dRYXREYTU5KwpFS0hTbUFZOFhPeHRaMzFmQjNIRVFPNXRJN1RsOE9nN0RsOEhPRlBtMmNrY1VFWVJuMU12czRJSHZ2YUNuOGpSCmNkN1RacEE4ODV1a1M1L3JSdTFqNHJpVkFnTUJBQUdqYURCbU1BNEdBMVVkRHdFQi93UUVBd0lGb0RBZEJnTlYKSFNVRUZqQVVCZ2dyQmdFRkJRY0RBUVlJS3dZQkJRVUhBd0l3REFZRFZSMFRBUUgvQkFJd0FEQW5CZ05WSFJFRQpJREFlZ2h4MFlYQXRhVzVxWldOMGIzSXViR2x1YTJWeVpDMTJhWG91YzNaak1BMEdDU3FHU0liM0RRRUJDd1VBCkE0SUJBUUF1eGVNNHl1bTBheFZGZWw4SUtvRVNrbkFMUjB5eUpRZWcxSS9VSGNlK0c2ZkF5THAyM1RpTWtkR2oKNklIZ1VjSDlqYlJ6YVRLU0diT29ESTBYa1F5aVcyZXlnbEw4SDZkMGU4bXlKTjJFUlV5MlczaU1HcW80TGF4bwp1MXNqdmNWSWZNT1pSbkF1dVNrbWhFTksrbU5ORmhqZ0xpWHZ6KzZQY0djS0p1OXhGK2d6amJIMnVBRU4vN2dDCk1XbmJJMHY5T05QSk94TUpXaWhuV0xhTnBlYzhQZ1k2TkJhWnJMZ3JJMTBYbmdrUmRtOEM0SFZRQ0E2TjlVREQKZDM4NkhjVG4zT3kvN2tpaHpvRzRlUW5UZTROY00xV3ZrWTY2bzI1QUM3Mk14emZCWkVwSGhIUy9YRzdkSVVCZwpjbGw2OHNUVVBVL3BKeEg0SG9ZeDBCZ0VUZGJ4Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0=
-  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBM3BrZE9NRHhzUzlYN2ZLRmFZUkpaVHA4WFJOS204NDIyUzVwR1JaNzlxVnkwdkI4CmF0R20vdWVLcGNaKzN0Y0dxVXNONStnYWdUaFhiM0VXWHlSY2t4K1NWclc2bnE2Rm85Q0NmOUlDUlovcTJVdjEKcEJhWWhJS2t1MlRGNWtPZXB4Rm80NU9HU1FjUUxWNTV1ajMydCtIY1gxM3ZWTGtVajB4L3N1eDJ3YU1ZQ3NKbAowWGxZZUwvRnhkTElpekkzbDNwcjRoVG9jUEovc3FjRENqNWN5WnR1YXNFZnRmNkhjMUhvVVZsS1U5NjZneXZPClpNMkFsa0dyUTJ1ZmZoQ2gwcGdHUEZ6c2JXZDlYd2R4eEVEdWJTTzA1ZkRvT3c1ZkJ6aFQ1dG5KSEZCR0VaOVQKTDdPQ0I3NzJncC9JMFhIZTAyYVFQUE9icEV1ZjYwYnRZK0s0bFFJREFRQUJBb0lCQUFQVXp0UHpQalcyZ3VUdApqNjVKUUpvbGI0Nktqbll3RG5HZWd1Q1RxbjZNU25XbS9mMDRybzhrblJaTlhGR3BrY3ZJSnUwZTZaWGZ5bUY0CnFOSHFaazJCOVpyWWRlWFZTeWVPcHpCY0JQMzl5cVVDMGErSlZBYXoyUElBd2djOGtyWjliamk4aVVzb2UvYkwKOFh4ckpKdjFuejFrK0lHVXplM0plMGt4R0xvc2REd1ZPU0dXRFNKMHA5UG9YS2tvdWNtTW5JdjhUejNJaGZLMQoydXB2SmFqYVpQOGo2RmxQTXBma3JzVktDSjBJc2NUM1htdmpHY0JSQ1RhT3lBOSsxRkhRSlhlUHlYMk5KNXZGCkRMZnM2OWUrRmc3MnB5Q014Y0Z2aklWcGdwOG9qWEkwRmZmQ0txUml6V3JvWDdveGFXUDdXMlRlV0dqRHRqMVMKYmxhb0V3RUNnWUVBNVVNdnN3THJ0TnpicGlCZUw5R2VGWnlyVm9pS21xNnVzM0U3OGl1ZzJCYWxKSGdiOWF2Kwp4bHNIT0w2Zmk5L1VQNU9TZEE0RlJyUndmWGFEdGpUdkYzT0FyaDhMdDBHWXB5Z2tNUDdjZWJUZXNBeHlvWFdnCkQrVHAzRzJlVUFZQ2dWME9VQUxONXFwMFZVQjlNR1NFRVNsaUxadFlqeVNHemVkSDFRYlJ6NmtDZ1lFQStJNzEKWDQ4eFZXeEhkcXJiOVBtM3hxN3F2K0dFSCtUUWtXd2hLamp0WWpQYml2WVNOMkZBT3ZKVUVTc052TmxxK284ZApINEF5RVNuUEJDSTlqdVdHV1RSUm0xdXJ2OExQZXpsMk5MK1N6bkVGK005WWxRWG9WczJWdlNmNkdvWW1tSUZoCnhKS0tTQ3pacHptTzd2M3JMS3JCV1lDSHNldkZDK0ZaQzJoUjVRMENnWUVBbUZjWXJ2N1YyUXlZOTc2eVYxd1cKaTQzYlhGakdvUnBLQS9yT05wRS9BOWVvVEo5ekZNQUJQNVRsSzVPZk9MYTJ0cmc4ck5sVU1ETmVQRUF3TFRibgpXTkhyUThobFpKUTE5M3o0NzRXcXcwU29aSnNnNEtEa2h5czVLcnU4WXJoYm1kSlgzRnJBcnZHODg1a3lscUYwCkVHTkxWYnJRRWUzWGxhS0ZYTXgzUm1FQ2dZRUF3MmlJcWJiR2Z6VGdQZi8zYXZIRHRGU2h3M2FGVEJtMGl3OXEKUjJwMzNjT05Md05qc053cEJlNnJmcy9OUGhIajA5WWRmRDFwbnlxeVVMcW1rS2dMNWllR25OQUdCMzBkWnUvMgo2V05QQkRQQkVTblpwMWI4b1BtQlpqTitvY21qb0RQZmJBNFUzc2M3MmdjYlF2S25KL2VhaUVYTzZHYkdCQ0FHCnhEd2dYaVVDZ1lCT3A2ZzVYQnJNbXBOUVZEclJ0OHVqclpKaHRzd0pVTWtybXdmcWNiUDQwUmFMeFlIVEVheTQKa3lmTW5QQWpDVzZ4MkliaHJkUzVjR3NXb2wyNjlEb1RQWHdkMytxc2ZFVnNaVjdwL1VrNG1RSUIxRHZYZkhVVgo5NnFKUjRkSmtHVHNqZUNaNFcrcjgvRk5TLzloOE1HaHNiNlZsNXlReVVvdWcvT2RlaE1DMkE9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQ==
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURRVENDQWltZ0F3SUJBZ0lSQU56cFdZc1kzY2lPTmxRYTZTb1JNN013RFFZSktvWklodmNOQVFFTEJRQXcKSnpFbE1DTUdBMVVFQXhNY2RHRndMV2x1YW1WamRHOXlMbXhwYm10bGNtUXRkbWw2TG5OMll6QWVGdzB5TVRFeApNVEV4TlRRNU5EaGFGdzB5TWpFeE1URXhOVFE1TkRoYU1DY3hKVEFqQmdOVkJBTVRISFJoY0MxcGJtcGxZM1J2CmNpNXNhVzVyWlhKa0xYWnBlaTV6ZG1Nd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUIKQVFESUptd2M3RGlPeXVRQy81NXBoV0xoNWY1Y2xBSGdWUzJTQlo2OGZUQVVNNW83dWsxNVZXS09qM0xJUGl3aQpTVm9sT2g4N1NEbG1zZUdyZGV0UEs3Y0NKVy92ZUU2U1o1L3JXTDJ3L0dYNXhNNnJTMzJ2VERpWkN2RXZvQUFJCnFWeld5Y09wbzR2YzBJWGQzbVF2TzI3NEFTZDJiaU0yd3hzWXordDl2Z3NlNFgxZWovM1l6ak9NNmU0bjRRaUQKR3FEcHp4NkJSWm5VcFRvN0ZaSDhTemN0dnJaMXRDOUNaUTRzY1ZicWplekJMOWxEbnowWWZpWnZMQ1BsN3B0MgpHc2hXM3VudjBFZlR0c3ROMllUQWdxYnRwZWtHNjRYV0xKZmhBVnhHenNQcVJCdG9kZGM3dVhTYUtCWlZPTVlZCjlHbVhKRkFNQURxaVZwY0xacDhkcDFOdkFnTUJBQUdqYURCbU1BNEdBMVVkRHdFQi93UUVBd0lGb0RBZEJnTlYKSFNVRUZqQVVCZ2dyQmdFRkJRY0RBUVlJS3dZQkJRVUhBd0l3REFZRFZSMFRBUUgvQkFJd0FEQW5CZ05WSFJFRQpJREFlZ2h4MFlYQXRhVzVxWldOMGIzSXViR2x1YTJWeVpDMTJhWG91YzNaak1BMEdDU3FHU0liM0RRRUJDd1VBCkE0SUJBUURFRFhtVWpmS3F4VVBnOTlIOEJ5eU42NnQyclc0Ty9MYXEwYzRmRDQ1cys1ZDBVQklPVVpOUkl6RGgKRnk0SGR3MUNENXhQbm00NkxwUnZQZjhnWkxxNENUa2hGOW1ybTdLOGlyTUZaeFJtL2JHMm50NU9TYzNWWEdNMApYQVlHeU4xbTI1N0QxZkVqR0ZLb0RFNHlNOHRWYk5Sd0FlallSS3R2RDhZVkxIQ3J6WE5Fc0RKcENWQU9BZzRVCmUyQUhocTZrMUdGSkc4ekVjcUY1M3FhK3UyTlZpWkhLR3pIWmU2bG4zTkt5ZjNqbkViNEpRY1RrZ2JTOGsvOGwKcyt0K3F0WUhoUGV4WThURWJHbzBMRWN6VFFBcE9rOWZKUGI4aEFDZ3JWRVp6eCs1ODIzTUkvSzQ3VEtPa0Z1VwpzYnh4RkNNVGNZam5iaHc1ZSswV0RrTWVmRTJhCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0=
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcFFJQkFBS0NBUUVBeUNac0hPdzRqc3JrQXYrZWFZVmk0ZVgrWEpRQjRGVXRrZ1dldkgwd0ZET2FPN3BOCmVWVmlqbzl5eUQ0c0lrbGFKVG9mTzBnNVpySGhxM1hyVHl1M0FpVnY3M2hPa21lZjYxaTlzUHhsK2NUT3EwdDkKcjB3NG1RcnhMNkFBQ0tsYzFzbkRxYU9MM05DRjNkNWtMenR1K0FFbmRtNGpOc01iR00vcmZiNExIdUY5WG8vOQoyTTR6ak9udUorRUlneHFnNmM4ZWdVV1oxS1U2T3hXUi9FczNMYjYyZGJRdlFtVU9MSEZXNm8zc3dTL1pRNTg5CkdING1ieXdqNWU2YmRocklWdDdwNzlCSDA3YkxUZG1Fd0lLbTdhWHBCdXVGMWl5WDRRRmNSczdENmtRYmFIWFgKTzdsMG1pZ1dWVGpHR1BScGx5UlFEQUE2b2xhWEMyYWZIYWRUYndJREFRQUJBb0lCQVFDUThXSXh2ODlsZVFDTwpPMWNZeTRQRVc2NU1sTktYQnBndHV1d3RTK3RaZGRVbms4OHZJdXB3bXVsZ29jV01QdHFOUXY0RERGYWxUQVJGCkN1d1JOWE1lbHNYdEFZN0U3MDRjUFBPQ0RBWTlUb3pyOTR0Wk96VnhmejhTWWlna0hhSWgyWk5jY2hlREhXOFUKTVUwVDkxSnhQMFM0dXlHOU1xV1kzbG1IZ2V6RHV2ZGJsOENUVjVNTlpCNkF4QU9lN1U3RnIydmg2OWt3UGZjRApVNWZmcjYyMnZPQ1NYcmQzNUxKS0ZGenRpbUxvVEtqd2FBTmliWnVKREFsbURLeGtsNlR3WFhZYlMyQnI3QjJmCjViVnZBZHB6TS9FcndUNDhBaklMaWszRysySXlQYVJjV3dyTGZlY0ltVHlWNE9KWEYwK0hNeVNIU0E3eENJTTgKeEovZ3lWdUJBb0dCQVBJZEZkUTFVWU96TElCMURjcGs4T0tsYVRYRlNKUFdqWlErK09VNWdQQXJDcDQ2OVhHWQo0RTRTUUJpMlpzTDg3MDViQ2ZvT3NvUjE5K3ptbjJGc2VzcWJnQnVya3hOcy9VMkpPYyt4VS9Cb2haUEVEMzYrClQ5TnFIczJGV2VRei9ka1pxVkloZUs4QjBsaGMwbjlxemcxUjFLNUJsczdNTWhENmFUVXVYOFovQW9HQkFOT2gKTVlQZjVqUFpBc1pJK3lKOERwenFnQmdRb2ZvckdzZnF3RFJETVJSc1dQWUpGTENqUXJkRFFrV1lFMCtOcXNGQQp2TnJtSlh5R1VGQzBhR1NPcENXbHlBVFVEcCtkMDdLbW93QlFFTWR6bC9obVFMWmtXT0lxVDBXMnVocm9jSTQrCnFjbDhLVk9kNW15OXYzTGp4MjdtSCtnK3VhYVBodlBHRkJ1OFJGc1JBb0dCQU9lS1h6emhmTUk1a042TWt4S3kKOUJlY1h3Q1lXaTlnS1dmVHpVM1NiM2UvZ2RrT3czbk8zUHhzd2JXZ2dxZ0pJb2JKMDhHN1dvZ0pGWUFPa2UrbQp3Y3VQYUxXTm9Rc2IyU2JVakdBTzB4cC9xdmRFc2hqZ3doQ0tWVWp4TmFWaS8yb20rMkhiTnNJUE9PMWVYOFNSCkROdDZIYTVFZFlmeGloUG9sc0xRUmJIYkFvR0JBTU5FZW1HSjEraURGZEpMU0oxN0JpaTNIdFlWa3I4M3dwQXcKQklTMGNyYTdlaUlhSXVNUTRPQWp5U1JadTRldDJaNVMwMjdPNkV2THlwT013cjMxOTNOZFVmOVNndU80UnJzUwprbGdaaUVIZ1lKcXNEbzI4YlY3UlZ5K2wrSFlYZnJOaEVseDhtYzB6Wm9kelZSRDNKdThtbXM0NkFpYXpTL3ZtCkNtdkUvUFZoQW9HQU9GYS9kMHpoNE5URUVoQ1BIQ3cvSkFVRGwxQWhMRXo4eHJ3a3VmZUFncU41QlY0dmNZdmsKb1ZHZHlIYWRvMnlxbzA3WTFPL2V0NGYvK0xqblN0S3BvemxCODViTmFKQStCQ3haZGZJcFBXaGU5ejdhQXlCMgpveGYralJUYjFuM0xaMm5IcUVGTng3L3pQUzEzOFZ0N1oxUjZyOFdwYzNhQi83MUZ6NFBBKytJPQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQ==
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
@@ -1061,7 +1220,7 @@ webhooks:
       name: tap-injector
       namespace: linkerd-viz
       path: "/"
-    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURRVENDQWltZ0F3SUJBZ0lSQUp4Z1Y3WlZEakI5RldZc3lLNlB2cW93RFFZSktvWklodmNOQVFFTEJRQXcKSnpFbE1DTUdBMVVFQXhNY2RHRndMV2x1YW1WamRHOXlMbXhwYm10bGNtUXRkbWw2TG5OMll6QWVGdzB5TVRBMgpNRE14T0RJM01UaGFGdzB5TWpBMk1ETXhPREkzTVRoYU1DY3hKVEFqQmdOVkJBTVRISFJoY0MxcGJtcGxZM1J2CmNpNXNhVzVyWlhKa0xYWnBlaTV6ZG1Nd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUIKQVFEZW1SMDR3UEd4TDFmdDhvVnBoRWxsT254ZEUwcWJ6amJaTG1rWkZudjJwWExTOEh4cTBhYis1NHFseG43ZQoxd2FwU3czbjZCcUJPRmR2Y1JaZkpGeVRINUpXdGJxZXJvV2owSUovMGdKRm4rclpTL1drRnBpRWdxUzdaTVhtClE1Nm5FV2pqazRaSkJ4QXRYbm02UGZhMzRkeGZYZTlVdVJTUFRIK3k3SGJCb3hnS3dtWFJlVmg0djhYRjBzaUwKTWplWGVtdmlGT2h3OG4reXB3TUtQbHpKbTI1cXdSKzEvb2R6VWVoUldVcFQzcnFESzg1a3pZQ1dRYXREYTU5KwpFS0hTbUFZOFhPeHRaMzFmQjNIRVFPNXRJN1RsOE9nN0RsOEhPRlBtMmNrY1VFWVJuMU12czRJSHZ2YUNuOGpSCmNkN1RacEE4ODV1a1M1L3JSdTFqNHJpVkFnTUJBQUdqYURCbU1BNEdBMVVkRHdFQi93UUVBd0lGb0RBZEJnTlYKSFNVRUZqQVVCZ2dyQmdFRkJRY0RBUVlJS3dZQkJRVUhBd0l3REFZRFZSMFRBUUgvQkFJd0FEQW5CZ05WSFJFRQpJREFlZ2h4MFlYQXRhVzVxWldOMGIzSXViR2x1YTJWeVpDMTJhWG91YzNaak1BMEdDU3FHU0liM0RRRUJDd1VBCkE0SUJBUUF1eGVNNHl1bTBheFZGZWw4SUtvRVNrbkFMUjB5eUpRZWcxSS9VSGNlK0c2ZkF5THAyM1RpTWtkR2oKNklIZ1VjSDlqYlJ6YVRLU0diT29ESTBYa1F5aVcyZXlnbEw4SDZkMGU4bXlKTjJFUlV5MlczaU1HcW80TGF4bwp1MXNqdmNWSWZNT1pSbkF1dVNrbWhFTksrbU5ORmhqZ0xpWHZ6KzZQY0djS0p1OXhGK2d6amJIMnVBRU4vN2dDCk1XbmJJMHY5T05QSk94TUpXaWhuV0xhTnBlYzhQZ1k2TkJhWnJMZ3JJMTBYbmdrUmRtOEM0SFZRQ0E2TjlVREQKZDM4NkhjVG4zT3kvN2tpaHpvRzRlUW5UZTROY00xV3ZrWTY2bzI1QUM3Mk14emZCWkVwSGhIUy9YRzdkSVVCZwpjbGw2OHNUVVBVL3BKeEg0SG9ZeDBCZ0VUZGJ4Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0=
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURRVENDQWltZ0F3SUJBZ0lSQU56cFdZc1kzY2lPTmxRYTZTb1JNN013RFFZSktvWklodmNOQVFFTEJRQXcKSnpFbE1DTUdBMVVFQXhNY2RHRndMV2x1YW1WamRHOXlMbXhwYm10bGNtUXRkbWw2TG5OMll6QWVGdzB5TVRFeApNVEV4TlRRNU5EaGFGdzB5TWpFeE1URXhOVFE1TkRoYU1DY3hKVEFqQmdOVkJBTVRISFJoY0MxcGJtcGxZM1J2CmNpNXNhVzVyWlhKa0xYWnBlaTV6ZG1Nd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUIKQVFESUptd2M3RGlPeXVRQy81NXBoV0xoNWY1Y2xBSGdWUzJTQlo2OGZUQVVNNW83dWsxNVZXS09qM0xJUGl3aQpTVm9sT2g4N1NEbG1zZUdyZGV0UEs3Y0NKVy92ZUU2U1o1L3JXTDJ3L0dYNXhNNnJTMzJ2VERpWkN2RXZvQUFJCnFWeld5Y09wbzR2YzBJWGQzbVF2TzI3NEFTZDJiaU0yd3hzWXordDl2Z3NlNFgxZWovM1l6ak9NNmU0bjRRaUQKR3FEcHp4NkJSWm5VcFRvN0ZaSDhTemN0dnJaMXRDOUNaUTRzY1ZicWplekJMOWxEbnowWWZpWnZMQ1BsN3B0MgpHc2hXM3VudjBFZlR0c3ROMllUQWdxYnRwZWtHNjRYV0xKZmhBVnhHenNQcVJCdG9kZGM3dVhTYUtCWlZPTVlZCjlHbVhKRkFNQURxaVZwY0xacDhkcDFOdkFnTUJBQUdqYURCbU1BNEdBMVVkRHdFQi93UUVBd0lGb0RBZEJnTlYKSFNVRUZqQVVCZ2dyQmdFRkJRY0RBUVlJS3dZQkJRVUhBd0l3REFZRFZSMFRBUUgvQkFJd0FEQW5CZ05WSFJFRQpJREFlZ2h4MFlYQXRhVzVxWldOMGIzSXViR2x1YTJWeVpDMTJhWG91YzNaak1BMEdDU3FHU0liM0RRRUJDd1VBCkE0SUJBUURFRFhtVWpmS3F4VVBnOTlIOEJ5eU42NnQyclc0Ty9MYXEwYzRmRDQ1cys1ZDBVQklPVVpOUkl6RGgKRnk0SGR3MUNENXhQbm00NkxwUnZQZjhnWkxxNENUa2hGOW1ybTdLOGlyTUZaeFJtL2JHMm50NU9TYzNWWEdNMApYQVlHeU4xbTI1N0QxZkVqR0ZLb0RFNHlNOHRWYk5Sd0FlallSS3R2RDhZVkxIQ3J6WE5Fc0RKcENWQU9BZzRVCmUyQUhocTZrMUdGSkc4ekVjcUY1M3FhK3UyTlZpWkhLR3pIWmU2bG4zTkt5ZjNqbkViNEpRY1RrZ2JTOGsvOGwKcyt0K3F0WUhoUGV4WThURWJHbzBMRWN6VFFBcE9rOWZKUGI4aEFDZ3JWRVp6eCs1ODIzTUkvSzQ3VEtPa0Z1VwpzYnh4RkNNVGNZam5iaHc1ZSswV0RrTWVmRTJhCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0=
   failurePolicy: Ignore
   admissionReviewVersions: ["v1", "v1beta1"]
   reinvocationPolicy: IfNeeded
@@ -1084,7 +1243,7 @@ metadata:
     linkerd.io/extension: viz
     component: tap-injector
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
 spec:
   type: ClusterIP
   selector:
@@ -1099,7 +1258,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
   labels:
     linkerd.io/extension: viz
     app.kubernetes.io/name: tap-injector
@@ -1115,8 +1274,8 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 20f2fd0c4c6cbf901e33e1fe53f1d8ba628a8b4aea25a413266a4bcf6b984204
-        linkerd.io/created-by: linkerd/helm stable-2.10.2
+        checksum/config: 4ef0e9e068893bc96d20df8fa223e6ee80d8396d8a5cedf31e0c7949aa08932a
+        linkerd.io/created-by: linkerd/helm stable-2.11.1
       labels:
         linkerd.io/extension: viz
         component: tap-injector
@@ -1126,9 +1285,10 @@ spec:
       containers:
       - args:
         - injector
-        - -tap-service-name=tap.linkerd-viz.serviceaccount.identity.$(_l5d_ns).$(_l5d_trustdomain)
+        - -tap-service-name=tap.linkerd-viz.serviceaccount.identity.linkerd.cluster.local
         - -log-level=info
-        image: cr.l5d.io/linkerd/tap:stable-2.10.2
+        - -log-format=plain
+        image: cr.l5d.io/linkerd/tap:stable-2.11.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -1159,6 +1319,41 @@ spec:
         secret:
           secretName: tap-injector-k8s-tls
 ---
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  namespace: linkerd-viz
+  name: tap-injector-webhook
+  labels:
+    linkerd.io/extension: viz
+    component: tap-injector
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  podSelector:
+    matchLabels:
+      linkerd.io/extension: viz
+      component: tap-injector
+  port: tap-injector
+  proxyProtocol: TLS
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
+  namespace: linkerd-viz
+  name: tap-injector
+  labels:
+    linkerd.io/extension: viz
+    component: tap-injector
+  annotations:
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
+spec:
+  server:
+    name: tap-injector-webhook
+  client:
+    # traffic coming from kube-api
+    unauthenticated: true
+---
 ###
 ### Web
 ###
@@ -1172,7 +1367,7 @@ metadata:
     component: web
     namespace: linkerd-viz
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
 spec:
   type: ClusterIP
   selector:
@@ -1190,12 +1385,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    linkerd.io/created-by: linkerd/helm stable-2.10.2
+    linkerd.io/created-by: linkerd/helm stable-2.11.1
   labels:
     linkerd.io/extension: viz
     app.kubernetes.io/name: web
     app.kubernetes.io/part-of: Linkerd
-    app.kubernetes.io/version: stable-2.10.2
+    app.kubernetes.io/version: stable-2.11.1
     component: web
     namespace: linkerd-viz
   name: web
@@ -1210,7 +1405,7 @@ spec:
   template:
     metadata:
       annotations:
-        linkerd.io/created-by: linkerd/helm stable-2.10.2
+        linkerd.io/created-by: linkerd/helm stable-2.11.1
       labels:
         linkerd.io/extension: viz
         component: web
@@ -1220,15 +1415,15 @@ spec:
         beta.kubernetes.io/os: linux
       containers:
       - args:
-        - -linkerd-controller-api-addr=linkerd-controller-api.linkerd.svc.cluster.local:8085
         - -linkerd-metrics-api-addr=metrics-api.linkerd-viz.svc.cluster.local:8085
         - -cluster-domain=cluster.local
         - -grafana-addr=grafana.linkerd-viz.svc.cluster.local:3000
         - -controller-namespace=linkerd
         - -viz-namespace=linkerd-viz
         - -log-level=info
+        - -log-format=plain
         - -enforced-host=^(localhost|127\.0\.0\.1|web\.linkerd-viz\.svc\.cluster\.local|web\.linkerd-viz\.svc|\[::1\])(:\d+)?$
-        image: cr.l5d.io/linkerd/web:stable-2.10.2
+        image: cr.l5d.io/linkerd/web:stable-2.11.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -1250,3 +1445,111 @@ spec:
         securityContext:
           runAsUser: 2103
       serviceAccountName: web
+---
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: metrics-api.linkerd-viz.svc.cluster.local
+  namespace: linkerd-viz
+spec:
+  routes:
+  - name: POST /api/v1/StatSummary
+    condition:
+      method: POST
+      pathRegex: /api/v1/StatSummary
+  - name: POST /api/v1/TopRoutes
+    condition:
+      method: POST
+      pathRegex: /api/v1/TopRoutes
+  - name: POST /api/v1/ListPods
+    condition:
+      method: POST
+      pathRegex: /api/v1/ListPods
+  - name: POST /api/v1/ListServices
+    condition:
+      method: POST
+      pathRegex: /api/v1/ListServices
+  - name: POST /api/v1/SelfCheck
+    condition:
+      method: POST
+      pathRegex: /api/v1/SelfCheck
+  - name: POST /api/v1/Gateways
+    condition:
+      method: POST
+      pathRegex: /api/v1/Gateways
+  - name: POST /api/v1/Edges
+    condition:
+      method: POST
+      pathRegex: /api/v1/Edges
+---
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: prometheus.linkerd-viz.svc.cluster.local
+  namespace: linkerd-viz
+spec:
+  routes:
+  - name: POST /api/v1/query
+    condition:
+      method: POST
+      pathRegex: /api/v1/query
+  - name: GET /api/v1/query_range
+    condition:
+      method: GET
+      pathRegex: /api/v1/query_range
+  - name: GET /api/v1/series
+    condition:
+      method: GET
+      pathRegex: /api/v1/series
+---
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: grafana.linkerd-viz.svc.cluster.local
+  namespace: linkerd-viz
+spec:
+  routes:
+  - name: GET /api/annotations
+    condition:
+      method: GET
+      pathRegex: /api/annotations
+  - name: GET /api/dashboards/tags
+    condition:
+      method: GET
+      pathRegex: /api/dashboards/tags
+  - name: GET /api/dashboards/uid/{uid}
+    condition:
+      method: GET
+      pathRegex: /api/dashboards/uid/.*
+  - name: GET /api/dashboard/{dashboard}
+    condition:
+      method: GET
+      pathRegex: /api/dashboard/.*
+  - name: GET /api/datasources/proxy/1/api/v1/series
+    condition:
+      method: GET
+      pathRegex: /api/datasources/proxy/1/api/v1/series
+  - name: GET /api/datasources/proxy/1/api/v1/query_range
+    condition:
+      method: GET
+      pathRegex: /api/datasources/proxy/1/api/v1/query_range
+  - name: GET /api/search
+    condition:
+      method: GET
+      pathRegex: /api/search
+  - name: GET /d/{uid}/{dashboard-name}
+    condition:
+      method: GET
+      pathRegex: /d/[^/]*/.*
+  - name: GET /public/build/{style}.css
+    condition:
+      method: GET
+      pathRegex: /public/build/.*\.css
+  - name: GET /public/fonts/{font}
+    condition:
+      method: GET
+      pathRegex: /public/fonts/.*
+  - name: GET /public/img/{img}
+    condition:
+      method: GET
+      pathRegex: /public/img/.*
