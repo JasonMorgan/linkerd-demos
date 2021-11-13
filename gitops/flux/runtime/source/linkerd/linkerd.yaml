@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   timeout: 3m
-  interval: 40m
+  interval: 10m
   releaseName: linkerd
   targetNamespace: linkerd
   storageNamespace: linkerd
@@ -18,7 +18,8 @@ spec:
         namespace: flux-system
       interval: 40m
   values:
-    identity.issuer.crtExpiry: 2022-11-13T11:56:59Z
+    identity.issuer.crtExpiry: "2022-11-13T11:56:59Z"
+    installNamespace: false
   valuesFrom:
     - kind: Secret
       name: linkerd-certs
