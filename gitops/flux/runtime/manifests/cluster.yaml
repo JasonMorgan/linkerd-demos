@@ -12,26 +12,10 @@ spec:
     name: gitops
   validation: client
   healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: linkerd-proxy-injector
-      namespace: linkerd
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: linkerd-identity
-      namespace: linkerd
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: linkerd-controller
-      namespace: linkerd
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: linkerd-sp-validator
-      namespace: linkerd
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: linkerd-destination
-      namespace: linkerd
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: linkerd
+      namespace: flux-system
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -49,30 +33,10 @@ spec:
     name: gitops
   validation: client
   healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: tap
-      namespace: linkerd-viz
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: metrics-api
-      namespace: linkerd-viz
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: prometheus
-      namespace: linkerd-viz
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: grafana
-      namespace: linkerd-viz
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: tap-injector
-      namespace: linkerd-viz
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: web
-      namespace: linkerd-viz
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: linkerd-viz
+      namespace: flux-system
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
