@@ -6,12 +6,12 @@ metadata:
 spec:
   timeout: 3m
   interval: 10m
-  releaseName: linkerd2
+  releaseName: linkerd
   targetNamespace: linkerd
   storageNamespace: linkerd
   chart:
     spec:
-      chart: linkerd
+      chart: linkerd2
       sourceRef:
         kind: HelmRepository
         name: linkerd
