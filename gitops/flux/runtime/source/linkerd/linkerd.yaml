@@ -18,28 +18,20 @@ spec:
         namespace: flux-system
       interval: 40m
   values:
-    identityTrustAnchorsPEM: | 
-      -----BEGIN CERTIFICATE-----
-      MIIBjjCCATOgAwIBAgIQZvALyxpN0z9AwMEqp9ScrTAKBggqhkjOPQQDAjAlMSMw
-      IQYDVQQDExpyb290LmxpbmtlcmQuY2x1c3Rlci5sb2NhbDAeFw0yMTExMTMxNjQ4
-      MDFaFw0zMTExMTExNjQ4MDFaMCUxIzAhBgNVBAMTGnJvb3QubGlua2VyZC5jbHVz
-      dGVyLmxvY2FsMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8FWULFxvTsMldrKO
-      H6Mlt8GHAN4p91FAMQfXhX7JP5ikF9nMKD52JwTFJb4yHUq+XHca9b2KiYPfNgjg
-      oewda6NFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYD
-      VR0OBBYEFIbxBaxtjqc44MQYtJVBs/BdOEvmMAoGCCqGSM49BAMCA0kAMEYCIQCL
-      y3Nx7PPEJ0vxw7biltLX4UErw9JgFWuD4eez9KnbTAIhAORncOwa0ZcekBCa6JYH
-      AVOvexMpzewRdr44VhuEohxq
-      -----END CERTIFICATE-----
     identity.issuer.crtExpiry: 2022-11-13T11:56:59Z
   valuesFrom:
     - kind: Secret
-      name: linkerd-issuer
-      targetPath: identity.issuer.tls.crtPEM
-      valuesKey: tls.crt
+      name: linkerd-certs
+      valuesKey: ca.crt
+      targetPath: global.identityTrustAnchorsPEM
     - kind: Secret
-      name: linkerd-issuer
+      name: linkerd-certs
+      valuesKey: issuer.crt
+      targetPath: identity.issuer.tls.crtPEM
+    - kind: Secret
+      name: linkerd-certs
+      valuesKey: issuer.key
       targetPath: identity.issuer.tls.keyPEM
-      valuesKey: tls.key
   postRenderers:
   install:
     crds: CreateReplace
