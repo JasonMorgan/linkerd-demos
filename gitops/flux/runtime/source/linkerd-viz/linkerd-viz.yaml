@@ -17,8 +17,6 @@ spec:
         name: linkerd
         namespace: linkerd
       interval: 40m
-  values:
-  valuesFrom:
   postRenderers:
   install:
     crds: CreateReplace
@@ -29,7 +27,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
   name: linkerd
-  namespace: linkerd-viz
+  namespace: linkerd
 spec:
   interval: 2m
   url: https://helm.linkerd.io/stable
