@@ -2,7 +2,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
   name: ambassador
-  namespace: flux-system
+  namespace: ambassador
 spec:
   interval: 2m
   url: https://www.getambassador.io
