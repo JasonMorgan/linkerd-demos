@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: linkerd-viz
-  namespace: flux-system
+  namespace: linkerd
 spec:
   timeout: 3m
   interval: 40m
@@ -15,7 +15,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: linkerd-viz
-        namespace: flux-system
+        namespace: linkerd
       interval: 40m
   values:
   valuesFrom:
@@ -29,7 +29,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
   name: linkerd
-  namespace: flux-system
+  namespace: linkerd
 spec:
   interval: 2m
   url: https://helm.linkerd.io/stable
