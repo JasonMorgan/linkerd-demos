@@ -17,6 +17,8 @@ spec:
         name: linkerd
         namespace: linkerd
       interval: 40m
+  values:
+    installNamespace: false
   install:
     crds: CreateReplace
   upgrade:
