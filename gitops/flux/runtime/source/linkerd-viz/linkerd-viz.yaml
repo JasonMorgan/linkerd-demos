@@ -17,7 +17,6 @@ spec:
         name: linkerd
         namespace: linkerd
       interval: 40m
-  postRenderers:
   install:
     crds: CreateReplace
   upgrade:
