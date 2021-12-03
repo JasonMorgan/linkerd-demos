@@ -97,4 +97,3 @@ spec:
     kind: GitRepository
     name: gitops
   validation: client
-  healthChecks:
