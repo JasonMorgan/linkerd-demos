@@ -1,0 +1,14 @@
+---
+apiVersion: wego.weave.works/v1alpha1
+kind: Application
+metadata:
+  labels:
+    wego.weave.works/app-identifier: wego-07b821affa8dbc027a394dfcbd3962a4
+  name: platform
+  namespace: wego-system
+spec:
+  branch: main
+  deployment_type: kustomize
+  path: ./gitops/flux/runtime/manifests/
+  source_type: git
+  url: ssh://git@github.com/JasonMorgan/linkerd-demos.git
