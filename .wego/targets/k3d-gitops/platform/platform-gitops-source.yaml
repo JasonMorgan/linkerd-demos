@@ -1,0 +1,12 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: platform
+  namespace: wego-system
+spec:
+  interval: 30s
+  ref:
+    branch: main
+  url: https://github.com/JasonMorgan/linkerd-demos.git
+
