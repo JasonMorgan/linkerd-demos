@@ -3,6 +3,7 @@ apiVersion: getambassador.io/v2
 kind: Host
 metadata:
   name: podinfo
+  namespace: podinfo
 spec:
   hostname: "podinfo.civo.59s.io"
   acmeProvider:
