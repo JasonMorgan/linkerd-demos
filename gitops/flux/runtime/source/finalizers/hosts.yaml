@@ -2,6 +2,7 @@ apiVersion: getambassador.io/v2
 kind: Host
 metadata:
   name: dashboard
+  namespace: linkerd-viz
 spec:
   hostname: "dashboard.civo.59s.io"
   acmeProvider:
