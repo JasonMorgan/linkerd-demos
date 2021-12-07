@@ -13,9 +13,17 @@ spec:
             runAsUser: 1337
           env:
           - name: PODINFO_UI_COLOR
-            # value: '#008000' # #008000 #1919FF
+            value: '#008000' # #008000 #1919FF
           command:
-            # - --ui-logo=https://github.com/wego-example/podinfo-deploy/raw/logo/weaveicon.png
+            - ./podinfo
+            - --port=9898
+            - --port-metrics=9797
+            - --grpc-port=9999
+            - --grpc-service-name=podinfo
+            - --level=info
+            - --random-delay=false
+            - --random-error=false
+            - --ui-logo=https://github.com/wego-example/podinfo-deploy/raw/logo/weaveicon.png
 ---
 apiVersion: v1
 kind: Service
