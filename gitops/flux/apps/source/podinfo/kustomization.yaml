@@ -1,6 +1,6 @@
 namespace: podinfo
 bases:
-  - "github.com/stefanprodan/podinfo/kustomize/?ref=6.0.0"
+  - "github.com/stefanprodan/podinfo/kustomize/?ref=6.0.3"
 
 resources:
   - frontend.yaml
