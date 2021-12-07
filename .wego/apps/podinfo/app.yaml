@@ -1,0 +1,14 @@
+---
+apiVersion: wego.weave.works/v1alpha1
+kind: Application
+metadata:
+  labels:
+    wego.weave.works/app-identifier: wego-680c713380a2a493fa7c8393b9d5677b
+  name: podinfo
+  namespace: wego-system
+spec:
+  branch: main
+  deployment_type: kustomize
+  path: ./gitops/flux/apps/manifests/podinfo
+  source_type: git
+  url: ssh://git@github.com/JasonMorgan/linkerd-demos.git
