@@ -16,7 +16,15 @@ k get host -A
 
 gitops add app --url https://github.com/JasonMorgan/linkerd-demos.git --path ./gitops/flux/apps/source/podinfo --name podinfo --app-config-url NONE
 
-micro git_repos/jasonmorgan
+micro git_repos/jasonmorgan/linkerd-demos/gitops/flux/apps/source/podinfo/patch.yaml
+
+cd git_repos/jasonmorgan/linkerd-demos/
+
+git add .
+
+git commit -m ''
+
+git push
 
 watch k get deploy
 
