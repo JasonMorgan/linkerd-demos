@@ -30,7 +30,7 @@ pe "kubectl rollout status  -n ambassador deployment/edge-stack -w"
 wait
 clear
 
-pe "yat manifests/listener.yaml"
+pe "bat -l yaml manifests/listener.yaml"
 wait
 clear
 
