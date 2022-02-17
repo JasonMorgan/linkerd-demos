@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ../demo-magic.sh
+clear
 
 pe "cd ~/tmp/ca"
 wait
@@ -42,6 +43,6 @@ pe "k get ingress"
 wait
 clear
 
-pe "k edit svc podinfo"
+pe "k label svc podinfo mirror.linkerd.io/exported=true"
 wait
 clear

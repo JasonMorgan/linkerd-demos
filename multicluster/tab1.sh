@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ../demo-magic.sh
+clear
 
 pe "cd ~/tmp/ca"
 wait
@@ -84,9 +85,9 @@ pe "k get ingress"
 wait
 clear
 
-pe "k edit svc podinfo"
-wait
-clear
+# pe "k edit svc podinfo"
+# wait
+# clear
 
 # Cleanup
 

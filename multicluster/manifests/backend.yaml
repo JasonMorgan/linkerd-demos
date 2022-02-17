@@ -25,7 +25,7 @@ metadata:
   name: podinfo
   namespace: podinfo
   labels:
-    mirror.linkerd.io/exported: "true"
+    # mirror.linkerd.io/exported: "true"
 spec:
   ports:
   - name: http
