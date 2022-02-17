@@ -1,5 +1,5 @@
 ---
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: podinfo
@@ -7,3 +7,12 @@ spec:
   prefix: /
   service: podinfo.podinfo:9898
   rewrite: ""
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: podinfo
+spec:
+  hostname: "podinfo.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com

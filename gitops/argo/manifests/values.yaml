@@ -1,0 +1,7 @@
+## ArgoCD configuration
+## Ref: https://github.com/argoproj/argo-cd
+
+## Server
+server:
+  extraArgs:
+    - --insecure

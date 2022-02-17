@@ -1,7 +1,8 @@
 #!/bin/env bash
 source ../demo-magic.sh
 k3d cluster delete emissary > /dev/null 2>&1 || true
-k3d cluster create emissary -p "8080:80@loadbalancer" -p "8443:443@loadbalancer"  --k3s-server-arg '--no-deploy=traefik' > /dev/null 2>&1
+k3d cluster create emissary -p "8080:80@loadbalancer" -p "8443:443@loadbalancer"  --k3s-arg '--no-deploy=traefik@server:*;agents:*' > /dev/null 2>&1
+k ns default
 
 clear
 
@@ -9,7 +10,31 @@ pe "helm repo add datawire https://www.getambassador.io"
 wait
 clear
 
-pe "kubectl create namespace ambassador && helm install ambassador --namespace ambassador datawire/ambassador --set replicaCount=1 && kubectl -n ambassador wait --for condition=available --timeout=90s deploy -lproduct=aes"
+pe "kubectl apply -f https://app.getambassador.io/yaml/edge-stack/2.2.0/aes-crds.yaml"
+wait
+clear
+
+pe "kubectl wait --timeout=90s --for=condition=available deployment emissary-apiext -n emissary-system"
+wait
+clear
+
+pe "kubectl create namespace ambassador"
+wait
+clear
+
+pe "helm install -n ambassador edge-stack datawire/edge-stack"
+wait
+clear
+
+pe "kubectl rollout status  -n ambassador deployment/edge-stack -w"
+wait
+clear
+
+pe "yat manifests/listener.yaml"
+wait
+clear
+
+pe "kubectl apply -f manifests/listener.yaml"
 wait
 clear
 
@@ -36,7 +61,7 @@ pe "linkerd viz install | kubectl apply -f - && linkerd viz check"
 wait
 clear
 
-pe "kubectl get deploy -n ambassador ambassador -o yaml | linkerd inject --skip-inbound-ports \"80,443\" - | kubectl apply -f -"
+pe "kubectl get deploy -n ambassador edge-stack -o yaml | linkerd inject --skip-inbound-ports \"80,443\" - | kubectl apply -f -"
 wait
 clear
 

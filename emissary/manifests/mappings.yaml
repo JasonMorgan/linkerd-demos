@@ -1,5 +1,5 @@
 ---
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: emojivoto
@@ -10,7 +10,7 @@ spec:
   rewrite: ""
   host: emojivoto.civo.59s.io
 ---
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: booksapp
@@ -21,7 +21,7 @@ spec:
   rewrite: ""
   host: booksapp.civo.59s.io
 ---
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: dashboard
@@ -37,7 +37,7 @@ spec:
   remove_request_headers:
   - Origin
 ---
-apiVersion: getambassador.io/v2
+apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: quote-backend
