@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kube-system
+  labels:
+    config.linkerd.io/admission-webhooks: disabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flux-system
+  labels:
+    config.linkerd.io/admission-webhooks: disabled
+  
+
