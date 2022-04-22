@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: linkerd2
-      version: 2.11.2
+      version: 2.11.1
       sourceRef:
         kind: HelmRepository
         name: linkerd
@@ -24,7 +24,7 @@ spec:
   values:
     identity.issuer.crtExpiry: "2022-11-13T11:56:59Z"
     installNamespace: false
-    enablePodAntiAffinity: true
+    # enablePodAntiAffinity: true
     # proxy:
     #   resources:
     #     cpu:
