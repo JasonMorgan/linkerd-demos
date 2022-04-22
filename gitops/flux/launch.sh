@@ -5,4 +5,4 @@ flux install
 
 kubectl apply -f runtime/manifests/repo.yaml
 kubectl apply -f runtime/manifests/cluster.yaml
-k ns linkerd
+k ns default
