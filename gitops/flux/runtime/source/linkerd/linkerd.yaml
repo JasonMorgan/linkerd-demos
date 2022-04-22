@@ -12,14 +12,14 @@ spec:
   chart:
     spec:
       chart: linkerd2
-      version: 2.11.2
+      version: 2.11.1
       sourceRef:
         kind: HelmRepository
         name: linkerd
         namespace: linkerd
       interval: 40m
       valuesFiles:
-        - values.yaml
+        # - values.yaml
         - values-ha.yaml
   values:
     identity.issuer.crtExpiry: "2022-11-13T11:56:59Z"
