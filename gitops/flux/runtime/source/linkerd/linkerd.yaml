@@ -12,6 +12,7 @@ spec:
   chart:
     spec:
       chart: linkerd2
+      version: 2.11.1
       sourceRef:
         kind: HelmRepository
         name: linkerd
