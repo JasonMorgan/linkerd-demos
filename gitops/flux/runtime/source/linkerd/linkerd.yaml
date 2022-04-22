@@ -23,6 +23,16 @@ spec:
   values:
     identity.issuer.crtExpiry: "2022-11-13T11:56:59Z"
     installNamespace: false
+    enablePodAntiAffinity: true
+    proxy:
+      resources:
+        cpu:
+          request: 100m
+        memory:
+          limit: 250Mi
+          request: 20Mi
+    controllerReplicas: 3
+    webhookFailurePolicy: Fail
   valuesFrom:
     - kind: Secret
       name: linkerd-certs
