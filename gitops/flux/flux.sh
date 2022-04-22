@@ -3,7 +3,7 @@
 clear
 
 k3d cluster delete gitops &>/dev/null
-k3d cluster create gitops -p "8080:80@loadbalancer" -p "8443:443@loadbalancer"  --k3s-arg '--no-deploy=traefik@server:*;agents:*' > /dev/null 2>&1
+k3d cluster create gitops -s 3 -p "8080:80@loadbalancer" -p "8443:443@loadbalancer"  --k3s-arg '--no-deploy=traefik@server:*;agents:*' > /dev/null 2>&1
 kubectl ns default
 
 clear
