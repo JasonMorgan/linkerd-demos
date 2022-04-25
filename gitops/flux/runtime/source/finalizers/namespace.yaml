@@ -11,5 +11,6 @@ metadata:
   name: flux-system
   labels:
     # config.linkerd.io/admission-webhooks: disabled
+    linkerd.io/inject: enabled
   
 
