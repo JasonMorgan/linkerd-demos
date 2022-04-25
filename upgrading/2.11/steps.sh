@@ -4,8 +4,9 @@ clear
 
 k3d cluster delete linkerd > /dev/null 2>&1 || true
 k3d cluster create linkerd -p "8080:80@loadbalancer" -p "8443:443@loadbalancer"  --k3s-server-arg '--no-deploy=traefik'
-curl -sL https://run.linkerd.io/emojivoto.yml | linkerd inject - | kubectl apply -f -
-curl -sL https://run.linkerd.io/booksapp.yml | linkerd inject - | kubectl apply -n booksapp -f -
+curl -sL https://run.linkerd.io/emojivoto.yml | kubectl apply -f -
+k create ns booksapp
+curl -sL https://run.linkerd.io/booksapp.yml | kubectl apply -n booksapp -f -
 wait 
 clear
 
