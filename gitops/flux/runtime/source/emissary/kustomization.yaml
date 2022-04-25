@@ -4,4 +4,4 @@ resources:
   - emissary.yaml
   - emissary-repo.yaml
   - emissary-helm-release.yaml
-  - https://app.getambassador.io/yaml/edge-stack/2.2.2/aes-crds.yaml
+  - https://app.getambassador.io/yaml/emissary/2.2.2/emissary-crds.yaml
