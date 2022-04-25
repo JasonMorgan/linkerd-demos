@@ -17,30 +17,30 @@ spec:
         name: emissary
         namespace: emissary
       interval: 40m
-  # postRenderers:
-  #   - kustomize:
-  #       patchesStrategicMerge:
-  #         - kind: Deployment
-  #           apiVersion: apps/v1
-  #           metadata:
-  #             name: emissary-ingress
-  #             namespace: emissary
-  #           spec:
-  #             template:
-  #               metadata:
-  #                 annotations:
-  #                   config.linkerd.io/skip-inbound-ports: 80,443
-  #                   linkerd.io/inject: enabled
-  #         - kind: Deployment
-  #           apiVersion: apps/v1
-  #           metadata:
-  #             name: emissary-ingress-agent
-  #             namespace: emissary
-  #           spec:
-  #             template:
-  #               metadata:
-  #                 annotations:
-  #                   linkerd.io/inject: enabled
+  postRenderers:
+    - kustomize:
+        patchesStrategicMerge:
+          - kind: Deployment
+            apiVersion: apps/v1
+            metadata:
+              name: emissary-emissary-ingress
+              namespace: emissary
+            spec:
+              template:
+                metadata:
+                  annotations:
+                    config.linkerd.io/skip-inbound-ports: 80,443
+                    linkerd.io/inject: enabled
+          - kind: Deployment
+            apiVersion: apps/v1
+            metadata:
+              name: emissary-emissary-ingress-agent
+              namespace: emissary
+            spec:
+              template:
+                metadata:
+                  annotations:
+                    linkerd.io/inject: enabled
   install:
     crds: CreateReplace
   upgrade:
