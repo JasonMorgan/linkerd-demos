@@ -4,3 +4,4 @@ resources:
   - ambassador.yaml
   - ambassador-repo.yaml
   - ambassador-helm-release.yaml
+  - https://app.getambassador.io/yaml/edge-stack/2.2.2/aes-crds.yaml

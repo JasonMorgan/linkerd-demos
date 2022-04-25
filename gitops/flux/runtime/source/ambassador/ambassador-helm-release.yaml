@@ -2,56 +2,56 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: ambassador-edge-stack
-  namespace: ambassador
+  namespace: edge-stack
 spec:
   timeout: 3m
   interval: 40m
   releaseName: ambassador
-  targetNamespace: ambassador
-  storageNamespace: ambassador
+  targetNamespace: edge-stack
+  storageNamespace: edge-stack
   chart:
     spec:
       chart: edge-stack
       sourceRef:
         kind: HelmRepository
         name: ambassador
-        namespace: ambassador
+        namespace: edge-stack
       interval: 40m
-  # postRenderers:
-  #   - kustomize:
-  #       patchesStrategicMerge:
-  #         - kind: Deployment
-  #           apiVersion: apps/v1
-  #           metadata:
-  #             name: ambassador-edge-stack
-  #             namespace: ambassador
-  #           spec:
-  #             template:
-  #               metadata:
-  #                 annotations:
-  #                   config.linkerd.io/skip-inbound-ports: 80,443
-  #                   linkerd.io/inject: enabled
-  #         - kind: Deployment
-  #           apiVersion: apps/v1
-  #           metadata:
-  #             name: ambassador-edge-stack-agent
-  #             namespace: ambassador
-  #           spec:
-  #             template:
-  #               metadata:
-  #                 annotations:
-  #                   linkerd.io/inject: enabled
-  #         - kind: Deployment
-  #           apiVersion: apps/v1
-  #           metadata:
-  #             name: ambassador-edge-stack-redis
-  #             namespace: ambassador
-  #           spec:
-  #             template:
-  #               metadata:
-  #                 annotations:
-  #                   config.linkerd.io/skip-inbound-ports: 80,443
-  #                   linkerd.io/inject: enabled
+  postRenderers:
+    - kustomize:
+        patchesStrategicMerge:
+          - kind: Deployment
+            apiVersion: apps/v1
+            metadata:
+              name: ambassador
+              namespace: edge-stack
+            spec:
+              template:
+                metadata:
+                  annotations:
+                    config.linkerd.io/skip-inbound-ports: 80,443
+                    linkerd.io/inject: enabled
+          - kind: Deployment
+            apiVersion: apps/v1
+            metadata:
+              name: ambassador-agent
+              namespace: edge-stack
+            spec:
+              template:
+                metadata:
+                  annotations:
+                    linkerd.io/inject: enabled
+          - kind: Deployment
+            apiVersion: apps/v1
+            metadata:
+              name: ambassador-redis
+              namespace: edge-stack
+            spec:
+              template:
+                metadata:
+                  annotations:
+                    config.linkerd.io/skip-inbound-ports: 80,443
+                    linkerd.io/inject: enabled
   install:
     crds: CreateReplace
   upgrade:
