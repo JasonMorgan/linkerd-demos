@@ -6,7 +6,7 @@ metadata:
 spec:
   timeout: 3m
   interval: 40m
-  releaseName: ambassador-edge-stack
+  releaseName: edge-stack
   targetNamespace: ambassador
   storageNamespace: ambassador
   chart:
@@ -14,7 +14,7 @@ spec:
       chart: ambassador
       sourceRef:
         kind: HelmRepository
-        name: edge-stack
+        name: ambassador
         namespace: ambassador
       interval: 40m
   postRenderers:
