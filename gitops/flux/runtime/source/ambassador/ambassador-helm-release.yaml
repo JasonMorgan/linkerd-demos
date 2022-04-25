@@ -14,7 +14,7 @@ spec:
       chart: ambassador
       sourceRef:
         kind: HelmRepository
-        name: ambassador
+        name: edge-stack
         namespace: ambassador
       interval: 40m
   postRenderers:
