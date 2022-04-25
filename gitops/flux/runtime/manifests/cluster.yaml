@@ -57,7 +57,7 @@ spec:
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
-      name: ambassador-edge-stack
+      name: edge-stack
       namespace: ambassador
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
