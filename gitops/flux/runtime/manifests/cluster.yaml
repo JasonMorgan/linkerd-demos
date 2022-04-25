@@ -92,7 +92,7 @@ spec:
   dependsOn:
     - name: flagger
     - name: linkerd-viz
-    - name: ambassador
+    - name: emissary
   prune: true
   sourceRef:
     kind: GitRepository
