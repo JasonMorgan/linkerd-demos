@@ -2,7 +2,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
   name: emissary
-  namespace: emissary-ingress
+  namespace: emissary
 spec:
   interval: 2m
   url: https://app.getambassador.io

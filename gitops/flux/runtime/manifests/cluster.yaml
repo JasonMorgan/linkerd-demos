@@ -42,13 +42,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: ambassador
+  name: emissary
   namespace: flux-system
 spec:
   dependsOn:
   - name: linkerd-viz
   interval: 3m0s
-  path: ./gitops/flux/runtime/source/ambassador
+  path: ./gitops/flux/runtime/source/emissary
   prune: true
   sourceRef:
     kind: GitRepository
@@ -57,8 +57,8 @@ spec:
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
-      name: ambassador-edge-stack
-      namespace: edge-stack
+      name: emissary-edge-stack
+      namespace: emissary
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization

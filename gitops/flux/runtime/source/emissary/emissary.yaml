@@ -2,5 +2,5 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: emissary-ingress
+  name: emissary
   
