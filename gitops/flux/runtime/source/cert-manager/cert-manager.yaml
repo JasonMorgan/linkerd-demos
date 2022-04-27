@@ -25,6 +25,7 @@ spec:
         patchesStrategicMerge:
           - kind: Job
             apiVersion: batch/v1
+            metadata:
               name: cert-manager-startupapicheck
               namespace: cert-manager
             spec:
