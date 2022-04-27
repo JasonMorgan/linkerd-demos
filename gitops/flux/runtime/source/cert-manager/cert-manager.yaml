@@ -27,7 +27,7 @@ spec:
             apiVersion: batch/v1
             metadata:
               name: cert-manager-startupapicheck
-              namespace: cert-manager
+              namespace: "cert-manager"
             spec:
               template:
                 metadata:
