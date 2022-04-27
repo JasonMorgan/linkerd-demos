@@ -20,19 +20,18 @@ spec:
       interval: 40m
   values:
     installCRDs: true
-  # postRenderers:
-  #   - kustomize:
-  #       patchesStrategicMerge:
-  #         - kind: Deployment
-  #           apiVersion: apps/v1
-  #           metadata:
-  #             name: cert-manager-webhook
-  #             namespace: cert-manager
-  #           spec:
-  #             template:
-  #               metadata:
-  #                 annotations:
-  #                   linkerd.io/inject: enabled
+  postRenderers:
+    - kustomize:
+        patchesStrategicMerge:
+          - kind: Job
+            apiVersion: batch/v1
+              name: cert-manager-startupapicheck
+              namespace: cert-manager
+            spec:
+              template:
+                metadata:
+                  annotations:
+                    linkerd.io/inject: disabled
   #         - kind: Deployment
   #           apiVersion: apps/v1
   #           metadata:
