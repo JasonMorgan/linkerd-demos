@@ -4,4 +4,5 @@ resources:
   - emissary.yaml
   - emissary-repo.yaml
   - emissary-helm-release.yaml
+  - acme-solver.yaml
   - https://app.getambassador.io/yaml/emissary/2.2.2/emissary-crds.yaml

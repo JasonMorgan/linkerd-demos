@@ -7,3 +7,5 @@ spec:
   hostname: "dashboard.civo.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
+  tlsSecret:
+    name: linkerd-dashboard

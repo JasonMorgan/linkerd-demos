@@ -1,0 +1,22 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: acme-challenge-mapping
+spec:
+  hostname: "*"
+  prefix: /.well-known/acme-challenge/
+  rewrite: ""
+  service: acme-challenge-service
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: acme-challenge-service
+spec:
+  ports:
+  - port: 80
+    targetPort: 8089
+  selector:
+    acme.cert-manager.io/http01-solver: "true"
