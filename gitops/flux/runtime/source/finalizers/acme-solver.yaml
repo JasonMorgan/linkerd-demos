@@ -3,7 +3,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: acme-challenge-mapping
-  namespace: linkerd-viz
+  namespace: emissary
 spec:
   hostname: "*"
   prefix: /.well-known/acme-challenge/
@@ -15,7 +15,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: acme-challenge-service
-  namespace: linkerd-viz
+  namespace: emissary
 spec:
   ports:
   - port: 80
