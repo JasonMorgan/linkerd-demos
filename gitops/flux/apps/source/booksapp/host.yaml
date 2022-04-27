@@ -3,7 +3,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Host
 metadata:
   name: booksapp
-  namespace: emissary
+  namespace: booksapp
 spec:
   hostname: "booksapp.civo.59s.io"
   acmeProvider:

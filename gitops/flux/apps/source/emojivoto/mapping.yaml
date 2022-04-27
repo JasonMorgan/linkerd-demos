@@ -3,7 +3,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: emojivoto
-  namespace: emissary
+  namespace: emojivoto
 spec:
   prefix: /
   service: web-svc.emojivoto:80

@@ -3,7 +3,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: podinfo
-  namespace: emissary
+  namespace: emojivoto
 spec:
   prefix: /
   service: frontend.podinfo:8080

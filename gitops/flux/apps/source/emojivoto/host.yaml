@@ -3,7 +3,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Host
 metadata:
   name: emojivoto
-  namespace: emissary
+  namespace: emojivoto
 spec:
   hostname: "emojivoto.civo.59s.io"
   acmeProvider:
