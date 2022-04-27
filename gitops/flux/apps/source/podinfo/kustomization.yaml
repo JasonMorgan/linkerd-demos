@@ -1,4 +1,4 @@
-namespace: podinfo
+#namespace: podinfo
 bases:
   - "github.com/stefanprodan/podinfo/kustomize/?ref=6.0.3"
 
