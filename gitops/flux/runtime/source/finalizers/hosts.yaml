@@ -8,7 +8,7 @@ spec:
   acmeProvider:
     email: jmorgan@f9vs.com
   tlsSecret:
-    name: linkerd-dashboard
+    name: certs
 ---
 apiVersion: getambassador.io/v3alpha1
 kind: Host

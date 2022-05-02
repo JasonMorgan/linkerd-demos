@@ -8,13 +8,13 @@ spec:
   hostname: "dashboard.civo.59s.io"
   prefix: /.well-known/acme-challenge/
   rewrite: ""
-  service: acme-challenge-service-linkerd
+  service: acme-challenge-service
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: acme-challenge-service-linkerd
+  name: acme-challenge-service
   namespace: linkerd-viz
 spec:
   ports:

@@ -9,4 +9,4 @@ spec:
   acmeProvider:
     email: jmorgan@f9vs.com
   tlsSecret:
-    name: booksapp
+    name: certs
