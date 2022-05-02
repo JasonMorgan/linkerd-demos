@@ -14,6 +14,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Host
 metadata:
   name: host-wildcard
+  namespace: emissary
 spec:
   hostname: "*"
   requestPolicy:
