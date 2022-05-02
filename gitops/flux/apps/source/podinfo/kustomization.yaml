@@ -9,6 +9,8 @@ resources:
   - generator.yaml
   - mapping.yaml
   - host.yaml
+  - acme-sover.yaml
+  - certs.yaml
 
 patchesStrategicMerge:
   - patch.yaml

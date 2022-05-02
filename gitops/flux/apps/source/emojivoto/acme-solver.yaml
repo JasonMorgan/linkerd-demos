@@ -8,13 +8,13 @@ spec:
   hostname: "emojivoto.civo.59s.io"
   prefix: /.well-known/acme-challenge/
   rewrite: ""
-  service: acme-challenge-service
+  service: acme-challenge-service-emoji
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: acme-challenge-service
+  name: acme-challenge-service-emoji
   namespace: emojivoto
 spec:
   ports:
