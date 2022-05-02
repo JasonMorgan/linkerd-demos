@@ -14,4 +14,7 @@ spec:
     kind: ClusterIssuer
   dnsNames:
   - civo.59s.io
-  - "*.civo.59s.io"
+  - dashboard.civo.59s.io
+  - emojivoto.civo.59s.io
+  - podinfo.civo.59s.io
+  - booksapp.civo.59s.io
