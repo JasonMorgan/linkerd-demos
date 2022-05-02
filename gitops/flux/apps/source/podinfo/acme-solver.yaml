@@ -5,7 +5,7 @@ metadata:
   name: acme-challenge-mapping
   namespace: podinfo
 spec:
-  hostname: "*"
+  hostname: "podinfo.civo.59s.io"
   prefix: /.well-known/acme-challenge/
   rewrite: ""
   service: acme-challenge-service
