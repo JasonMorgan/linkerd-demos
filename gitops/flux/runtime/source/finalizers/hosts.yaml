@@ -9,3 +9,15 @@ spec:
     email: jmorgan@f9vs.com
   tlsSecret:
     name: linkerd-dashboard
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: host-wildcard
+spec:
+  hostname: "*"
+  requestPolicy:
+    insecure:
+      action: Reject
+  acmeProvider:
+    authority: None
