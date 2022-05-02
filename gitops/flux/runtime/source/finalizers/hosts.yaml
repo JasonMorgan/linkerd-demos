@@ -2,23 +2,10 @@ apiVersion: getambassador.io/v3alpha1
 kind: Host
 metadata:
   name: dashboard
-  namespace: linkerd-viz
+  namespace: emissary
 spec:
   hostname: "dashboard.civo.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
   tlsSecret:
     name: certs
----
-apiVersion: getambassador.io/v3alpha1
-kind: Host
-metadata:
-  name: host-wildcard
-  namespace: emissary
-spec:
-  hostname: "*"
-  requestPolicy:
-    insecure:
-      action: Reject
-  acmeProvider:
-    authority: None
