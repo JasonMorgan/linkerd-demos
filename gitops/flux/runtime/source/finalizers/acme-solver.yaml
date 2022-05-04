@@ -5,7 +5,7 @@ metadata:
   name: acme-challenge-mapping
   namespace: linkerd-viz
 spec:
-  hostname: "dashboard.civo.59s.io"
+  hostname: "*"
   prefix: /.well-known/acme-challenge/
   rewrite: ""
   service: acme-challenge-service
