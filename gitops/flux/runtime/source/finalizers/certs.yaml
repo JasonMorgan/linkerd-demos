@@ -13,6 +13,7 @@ spec:
     name: letsencrypt-staging
     kind: ClusterIssuer
   dnsNames:
+  - civo.59s.io
   - dashboard.civo.59s.io
   - emojivoto.civo.59s.io
   - podinfo.civo.59s.io
