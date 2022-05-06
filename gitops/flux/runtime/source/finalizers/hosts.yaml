@@ -8,4 +8,5 @@ spec:
   acmeProvider:
     email: jmorgan@f9vs.com
   tlsSecret:
-    name: certs
+    name: wildcard
+    namespace: default
