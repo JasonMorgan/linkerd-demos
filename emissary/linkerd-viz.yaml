@@ -5,7 +5,7 @@ metadata:
   name: linkerd-viz
 spec:
   prefix: /
-  host: "linkerd.civo.59s.io"
+  host: "linkerd.k8s.59s.io"
   # host_regex: true
   host_rewrite: web.linkerd-viz.svc.cluster.local:8084
   service: web.linkerd-viz.svc.cluster.local:8084

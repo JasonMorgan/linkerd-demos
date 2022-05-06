@@ -8,7 +8,7 @@ spec:
   service: web.linkerd-viz:8084
   host_rewrite: web.linkerd-viz.svc.cluster.local:8084
   rewrite: ""
-  host: dashboard.civo.59s.io
+  host: dashboard.k8s.59s.io
   allow_upgrade:
   - websocket
   remove_request_headers:

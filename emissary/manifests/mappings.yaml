@@ -8,7 +8,7 @@ spec:
   prefix: /
   service: web-svc.emojivoto:80
   rewrite: ""
-  host: emojivoto.civo.59s.io
+  host: emojivoto.k8s.59s.io
 ---
 apiVersion: getambassador.io/v3alpha1
 kind: Mapping
@@ -19,7 +19,7 @@ spec:
   prefix: /
   service: webapp.booksapp:7000
   rewrite: ""
-  host: booksapp.civo.59s.io
+  host: booksapp.k8s.59s.io
 ---
 apiVersion: getambassador.io/v3alpha1
 kind: Mapping
@@ -31,7 +31,7 @@ spec:
   service: web.linkerd-viz:8084
   host_rewrite: web.linkerd-viz.svc.cluster.local:8084
   rewrite: ""
-  host: dashboard.civo.59s.io
+  host: dashboard.k8s.59s.io
   allow_upgrade:
   - websocket
   remove_request_headers:
@@ -44,4 +44,4 @@ metadata:
 spec:
   prefix: /
   service: quote
-  host: qotm.civo.59s.io
+  host: qotm.k8s.59s.io

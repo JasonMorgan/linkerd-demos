@@ -5,7 +5,7 @@ metadata:
   name: emojivoto
   namespace: default
 spec:
-  hostname: "emojivoto.civo.59s.io"
+  hostname: "emojivoto.k8s.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
   tlsSecret:

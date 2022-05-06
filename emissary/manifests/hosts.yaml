@@ -4,7 +4,7 @@ kind: Host
 metadata:
   name: podinfo
 spec:
-  hostname: "podinfo.civo.59s.io"
+  hostname: "podinfo.k8s.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
 ---
@@ -13,7 +13,7 @@ kind: Host
 metadata:
   name: booksapp
 spec:
-  hostname: "booksapp.civo.59s.io"
+  hostname: "booksapp.k8s.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
 ---
@@ -22,7 +22,7 @@ kind: Host
 metadata:
   name: qotm
 spec:
-  hostname: "qotm.civo.59s.io"
+  hostname: "qotm.k8s.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
 ---
@@ -31,7 +31,7 @@ kind: Host
 metadata:
   name: emojivoto
 spec:
-  hostname: "emojivoto.civo.59s.io"
+  hostname: "emojivoto.k8s.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
 ---
@@ -40,6 +40,6 @@ kind: Host
 metadata:
   name: dashboard
 spec:
-  hostname: "dashboard.civo.59s.io"
+  hostname: "dashboard.k8s.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
