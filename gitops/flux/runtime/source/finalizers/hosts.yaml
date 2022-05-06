@@ -2,11 +2,10 @@ apiVersion: getambassador.io/v3alpha1
 kind: Host
 metadata:
   name: dashboard
-  namespace: emissary
+  namespace: default
 spec:
   hostname: "dashboard.civo.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
   tlsSecret:
     name: wildcard
-    namespace: default
