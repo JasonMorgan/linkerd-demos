@@ -2,7 +2,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: dashboard
-  namespace: emissary
+  namespace: default
 spec:
   prefix: /
   service: web.linkerd-viz:8084
