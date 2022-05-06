@@ -3,7 +3,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: booksapp
-  namespace: booksapp
+  namespace: default
 spec:
   prefix: /
   service: webapp.booksapp:7000
