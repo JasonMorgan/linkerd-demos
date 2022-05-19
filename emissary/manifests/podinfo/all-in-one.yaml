@@ -1,0 +1,77 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: emojivoto
+  namespace: default
+spec:
+  hostname: "emojivoto.k8s.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com
+  tlsSecret:
+    name: wildcard
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: emojivoto
+  namespace: default
+spec:
+  prefix: /
+  service: web-svc.emojivoto:80
+  rewrite: ""
+  host: emojivoto.k8s.59s.io
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: dashboard
+  namespace: default
+spec:
+  prefix: /
+  service: web.linkerd-viz:8084
+  host_rewrite: web.linkerd-viz.svc.cluster.local:8084
+  rewrite: ""
+  host: dashboard.k8s.59s.io
+  allow_upgrade:
+  - websocket
+  remove_request_headers:
+  - Origin
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: dashboard
+  namespace: default
+spec:
+  hostname: "dashboard.k8s.59s.io"
+  acmeProvider:
+    email: jmorgan@f9vs.com
+  tlsSecret:
+    name: wildcard
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Listener
+metadata:
+  name: edge-stack-listener-8080
+  namespace: default
+spec:
+  port: 8080
+  protocol: HTTP
+  securityModel: XFP
+  hostBinding:
+    namespace:
+      from: ALL
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Listener
+metadata:
+  name: edge-stack-listener-8443
+  namespace: default
+spec:
+  port: 8443
+  protocol: HTTPS
+  securityModel: XFP
+  hostBinding:
+    namespace:
+      from: ALL
