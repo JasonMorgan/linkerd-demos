@@ -78,16 +78,11 @@ pe "linkerd check -n emojivoto --proxy"
 wait
 clear
 
+pe "linkerd viz tap deployment/emissary-ingress --namespace emissary --to deployment/web --to-namespace emojivoto --path / -o json"
+wait
+clear
+
 p "fin"
 wait
 clear
 
-# Cleanup
-kubectl get deploy -n emojivoto -o yaml | linkerd uninject - | kubectl apply -f -
-kubectl get deploy -n emissary -o yaml | linkerd uninject - | kubectl apply -f - 
-kubectl wait --timeout=90s --for=condition=available deployment web -n emojivoto
-kubectl delete -f https://app.getambassador.io/yaml/emissary/2.2.2/emissary-crds.yaml
-kubectl delete secret wildcard
-linkerd viz uninstall | kubectl delete -f -
-linkerd uninstall | kubectl delete -f -
-helm delete  -n emissary emissary-ingress
