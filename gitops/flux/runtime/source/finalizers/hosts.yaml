@@ -2,10 +2,10 @@ apiVersion: getambassador.io/v3alpha1
 kind: Host
 metadata:
   name: dashboard
-  namespace: default
+  namespace: linkerd-viz
 spec:
   hostname: "dashboard.k8s.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
-  tlsSecret:
-    name: wildcard
+  # tlsSecret:
+  #   name: wildcard

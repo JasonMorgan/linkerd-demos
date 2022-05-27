@@ -22,6 +22,7 @@ wait
 clear
 
 pe "helm install -n emissary --create-namespace emissary-ingress datawire/emissary-ingress --set replicaCount=1 --wait"
+# helm install -n emissary --create-namespace emissary-ingress ./emissary/emissary-ingress-7.3.2.tgz --set replicaCount=1 --wait
 wait
 clear
 

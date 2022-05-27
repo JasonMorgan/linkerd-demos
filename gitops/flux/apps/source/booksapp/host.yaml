@@ -8,5 +8,5 @@ spec:
   hostname: "booksapp.k8s.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
-  tlsSecret:
-    name: wildcard
+  # tlsSecret:
+  #   name: wildcard
