@@ -4,7 +4,7 @@ metadata:
   name: dashboard
   namespace: linkerd-viz
 spec:
-  hostname: "dashboard.k8s.59s.io"
+  hostname: "dashboard.civo.59s.io"
   acmeProvider:
     email: jmorgan@f9vs.com
   # tlsSecret:
