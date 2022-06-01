@@ -5,7 +5,7 @@ metadata:
   name: booksapp
   namespace: default
 spec:
-  hostname: "booksapp.civo.59s.io"
+  hostname: booksapp.civo.59s.io
   acmeProvider:
     email: jmorgan@f9vs.com
   # tlsSecret:
