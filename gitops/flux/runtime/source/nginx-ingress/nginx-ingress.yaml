@@ -6,12 +6,12 @@ metadata:
 spec:
   timeout: 3m
   interval: 40m
-  releaseName: nginx-ingress-controller
+  releaseName: frontdoor
   targetNamespace: nginx-ingress
   storageNamespace: nginx-ingress
   chart:
     spec:
-      chart: nginx-ingress
+      chart: nginx-ingress-controller
       sourceRef:
         kind: HelmRepository
         name: bitnami
