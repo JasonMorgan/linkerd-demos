@@ -46,7 +46,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-  - name: linkerd
+  - name: linkerd-viz
   interval: 1m0s
   path: ./gitops/flux/runtime/source/nginx-ingress
   prune: true
@@ -57,7 +57,7 @@ spec:
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
-      name: nginx-ingress
+      name: frontdoor
       namespace: nginx-ingress
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
@@ -133,7 +133,7 @@ spec:
   path: ./gitops/flux/runtime/source/cert-manager
   dependsOn:
     - name: linkerd-viz
-    - name: ambassador
+    - name: nginx-ingress
   prune: true
   sourceRef:
     kind: GitRepository
