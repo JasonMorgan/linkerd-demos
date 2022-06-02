@@ -6,4 +6,5 @@ resources:
   # - mappings.yaml
   - namespace.yaml
   - issuer.yaml
+  - ingress.yaml
   
