@@ -4,6 +4,12 @@ metadata:
   name: podinfo
   namespace: test
 spec:
+  #ingress reference
+  provider: nginx
+  ingressRef:
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    name: podinfo
   # deployment reference
   targetRef:
     apiVersion: apps/v1
@@ -27,12 +33,24 @@ spec:
     interval: 5s
     # max number of failed metric checks before rollback
     threshold: 5
+    ### Uncomment for nginx A/B testing
+    iterations: 10
+    match:
+      # curl -H 'X-Canary: always' http://app.example.com
+      - headers:
+          x-canary:
+            exact: "always"
+      # curl -b 'canary=always' http://app.example.com
+      - headers:
+          cookie:
+            exact: "canary"
+    ### Uncomment for Linkerd traffic split weighting
     # max traffic percentage routed to canary
     # percentage (0-100)
-    maxWeight: 95
+    # maxWeight: 95
     # canary increment step
     # percentage (0-100)
-    stepWeight: 5
+    # stepWeight: 5
     # Linkerd Prometheus checks
     metrics:
     - name: request-success-rate
@@ -47,4 +65,18 @@ spec:
       thresholdRange:
         max: 200
       interval: 30s
+    webhooks:
+      - name: acceptance-test
+        type: pre-rollout
+        url: http://flagger-loadtester.test/
+        timeout: 30s
+        metadata:
+          type: bash
+          cmd: "curl -sd 'test' http://podinfo-canary:9898/token | grep token"
+      - name: load-test
+        type: rollout
+        url: http://flagger-loadtester.test/
+        metadata:
+          cmd: "hey -z 2m -q 10 -c 2 -H 'Cookie: canary=always' http://app.example.com"
 
+    
