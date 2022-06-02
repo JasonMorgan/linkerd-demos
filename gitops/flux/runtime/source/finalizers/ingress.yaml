@@ -4,9 +4,11 @@ metadata:
   name: dashboard
   namespace: linkerd-viz
   annotations:
+    nginx.ingress.kubernetes.io/upstream-vhost: $service_name.$namespace.svc.cluster.local:8084
     nginx.ingress.kubernetes.io/service-upstream: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
+  ingressClassName: nginx
   rules:
   - http:
       paths:
