@@ -4,7 +4,8 @@ metadata:
   name: emojivoto
   namespace: emojivoto
   annotations:
-    nginx.ingress.kubernetes.io/service-upstream: true
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
   - http:
@@ -16,3 +17,7 @@ spec:
             name: web-svc
             port:
               number: 80
+  tls:
+  - hosts:
+    - emojivoto.civo.59s.io
+    secretName: emojivoto-ingress

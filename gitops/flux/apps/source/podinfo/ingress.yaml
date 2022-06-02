@@ -5,7 +5,8 @@ metadata:
   name: podinfo
   namespace: podinfo
   annotations:
-    nginx.ingress.kubernetes.io/service-upstream: true
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
   - http:
@@ -17,3 +18,7 @@ spec:
             name: frontend
             port:
               number: 8080
+  tls:
+  - hosts:
+    - podinfo.civo.59s.io
+    secretName: podinfo-ingress
