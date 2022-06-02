@@ -10,6 +10,7 @@ spec:
   ingressClassName: nginx
   rules:
   - http:
+    host: emojivoto.civo.59s.io
       paths:
       - path: /
         pathType: Prefix

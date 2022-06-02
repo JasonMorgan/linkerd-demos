@@ -11,6 +11,7 @@ spec:
   ingressClassName: nginx
   rules:
   - http:
+    host: podinfo.civo.59s.io
       paths:
       - path: /
         pathType: Prefix

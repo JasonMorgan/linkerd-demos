@@ -10,6 +10,7 @@ spec:
   ingressClassName: nginx
   rules:
   - http:
+    host: booksapp.civo.59s.io
       paths:
       - path: /
         pathType: Prefix
