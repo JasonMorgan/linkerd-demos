@@ -7,8 +7,9 @@ resources:
   - ns.yaml
   - canary.yaml
   - generator.yaml
-  - mapping.yaml
-  - host.yaml
+  - ingress.yaml
+  # - mapping.yaml
+  # - host.yaml
 
 patchesStrategicMerge:
   - patch.yaml
