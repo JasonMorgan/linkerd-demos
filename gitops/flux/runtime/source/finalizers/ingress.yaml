@@ -17,7 +17,7 @@ spec:
             name: web
             port:
               number: 8084
-tls:
-- hosts:
-  - dashboard.civo.59s.io
-  secretName: dashboard-ingress
+  tls:
+  - hosts:
+    - dashboard.civo.59s.io
+    secretName: dashboard-ingress
