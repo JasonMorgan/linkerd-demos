@@ -9,8 +9,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - http:
-    host: booksapp.civo.59s.io
+  - host: booksapp.civo.59s.io
+    http:
       paths:
       - path: /
         pathType: Prefix

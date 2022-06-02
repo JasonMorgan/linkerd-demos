@@ -10,8 +10,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - http:
-    host: podinfo.civo.59s.io
+  - host: podinfo.civo.59s.io
+    http:
       paths:
       - path: /
         pathType: Prefix
