@@ -4,10 +4,10 @@ metadata:
   name: emojivoto
   namespace: emojivoto
   annotations:
+    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/service-upstream: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
-  ingressClassName: nginx
   rules:
   - host: emojivoto.civo.59s.io
     http:

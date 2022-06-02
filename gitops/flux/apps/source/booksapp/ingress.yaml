@@ -4,10 +4,10 @@ metadata:
   name: booksapp
   namespace: booksapp
   annotations:
+    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/service-upstream: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
-  ingressClassName: nginx
   rules:
   - host: booksapp.civo.59s.io
     http:
