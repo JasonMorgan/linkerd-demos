@@ -1,9 +1,8 @@
-# apiVersion: networking.k8s.io/v1beta1 # for k3s < v1.19
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: podinfo
-  namespace: podinfo
+  name: emojivoto
+  namespace: emojivoto
   annotations:
     nginx.ingress.kubernetes.io/service-upstream: true
 spec:
@@ -14,6 +13,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: frontend
+            name: web-svc
             port:
-              number: 8080
+              number: 80

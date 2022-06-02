@@ -1,0 +1,10 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dashboard
+  namespace: linkerd-viz
+spec:
+  issuerRef:
+    name: letsencrypt
+  dnsNames:
+  - dashboard.civo.59s.io

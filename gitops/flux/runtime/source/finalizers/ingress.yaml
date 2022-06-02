@@ -1,11 +1,11 @@
-# apiVersion: networking.k8s.io/v1beta1 # for k3s < v1.19
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: podinfo
-  namespace: podinfo
+  name: dashboard
+  namespace: linkerd-viz
   annotations:
     nginx.ingress.kubernetes.io/service-upstream: true
+    cert-manager.io/cluster-issuer: letsencrypt-staging
 spec:
   rules:
   - http:
@@ -14,6 +14,10 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: frontend
+            name: web
             port:
-              number: 8080
+              number: 8084
+tls:
+- hosts:
+  - dashboard.civo.59s.io
+  secretName: dashboard-ingress
