@@ -14,6 +14,9 @@ metadata:
       proxy_http_version 1.1;
       proxy_set_header Upgrade "websocket";
       proxy_set_header Connection "Upgrade";
+      proxy_set_header Origin "";
+      proxy_hide_header l5d-remote-ip;
+      proxy_hide_header l5d-server-id;
 spec:
   rules:
   - host: dashboard.civo.59s.io
