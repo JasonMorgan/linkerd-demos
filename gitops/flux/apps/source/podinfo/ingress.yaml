@@ -17,9 +17,9 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: frontend
+            name: podinfo
             port:
-              number: 8080
+              number: 9898
   tls:
   - hosts:
     - podinfo.civo.59s.io
