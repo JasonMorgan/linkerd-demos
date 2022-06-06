@@ -27,9 +27,9 @@ spec:
             - name: CONCURRENCY
               value: "10"
             - name: SERVICE
-              value: frontend
+              value: podinfo
             - name: PORT
-              value: "8080"
+              value: "9898"
           command: ["/bin/sh", "-c"]
           args:
             - |-
