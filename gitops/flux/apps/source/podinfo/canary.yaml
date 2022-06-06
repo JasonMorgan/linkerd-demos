@@ -35,22 +35,22 @@ spec:
     threshold: 5
     ### Uncomment for nginx A/B testing
     iterations: 10
-    match:
-      # curl -H 'X-Canary: always' http://app.example.com
-      - headers:
-          x-canary:
-            exact: "always"
-      # curl -b 'canary=always' http://app.example.com
-      - headers:
-          cookie:
-            exact: "canary"
+    # match:
+    #   # curl -H 'X-Canary: always' http://app.example.com
+    #   - headers:
+    #       x-canary:
+    #         exact: "always"
+    #   # curl -b 'canary=always' http://app.example.com
+    #   - headers:
+    #       cookie:
+    #         exact: "canary"
     ### Uncomment for Linkerd traffic split weighting
     # max traffic percentage routed to canary
     # percentage (0-100)
-    # maxWeight: 95
+    maxWeight: 95
     # canary increment step
     # percentage (0-100)
-    # stepWeight: 5
+    stepWeight: 5
     # Linkerd Prometheus checks
     metrics:
     - name: request-success-rate
@@ -72,11 +72,11 @@ spec:
         timeout: 30s
         metadata:
           type: bash
-          cmd: "curl -sd 'test' http://podinfo-canary:9898/token | grep token"
+          cmd: "curl -H 'X-Canary: always' https://podinfo.civo.59s.io"
       - name: load-test
         type: rollout
         url: http://flagger-loadtester.test/
         metadata:
-          cmd: "hey -z 2m -q 10 -c 2 -H 'Cookie: canary=always' http://app.example.com"
+          cmd: "hey -z 2m -q 10 -c 2 -H 'Cookie: canary=always' https://podinfo.civo.59s.io"
 
     
