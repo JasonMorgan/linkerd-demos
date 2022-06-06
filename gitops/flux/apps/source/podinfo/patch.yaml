@@ -12,8 +12,8 @@ spec:
           securityContext:
             runAsUser: 1337
           env:
-          - name: PODINFO_UI_COLOR
-            value: '#1919FF' # #008000 #1919FF
+          # - name: PODINFO_UI_COLOR
+          #   value: '#1919FF' # #008000 #1919FF
           command:
             - ./podinfo
             - --port=9898
