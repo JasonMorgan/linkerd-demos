@@ -23,10 +23,6 @@ spec:
       kind: Deployment
       name: generator
       namespace: podinfo
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: frontend
-      namespace: podinfo
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
