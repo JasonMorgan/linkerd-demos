@@ -34,7 +34,7 @@ spec:
     # max number of failed metric checks before rollback
     threshold: 5
     ### Uncomment for nginx A/B testing
-    iterations: 5
+    iterations: 10
     match:
       # curl -H 'X-Canary: always' http://app.example.com
       - headers:
