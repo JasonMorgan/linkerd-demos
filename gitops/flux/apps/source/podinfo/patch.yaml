@@ -23,8 +23,8 @@ spec:
             - --level=info
             - --random-delay=false
             - --random-error=false
-            # - --ui-logo=https://github.com/wego-example/podinfo-deploy/raw/logo/weaveicon.png
-            - --ui-logo=https://github.com/cncf/artwork/raw/master/projects/linkerd/icon/color/linkerd-icon-color.png
+            - --ui-logo=https://github.com/wego-example/podinfo-deploy/raw/logo/weaveicon.png
+            # - --ui-logo=https://github.com/cncf/artwork/raw/master/projects/linkerd/icon/color/linkerd-icon-color.png
 ---
 apiVersion: v1
 kind: Service
