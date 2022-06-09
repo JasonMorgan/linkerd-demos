@@ -34,23 +34,23 @@ spec:
     # max number of failed metric checks before rollback
     threshold: 5
     ### Uncomment for nginx A/B testing
-    iterations: 10
-    match:
+    # iterations: 10
+    # match:
       # curl -H 'X-Canary: always' http://app.example.com
-      - headers:
-          x-canary:
-            exact: "always"
+     # - headers:
+      #    x-canary:
+      #      exact: "always"
       # curl -b 'canary=always' http://app.example.com
-      - headers:
-          cookie:
-            exact: "canary"
+      #- headers:
+      #    cookie:
+      #      exact: "canary"
     ### Uncomment for weighted splits
     # max traffic percentage routed to canary
     # percentage (0-100)
-    # maxWeight: 95
+    maxWeight: 95
     # canary increment step
     # percentage (0-100)
-    # stepWeight: 5
+    stepWeight: 5
     # Linkerd Prometheus checks
     metrics:
     - name: request-success-rate
