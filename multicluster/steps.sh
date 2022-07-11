@@ -8,31 +8,31 @@ step certificate create identity.linkerd.cluster.local issuer.lon.crt issuer.lon
 
 step certificate create identity.linkerd.cluster.local issuer.nyc.crt issuer.nyc.key   --profile intermediate-ca --not-after 8760h --no-password --insecure   --ca root.crt --ca-key root.key
 
-civo kubernetes create NYC2 -n 1 -s g3.k3s.small -w -y
+civo kubernetes create NYC -n 1 -s g4s.kube.small -w -y
 
-civo kubernetes config NYC2 > ~/.kube/configs/nyc2
+civo kubernetes config NYC > ~/.kube/configs/nyc
 
-export KUBECONFIG=~/.kube/configs/nyc2
+export KUBECONFIG=~/.kube/configs/nyc
 
-civo kubernetes create LON2 -n 1 -s g3.k3s.small -w -y --region LON1
+civo kubernetes create LON -n 1 -s g4s.kube.small -w -y --region LON1
 
-civo kubernetes config LON2 --region LON1 > ~/.kube/configs/lon2
+civo kubernetes config LON --region LON1 > ~/.kube/configs/lon
 
-export KUBECONFIG=~/.kube/configs/lon2
+export KUBECONFIG=~/.kube/configs/lon
 
-linkerd install --identity-trust-anchors-file ~/tmp/ca/root.crt --identity-issuer-certificate-file ~/tmp/ca/issuer.nyc.crt --identity-issuer-key-file ~/tmp/ca/issuer.nyc.key | k apply --kubeconfig ~/.kube/configs/nyc2 -f - && linkerd check
+linkerd install --identity-trust-anchors-file ~/tmp/ca/root.crt --identity-issuer-certificate-file ~/tmp/ca/issuer.nyc.crt --identity-issuer-key-file ~/tmp/ca/issuer.nyc.key | k apply -f - && linkerd check
 
-linkerd install --identity-trust-anchors-file ~/tmp/ca/root.crt --identity-issuer-certificate-file ~/tmp/ca/issuer.lon.crt --identity-issuer-key-file ~/tmp/ca/issuer.lon.key | k apply --kubeconfig ~/.kube/configs/lon2 -f - && linkerd check
+linkerd install --identity-trust-anchors-file ~/tmp/ca/root.crt --identity-issuer-certificate-file ~/tmp/ca/issuer.lon.crt --identity-issuer-key-file ~/tmp/ca/issuer.lon.key | k apply -f - && linkerd check
 
 linkerd multicluster install | k apply -f - && linkerd check
 
 linkerd viz install | k apply -f - && linkerd check
 
-linkerd multicluster link --kubeconfig ~/.kube/configs/lon2 --cluster-name lon | k apply --kubeconfig ~/.kube/configs/nyc2 -f -
+linkerd multicluster link --cluster-name lon | k apply -f -
 
-k apply -f git_repos/jasonmorgan/linkerd-demos/multicluster/manifests/frontend.yaml
+k apply -f ~/git_repos/jasonmorgan/linkerd-demos/multicluster/manifests/frontend.yaml
 
-k apply -k git_repos/jasonmorgan/linkerd-demos/101/podinfo
+k apply -k ~/git_repos/jasonmorgan/linkerd-demos/101/podinfo
 
 k ns podinfo
 
