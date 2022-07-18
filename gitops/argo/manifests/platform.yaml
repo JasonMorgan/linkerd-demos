@@ -78,32 +78,32 @@ spec:
     automated:
       prune: true
       selfHeal: true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: emissary
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: edge-stack
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     chart: edge-stack
+#     repoURL: https://app.getambassador.io
+#     targetRevision: 8.0.0
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: emissary
-  namespace: argocd
-spec:
-  destination:
-    namespace: emissary
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    chart: emissary-ingress
-    repoURL: https://app.getambassador.io
-    targetRevision: 8.0.0
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: emissary-crds
+  name: ambassador-edge-stack
   namespace: argocd
 spec:
   destination:
@@ -111,7 +111,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: gitops/argo/platform/emissary-crds
+    path: gitops/argo/platform/ambassador-edge-stack
     repoURL: https://github.com/JasonMorgan/linkerd-demos
     targetRevision: HEAD
   syncPolicy:

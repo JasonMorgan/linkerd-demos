@@ -1,0 +1,8 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: edge-stack
+  annotations:
+    linkerd.io/inject: enabled
+  

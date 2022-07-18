@@ -1,0 +1,21 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: edge-stack
+  namespace: argocd
+spec:
+  destination:
+    namespace: edge-stack
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: edge-stack
+    repoURL: https://app.getambassador.io
+    targetRevision: 8.0.0
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
