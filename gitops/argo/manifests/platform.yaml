@@ -101,12 +101,8 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  creationTimestamp: "2022-07-18T17:56:16Z"
-  generation: 24
   name: emissary-crds
   namespace: argocd
-  resourceVersion: "236184"
-  uid: 6e20698c-8c37-4603-b2fa-099c82a4de9e
 spec:
   destination:
     namespace: argocd
