@@ -86,7 +86,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: argocd
+    namespace: emissary
     server: https://kubernetes.default.svc
   project: default
   source:
@@ -97,6 +97,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -105,7 +107,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: argocd
+    namespace: emissary-system
     server: https://kubernetes.default.svc
   project: default
   source:
