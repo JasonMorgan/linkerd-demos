@@ -130,7 +130,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-  - name: linkerd-multicluster
+  - name: linkerd-viz
   interval: 1m0s
   path: ./gitops/flux/runtime/source/linkerd-multicluster
   prune: true
@@ -139,9 +139,9 @@ spec:
     name: gitops
   validation: client
   healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: flagger
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: linkerd-multicluster
       namespace: linkerd-multicluster
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
