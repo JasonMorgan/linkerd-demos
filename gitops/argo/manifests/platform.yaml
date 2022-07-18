@@ -71,3 +71,18 @@ spec:
     chart: linkerd-viz
     repoURL: https://helm.linkerd.io/stable
     targetRevision: 2.11.4
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: emissary
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: emissary-ingress
+    repoURL: https://app.getambassador.io
+    targetRevision: 8.0.0
