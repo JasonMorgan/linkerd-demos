@@ -55,7 +55,10 @@ spec:
           -----END CERTIFICATE-----
     repoURL: https://helm.linkerd.io/stable
     targetRevision: 2.11.4
-  syncPolicy: {}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -71,6 +74,10 @@ spec:
     chart: linkerd-viz
     repoURL: https://helm.linkerd.io/stable
     targetRevision: 2.11.4
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -86,3 +93,30 @@ spec:
     chart: emissary-ingress
     repoURL: https://app.getambassador.io
     targetRevision: 8.0.0
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: "2022-07-18T17:56:16Z"
+  generation: 24
+  name: emissary-crds
+  namespace: argocd
+  resourceVersion: "236184"
+  uid: 6e20698c-8c37-4603-b2fa-099c82a4de9e
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: gitops/argo/platform/emissary-crds
+    repoURL: https://github.com/JasonMorgan/linkerd-demos
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
