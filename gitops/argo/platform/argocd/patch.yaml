@@ -9,3 +9,4 @@ spec:
       - command:
         - argocd-server
         - --insecure
+        name: argocd-server
