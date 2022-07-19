@@ -7,8 +7,8 @@ spec:
   hostname: dashboard.civo.59s.io
   acmeProvider:
     email: jmorgan@f9vs.com
-  # tlsSecret:
-  #   name: wildcard
+  tlsSecret:
+    name: dashboard
 ---
 apiVersion: getambassador.io/v3alpha1
 kind: Host
@@ -19,3 +19,5 @@ spec:
   hostname: argocd.civo.59s.io
   acmeProvider:
     email: jmorgan@f9vs.com
+  tlsSecret:
+    name: argo-dashboard
