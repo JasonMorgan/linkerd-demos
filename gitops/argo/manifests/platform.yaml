@@ -137,3 +137,22 @@ spec:
     automated:
       prune: true
       selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: podinfo
+  namespace: argocd
+spec:
+  destination:
+    namespace: podinfo
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: gitops/argo/apps/podinfo
+    repoURL: https://github.com/JasonMorgan/linkerd-demos
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
