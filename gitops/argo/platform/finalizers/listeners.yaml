@@ -7,6 +7,10 @@ metadata:
 spec:
   port: 8080
   protocol: HTTP
+  securityModel: XFP
+  hostBinding:
+    namespace:
+      from: ALL
 ---
 apiVersion: getambassador.io/v3alpha1
 kind: Listener
@@ -16,4 +20,8 @@ metadata:
 spec:
   port: 8443
   protocol: HTTPS
+  securityModel: XFP
+  hostBinding:
+    namespace:
+      from: ALL
 
