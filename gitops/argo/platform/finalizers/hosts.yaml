@@ -21,3 +21,14 @@ spec:
     email: jmorgan@f9vs.com
   tlsSecret:
     name: argo-dashboard
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: wildcard
+  namespace: default
+spec:
+  hostname: "*"
+  requestPolicy: 
+    insecure: 
+      action: Reject
