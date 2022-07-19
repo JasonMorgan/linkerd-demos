@@ -22,7 +22,7 @@ metadata:
 spec:
   host: argocd.civo.59s.io
   prefix: /
-  service: argocd-server:80
+  service: argocd-server:443
 ---
 apiVersion: getambassador.io/v2
 kind: Mapping
@@ -31,7 +31,7 @@ metadata:
   namespace: argocd
 spec:
   # NOTE: the port must be ignored if you have strip_matching_host_port enabled on envoy
-  host: argocd.civo.59s.io:80
+  host: argocd.civo.59s.io:443
   prefix: /
   service: argocd-server:80
   regex_headers:
