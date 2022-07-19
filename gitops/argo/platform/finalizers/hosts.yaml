@@ -1,0 +1,21 @@
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: dashboard
+  namespace: linkerd-viz
+spec:
+  hostname: dashboard.civo.59s.io
+  acmeProvider:
+    email: jmorgan@f9vs.com
+  # tlsSecret:
+  #   name: wildcard
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: argo
+  namespace: argocd
+spec:
+  hostname: argocd.civo.59s.io
+  acmeProvider:
+    email: jmorgan@f9vs.com

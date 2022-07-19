@@ -1,0 +1,12 @@
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: podinfo
+  namespace: default
+spec:
+  hostname: podinfo.civo.59s.io
+  acmeProvider:
+    email: jmorgan@f9vs.com
+  # tlsSecret:
+  #   name: wildcard
