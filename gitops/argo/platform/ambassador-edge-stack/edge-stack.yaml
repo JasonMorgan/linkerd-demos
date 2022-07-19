@@ -13,6 +13,10 @@ spec:
     chart: edge-stack
     repoURL: https://app.getambassador.io
     targetRevision: 8.0.0
+    helm:
+      parameters:
+      - name: replicaCount
+        value: 1
   syncPolicy:
     automated:
       prune: true
