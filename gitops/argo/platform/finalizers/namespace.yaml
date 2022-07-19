@@ -4,12 +4,6 @@ metadata:
   name: kube-system
   labels:
     config.linkerd.io/admission-webhooks: disabled
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: argocd
-  annotations:
-    linkerd.io/inject: disabled
+
   
 
