@@ -3,6 +3,5 @@ kind: Kustomization
 resources:
   - ambassador.yaml
   # - ambassador-listener.yaml
-  # - https://app.getambassador.io/yaml/edge-stack/3.0.0/aes-crds.yaml
-  - aes-crds.yaml
+  - https://app.getambassador.io/yaml/edge-stack/3.0.0/aes-crds.yaml
   - edge-stack.yaml
