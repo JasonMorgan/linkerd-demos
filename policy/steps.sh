@@ -22,6 +22,7 @@ kubectl create ns booksapp && \
   curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/booksapp.yml \
   | kubectl -n booksapp apply -f -
 
+clear
 # Start the actual demo here
 ## Inject booksapp
 pe "kubectl get deploy -n booksapp -o yaml | linkerd inject - | kubectl apply -f -"
@@ -36,9 +37,10 @@ clear
 
 
 # No effective policies
-pe "linkerd viz authz -n booksapp deployment"
-wait 
-clear
+# pe "linkerd viz authz -n booksapp deployment"
+# wait 
+# clear
+
 ## Harden our ns
 ### Default deny
 ### Configure a deny policy for booksapp
@@ -50,9 +52,9 @@ pe 'kubectl get pods -n booksapp'
 wait
 clear
 
-pe "linkerd viz authz -n booksapp deployment"
-wait 
-clear
+# pe "linkerd viz authz -n booksapp deployment"
+# wait 
+# clear
 
 pe "linkerd viz stat deploy -n booksapp"
 wait 
@@ -66,13 +68,13 @@ clear
 
 # Now traffic is gone
 ## Alternately watch the traffic
-pe "linkerd viz authz -n booksapp deployment"
-wait 
-clear
+# pe "linkerd viz authz -n booksapp deployment"
+# wait 
+# clear
 
-pe "linkerd viz stat deploy -n booksapp"
-wait 
-clear
+# pe "linkerd viz stat deploy -n booksapp"
+# wait 
+# clear
 
 ### Allow admin traffic
 pe "kubectl apply -f manifests/booksapp/admin_server.yaml"
@@ -83,11 +85,11 @@ pe "kubectl apply -f manifests/booksapp/allow_viz.yaml"
 wait 
 clear
 
-pe "yat manifests/booksapp/admin_server.yaml"
+pe "bat -l yaml manifests/booksapp/admin_server.yaml"
 wait 
 clear
 
-pe "yat manifests/booksapp/allow_viz.yaml"
+pe "bat -l yaml manifests/booksapp/allow_viz.yaml"
 wait 
 clear
 
@@ -108,11 +110,11 @@ pe "kubectl apply -f manifests/booksapp/allow_namespace.yaml"
 wait 
 clear
 
-pe "yat manifests/booksapp/authors_server.yaml"
+pe "bat -l yaml manifests/booksapp/authors_server.yaml"
 wait 
 clear
 
-pe "yat manifests/booksapp/allow_namespace.yaml "
+pe "bat -l yaml manifests/booksapp/allow_namespace.yaml "
 wait 
 clear
 

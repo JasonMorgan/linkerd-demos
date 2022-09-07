@@ -23,7 +23,4 @@ metadata:
   namespace: booksapp
 spec:
   identities:
-    - "authors.booksapp.serviceaccount.identity.linkerd.cluster.local"
-    - "traffic.booksapp.serviceaccount.identity.linkerd.cluster.local"
-    - "webapp.booksapp.serviceaccount.identity.linkerd.cluster.local"
-    - "books.booksapp.serviceaccount.identity.linkerd.cluster.local"
+    - "*.booksapp.serviceaccount.identity.linkerd.cluster.local"
