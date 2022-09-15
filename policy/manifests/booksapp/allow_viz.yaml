@@ -6,8 +6,9 @@ metadata:
   namespace: booksapp
 spec:
   targetRef:
-    kind: Namespace
-    name: booksapp
+    group: policy.linkerd.io
+    kind: Server
+    name: linkerd-admin
   requiredAuthenticationRefs:
     - name: viz-apps
       kind: MeshTLSAuthentication
