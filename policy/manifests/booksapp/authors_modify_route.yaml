@@ -6,7 +6,7 @@ metadata:
   namespace: booksapp
 spec:
   parentRefs:
-    - name: authors-server
+    - name: authors
       kind: Server
       group: policy.linkerd.io
   rules:

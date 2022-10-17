@@ -5,9 +5,9 @@ bases:
 resources:
   # - frontend.yaml
   - ns.yaml
-  - nginx-canary.yaml
+  - canary.yaml
   - generator.yaml
-  - ingress.yaml
+  # - ingress.yaml
   # - mapping.yaml
   # - host.yaml
 
