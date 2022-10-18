@@ -8,8 +8,8 @@ resources:
   - canary.yaml
   - generator.yaml
   # - ingress.yaml
-  # - mapping.yaml
-  # - host.yaml
+  - mapping.yaml
+  - host.yaml
 
 patchesStrategicMerge:
   - patch.yaml
