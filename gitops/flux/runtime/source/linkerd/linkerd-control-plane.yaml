@@ -18,8 +18,6 @@ spec:
         name: linkerd
         namespace: linkerd
       interval: 40m
-      valuesFiles:
-        - values-ha.yaml
   values:
     installNamespace: false
   valuesFrom:
