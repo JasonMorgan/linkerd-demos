@@ -15,7 +15,11 @@ spec:
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
-      name: linkerd
+      name: linkerd-control-plane
+      namespace: linkerd
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: linkerd-crds
       namespace: linkerd
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
@@ -24,6 +28,8 @@ metadata:
   name: linkerd-smi
   namespace: flux-system
 spec:
+  dependsOn:
+  - name: linkerd
   interval: 1m0s
   path: ./gitops/flux/runtime/source/linkerd-smi
   prune: true

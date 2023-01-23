@@ -3,13 +3,13 @@ bases:
   - "github.com/stefanprodan/podinfo/kustomize/?ref=6.0.3"
 
 resources:
-  # - frontend.yaml
+  - frontend.yaml
   - ns.yaml
   - canary.yaml
   - generator.yaml
   # - ingress.yaml
-  - mapping.yaml
-  - host.yaml
+  # - mapping.yaml
+  # - host.yaml
 
 patchesStrategicMerge:
   - patch.yaml
