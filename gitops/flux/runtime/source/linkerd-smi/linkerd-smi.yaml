@@ -1,0 +1,41 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: linkerd-smi
+  namespace: linkerd
+spec:
+  timeout: 3m
+  interval: 40m
+  releaseName: linkerd-smi
+  targetNamespace: linkerd-smi
+  storageNamespace: linkerd-smi
+  chart:
+    spec:
+      chart: linkerd-smi
+      sourceRef:
+        kind: HelmRepository
+        name: linkerd-smi
+        namespace: linkerd-smi
+      interval: 40m
+  values:
+    installNamespace: false
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: linkerd-smi
+  namespace: linkerd-smi
+spec:
+  interval: 2m
+  url: https://linkerd.github.io/linkerd-smi
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: linkerd-smi
+  labels:
+    linkerd.io/extension: smi

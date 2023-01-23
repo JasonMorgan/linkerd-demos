@@ -1,28 +1,26 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: linkerd
+  name: linkerd-control-plane
   namespace: linkerd
 spec:
   timeout: 3m
   interval: 10m
-  releaseName: linkerd
+  releaseName: linkerd-control-plane
   targetNamespace: linkerd
   storageNamespace: linkerd
   chart:
     spec:
-      chart: linkerd2
-      version: 2.11.2
+      chart: linkerd-control-plane
+      version: 1.9.5
       sourceRef:
         kind: HelmRepository
         name: linkerd
         namespace: linkerd
       interval: 40m
       valuesFiles:
-        - values.yaml
         - values-ha.yaml
   values:
-    identity.issuer.crtExpiry: "2022-11-13T11:56:59Z"
     installNamespace: false
   valuesFrom:
     - kind: Secret
@@ -41,14 +39,3 @@ spec:
     crds: CreateReplace
   upgrade:
     crds: CreateReplace
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: linkerd
-  annotations:
-    linkerd.io/inject: disabled
-  labels:
-    linkerd.io/is-control-plane: "true"
-    config.linkerd.io/admission-webhooks: disabled
-    linkerd.io/control-plane-ns: linkerd

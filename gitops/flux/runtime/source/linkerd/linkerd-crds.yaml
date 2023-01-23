@@ -1,24 +1,24 @@
+---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: linkerd-multicluster
-  namespace: linkerd-multicluster
+  name: linkerd-crds
+  namespace: linkerd
 spec:
   timeout: 3m
-  interval: 40m
-  releaseName: linkerd-multicluster
-  targetNamespace: linkerd-multicluster
-  storageNamespace: linkerd-multicluster
+  interval: 10m
+  releaseName: linkerd-crds
+  targetNamespace: linkerd
+  storageNamespace: linkerd
   chart:
     spec:
-      chart: linkerd-multicluster
+      chart: linkerd-crds
+      version: 1.4.0
       sourceRef:
         kind: HelmRepository
         name: linkerd
         namespace: linkerd
       interval: 40m
-  values:
-    installNamespace: false
   install:
     crds: CreateReplace
   upgrade:
@@ -27,6 +27,8 @@ spec:
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: linkerd-multicluster
+  name: linkerd
   labels:
-    linkerd.io/extension: multicluster
+    linkerd.io/is-control-plane: "true"
+    config.linkerd.io/admission-webhooks: disabled
+    linkerd.io/control-plane-ns: linkerd

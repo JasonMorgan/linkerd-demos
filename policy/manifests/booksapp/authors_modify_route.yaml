@@ -18,6 +18,10 @@ spec:
       - path:
           value: "/authors/"
           type: "PathPrefix"
+        method: POST
+      - path:
+          value: "/authors/"
+          type: "PathPrefix"
         method: PUT
       - path:
           value: "/authors.json"

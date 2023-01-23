@@ -55,9 +55,7 @@ metadata:
   namespace: podinfo
 data:
   urls: |-
-    http://${SERVICE}:${PORT}
-    http://${SERVICE}:${PORT}/healthz
-    http://${SERVICE}:${PORT}/readyz
-    http://${SERVICE}:${PORT}/configs
-    http://${SERVICE}:${PORT}/env
-    http://${SERVICE}:${PORT}/headers
+    http://${SERVICE}:${PORT}/busywork
+    http://${SERVICE}:${PORT}/BusyworkService/busyworkGrpc
+    
+      
