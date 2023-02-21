@@ -21,6 +21,7 @@ metadata:
   namespace: booksapp
 spec:
   identities:
+    - "traffic.booksapp.serviceaccount.identity.linkerd.cluster.local"
     - "books.booksapp.serviceaccount.identity.linkerd.cluster.local"
     - "webapp.booksapp.serviceaccount.identity.linkerd.cluster.local"
     - "buoyant-cloud-agent.buoyant-cloud.serviceaccount.identity.linkerd.cluster.local"

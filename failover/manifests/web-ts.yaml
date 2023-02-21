@@ -12,5 +12,5 @@ spec:
     backends:
         - service: web-svc
           weight: 1
-        - service: web-svc-west
+        - service: web-svc-prod2
           weight: 0

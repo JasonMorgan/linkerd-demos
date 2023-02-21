@@ -115,3 +115,5 @@ k -n emojivoto get ts web-svc -oyaml
 k -n emojivoto scale --replicas 1 deploy web
 # Check changes on the traffic-split
 k -n emojivoto get ts web-svc -oyaml
+
+alias wts="watch kubectl get ts web-svc --output=custom-columns='NAME:.metadata.name,LOCAL_NAME:.spec.backends[0].service,LOCAL_WEIGHT:.spec.backends[0].weight,REMOTE_NAME:.spec.backends[1].service,REMOTE:.spec.backends[1].weight'"

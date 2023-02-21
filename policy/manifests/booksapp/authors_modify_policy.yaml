@@ -22,3 +22,4 @@ metadata:
 spec:
   identities:
     - "webapp.booksapp.serviceaccount.identity.linkerd.cluster.local"
+    - "traffic.booksapp.serviceaccount.identity.linkerd.cluster.local"

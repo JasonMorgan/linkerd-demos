@@ -12,5 +12,5 @@ spec:
     backends:
         - service: emoji-svc
           weight: 1
-        - service: emoji-svc-west
+        - service: emoji-svc-prod2
           weight: 0

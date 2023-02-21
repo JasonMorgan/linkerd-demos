@@ -12,5 +12,5 @@ spec:
     backends:
         - service: voting-svc
           weight: 1
-        - service: voting-svc-west
+        - service: voting-svc-prod2
           weight: 0
