@@ -27,7 +27,7 @@ data:
       set $east "east";
       set $west "west";
       location / {
-        proxy_pass http://podinfo-lon:9898;
+        proxy_pass http://podinfo-prod2:9898;
         proxy_http_version 1.1;
       }
     }
@@ -81,7 +81,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
+  # labels:
     # mirror.linkerd.io/exported: "true"
   name: frontend
   namespace: podinfo
@@ -137,7 +137,7 @@ spec:
       app: generator
   template:
     metadata:
-      annotations: null
+      # annotations: null
       labels:
         app: generator
     spec:
