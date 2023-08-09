@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-k3d cluster create dev -s 3 --k3s-arg '--no-deploy=traefik@server:*;agents:*'
+k3d cluster create dev -s 3 --k3s-arg '--disable=traefik@server:*'
 
 curl -sL https://run.linkerd.io/emojivoto.yml | kubectl apply -f -
 kubectl create ns booksapp
