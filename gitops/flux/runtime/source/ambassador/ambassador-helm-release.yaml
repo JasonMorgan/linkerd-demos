@@ -18,11 +18,11 @@ spec:
         name: ambassador
         namespace: ambassador
       interval: 40m
-      values:
-        emissary-ingress:
-          replicaCount: 1
-          podAnnotations:
-            linkerd.io/inject: enabled
+  values:
+    emissary-ingress:
+      replicaCount: 1
+      podAnnotations:
+        linkerd.io/inject: enabled
   install:
     crds: CreateReplace
   upgrade:
