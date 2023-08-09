@@ -180,8 +180,8 @@ spec:
   dependsOn:
     - name: flagger
     - name: linkerd-viz
-    # - name: ambassador
-    - name: nginx-ingress
+    - name: ambassador
+    # - name: nginx-ingress
     - name: cert-manager
   prune: true
   sourceRef:
