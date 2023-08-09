@@ -101,8 +101,7 @@ spec:
     name: gitops
   validation: client
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: Deployment
+    - kind: Deployment
       name: emissary-apiext
       namespace: emissary-system
 ---
@@ -114,6 +113,7 @@ metadata:
 spec:
   dependsOn:
   - name: linkerd-viz
+  - name: emissary
   interval: 3m0s
   path: ./gitops/flux/runtime/source/ambassador
   prune: true
@@ -125,7 +125,7 @@ spec:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
       name: ambassador-edge-stack
-      namespace: ambassador
+      namespace: edge-stack
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
