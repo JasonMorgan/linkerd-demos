@@ -20,7 +20,6 @@ spec:
       interval: 40m
   values:
     installCRDs: true
-  postRenderers:
   install:
     crds: CreateReplace
   upgrade:
