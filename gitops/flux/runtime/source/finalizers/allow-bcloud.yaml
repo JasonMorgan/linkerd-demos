@@ -1,0 +1,17 @@
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
+  annotations:
+  labels:
+    component: linkerd-service-mirror
+  name: allow-bcloud
+  namespace: linkerd-multicluster
+spec:
+  client:
+    meshTLS:
+      serviceAccounts:
+      - name: buoyant-cloud-agent
+        namespace: buoyant-cloud
+  server:
+    name: service-mirror

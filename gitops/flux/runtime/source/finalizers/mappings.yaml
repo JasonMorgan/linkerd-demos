@@ -1,15 +1,49 @@
+---
 apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: dashboard
-  namespace: default
+  namespace: linkerd-viz
 spec:
   prefix: /
   service: web.linkerd-viz:8084
   host_rewrite: web.linkerd-viz.svc.cluster.local:8084
   rewrite: ""
-  host: dashboard.k8s.59s.io
+  host: dashboard.civo.59s.io
   allow_upgrade:
   - websocket
   remove_request_headers:
   - Origin
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: emojivoto
+  namespace: default
+spec:
+  prefix: /
+  service: web-svc.emojivoto:80
+  rewrite: ""
+  host: emojivoto.civo.59s.io
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: booksapp
+  namespace: default
+spec:
+  prefix: /
+  service: webapp.booksapp:7000
+  rewrite: ""
+  host: booksapp.civo.59s.io
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: podinfo
+  namespace: default
+spec:
+  prefix: /
+  service: podinfo.podinfo:9898
+  rewrite: ""
+  host: podinfo.civo.59s.io

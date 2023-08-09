@@ -12,6 +12,7 @@ spec:
   chart:
     spec:
       chart: linkerd-viz
+      verion: 30.8.5
       sourceRef:
         kind: HelmRepository
         name: linkerd

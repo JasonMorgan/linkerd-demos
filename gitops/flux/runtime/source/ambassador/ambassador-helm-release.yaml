@@ -2,20 +2,21 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: ambassador-edge-stack
-  namespace: edge-stack
+  namespace: ambassador
 spec:
   timeout: 3m
   interval: 40m
   releaseName: ambassador
-  targetNamespace: edge-stack
-  storageNamespace: edge-stack
+  targetNamespace: ambassador
+  storageNamespace: ambassador
   chart:
     spec:
       chart: edge-stack
+      version: 8.7.2
       sourceRef:
         kind: HelmRepository
         name: ambassador
-        namespace: edge-stack
+        namespace: ambassador
       interval: 40m
   postRenderers:
     - kustomize:
@@ -23,8 +24,8 @@ spec:
           - kind: Deployment
             apiVersion: apps/v1
             metadata:
-              name: ambassador
-              namespace: edge-stack
+              name: edge-stack
+              namespace: ambassador
             spec:
               template:
                 metadata:
@@ -34,8 +35,8 @@ spec:
           - kind: Deployment
             apiVersion: apps/v1
             metadata:
-              name: ambassador-agent
-              namespace: edge-stack
+              name: edge-stack-agent
+              namespace: ambassador
             spec:
               template:
                 metadata:
@@ -44,13 +45,12 @@ spec:
           - kind: Deployment
             apiVersion: apps/v1
             metadata:
-              name: ambassador-redis
-              namespace: edge-stack
+              name: edge-stack-redis
+              namespace: ambassador
             spec:
               template:
                 metadata:
                   annotations:
-                    config.linkerd.io/skip-inbound-ports: 80,443
                     linkerd.io/inject: enabled
   install:
     crds: CreateReplace

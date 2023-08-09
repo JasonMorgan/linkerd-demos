@@ -2,11 +2,32 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./gitops/flux/runtime/source/cert-manager
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: gitops
+  validation: client
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: cert-manager
+      namespace: cert-manager
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
   name: linkerd
   namespace: flux-system
 spec:
   interval: 1m0s
   path: ./gitops/flux/runtime/source/linkerd
+  dependsOn:
+    - name: cert-manager
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,27 +42,6 @@ spec:
       kind: HelmRelease
       name: linkerd-crds
       namespace: linkerd
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: linkerd-smi
-  namespace: flux-system
-spec:
-  dependsOn:
-  - name: linkerd
-  interval: 1m0s
-  path: ./gitops/flux/runtime/source/linkerd-smi
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: gitops
-  validation: client
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: linkerd-smi
-      namespace: linkerd-smi
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -63,17 +63,59 @@ spec:
       kind: HelmRelease
       name: linkerd-viz
       namespace: linkerd-viz
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+# kind: Kustomization
+# metadata:
+#   name: nginx-ingress
+#   namespace: flux-system
+# spec:
+#   dependsOn:
+#   - name: linkerd-viz
+#   interval: 1m0s
+#   path: ./gitops/flux/runtime/source/nginx-ingress
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: gitops
+#   validation: client
+#   healthChecks:
+#     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+#       kind: HelmRelease
+#       name: frontdoor
+#       namespace: nginx-ingress
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: nginx-ingress
+  name: emissary
   namespace: flux-system
 spec:
   dependsOn:
   - name: linkerd-viz
-  interval: 1m0s
-  path: ./gitops/flux/runtime/source/nginx-ingress
+  interval: 3m0s
+  path: ./gitops/flux/runtime/source/emissary
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: gitops
+  validation: client
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: Deployment
+      name: emissary-apiext
+      namespace: emissary-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: ambassador
+  namespace: flux-system
+spec:
+  dependsOn:
+  - name: linkerd-viz
+  interval: 3m0s
+  path: ./gitops/flux/runtime/source/ambassador
   prune: true
   sourceRef:
     kind: GitRepository
@@ -82,50 +124,8 @@ spec:
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
-      name: frontdoor
-      namespace: nginx-ingress
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-# kind: Kustomization
-# metadata:
-#   name: emissary
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#   - name: linkerd-viz
-#   interval: 3m0s
-#   path: ./gitops/flux/runtime/source/emissary
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: gitops
-#   validation: client
-#   healthChecks:
-#     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-#       kind: HelmRelease
-#       name: emissary
-#       namespace: emissary
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-# kind: Kustomization
-# metadata:
-#   name: ambassador
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#   - name: linkerd-viz
-#   interval: 3m0s
-#   path: ./gitops/flux/runtime/source/ambassador
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: gitops
-#   validation: client
-#   healthChecks:
-#     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-#       kind: HelmRelease
-#       name: ambassador-edge-stack
-#       namespace: edge-stack
+      name: ambassador-edge-stack
+      namespace: ambassador
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
