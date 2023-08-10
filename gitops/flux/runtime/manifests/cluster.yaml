@@ -17,6 +17,10 @@ spec:
       kind: HelmRelease
       name: cert-manager
       namespace: cert-manager
+    - apiVersion: cert-manager.io/v1
+      kind: Certificate
+      name: linkerd-identity-issuer
+      namespace: linkerd
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
