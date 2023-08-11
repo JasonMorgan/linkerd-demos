@@ -17,10 +17,10 @@ spec:
       kind: HelmRelease
       name: cert-manager
       namespace: cert-manager
-    # - apiVersion: cert-manager.io/v1
-    #   kind: Certificate
-    #   name: linkerd-identity-issuer
-    #   namespace: linkerd
+    - apiVersion: cert-manager.io/v1
+      kind: Certificate
+      name: linkerd-identity-issuer
+      namespace: linkerd
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -50,32 +50,9 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: linkerd-viz
-  namespace: flux-system
-spec:
-  dependsOn:
-  - name: linkerd
-  interval: 1m0s
-  path: ./gitops/flux/runtime/source/linkerd-viz
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: gitops
-  validation: client
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: linkerd-viz
-      namespace: linkerd-viz
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
   name: emissary
   namespace: flux-system
 spec:
-  dependsOn:
-  - name: linkerd-viz
   interval: 3m0s
   path: ./gitops/flux/runtime/source/emissary
   prune: true
@@ -95,7 +72,6 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-  - name: linkerd-viz
   - name: emissary
   interval: 3m0s
   path: ./gitops/flux/runtime/source/ambassador
@@ -113,58 +89,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: flagger
-  namespace: flux-system
-spec:
-  dependsOn:
-  - name: linkerd-viz
-  interval: 1m0s
-  path: ./gitops/flux/runtime/source/flagger
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: gitops
-  validation: client
-  healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: flagger
-      namespace: linkerd-viz
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: linkerd-multicluster
-  namespace: flux-system
-spec:
-  dependsOn:
-  - name: linkerd-viz
-  interval: 1m0s
-  path: ./gitops/flux/runtime/source/linkerd-multicluster
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: gitops
-  validation: client
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: linkerd-multicluster
-      namespace: linkerd-multicluster
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
   name: finalizers
   namespace: flux-system
 spec:
   interval: 1m0s
   path: ./gitops/flux/runtime/source/finalizers
   dependsOn:
-    - name: flagger
-    - name: linkerd-viz
     - name: ambassador
-    # - name: nginx-ingress
     - name: cert-manager
   prune: true
   sourceRef:

@@ -17,10 +17,10 @@ spec:
       kind: HelmRelease
       name: cert-manager
       namespace: cert-manager
-    # - apiVersion: cert-manager.io/v1
-    #   kind: Certificate
-    #   name: linkerd-identity-issuer
-    #   namespace: linkerd
+    - apiVersion: cert-manager.io/v1
+      kind: Certificate
+      name: linkerd-identity-issuer
+      namespace: linkerd
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -67,6 +67,27 @@ spec:
       kind: HelmRelease
       name: linkerd-viz
       namespace: linkerd-viz
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+# kind: Kustomization
+# metadata:
+#   name: nginx-ingress
+#   namespace: flux-system
+# spec:
+#   dependsOn:
+#   - name: linkerd-viz
+#   interval: 1m0s
+#   path: ./gitops/flux/runtime/source/nginx-ingress
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: gitops
+#   validation: client
+#   healthChecks:
+#     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+#       kind: HelmRelease
+#       name: frontdoor
+#       namespace: nginx-ingress
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization

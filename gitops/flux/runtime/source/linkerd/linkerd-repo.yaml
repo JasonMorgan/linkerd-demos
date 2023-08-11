@@ -6,4 +6,7 @@ metadata:
   namespace: linkerd
 spec:
   interval: 2m
-  url: https://helm.linkerd.io/stable
+  url: oci://buoyant.azurecr.io/helm/
+  type: "oci"
+  secretRef:
+    name: buoyant-acr-secret
