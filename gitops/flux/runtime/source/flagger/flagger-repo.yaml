@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: flagger
+  namespace: linkerd-viz
+spec:
+  interval: 2m
+  url: https://flagger.app
+

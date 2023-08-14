@@ -1,27 +1,30 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: flagger
-spec:
-  template:
-    spec:
-      containers:
-        - name: flagger
-          args:
-            - -log-level=info
-            - -include-label-prefix=app.kubernetes.io
-            - -mesh-provider=linkerd
-            - -metrics-server=http://prometheus:9090
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
   name: flagger
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: flagger
-subjects:
-  - kind: ServiceAccount
-    name: flagger
-    namespace: linkerd-viz
+  namespace: linkerd-viz
+spec:
+  timeout: 3m
+  interval: 10m
+  releaseName: flagger
+  targetNamespace: linkerd-viz
+  storageNamespace: linkerd-viz
+  chart:
+    spec:
+      chart: flagger
+      version: 1.32.0
+      sourceRef:
+        kind: HelmRepository
+        name: flagger
+        namespace: linkerd-viz
+      interval: 40m
+    values:
+      meshProvider: linkerd
+      metricsServer: http://prometheus.linkerd-viz:9090
+      linkerdAuthPolicy:
+        create: true
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
