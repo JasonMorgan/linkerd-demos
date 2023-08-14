@@ -19,7 +19,8 @@ spec:
         namespace: linkerd
       interval: 40m
   values:
-    linkerd-control-plane.installNamespace: false
+    - linkerd-control-plane.installNamespace: false
+    - linkerd-control-plane.imagePullSecrets[0].name: buoyant-acr-secret
   valuesFrom:
     - kind: Secret
       name: linkerd-certs
