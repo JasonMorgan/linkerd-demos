@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: linkerd-enterprise-control-plane
-      version: 213.5.4
+      version: 213.6.0
       sourceRef:
         kind: HelmRepository
         name: linkerd
