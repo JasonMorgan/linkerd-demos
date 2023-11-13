@@ -1,0 +1,31 @@
+---
+apiVersion: linkerd.buoyant.io/v1alpha1
+kind: ControlPlane
+metadata:
+  name: linkerd-control-plane
+spec:
+  components:
+    linkerd:
+      version: enterprise-2.13.6-1
+      controlPlaneConfig:
+        identityTrustAnchorsPEM:
+          valuesFrom:
+            secretKeyRef:
+              name: linkerd-certs
+              key:  ca.crt
+        imagePullSecrets:
+        - name: buoyant-registry-secret
+        identity:
+          issuer:
+            scheme: kubernetes.io/tls
+            tls:
+              crtPEM:
+                valuesFrom:
+                  secretKeyRef:
+                    name: linkerd-certs
+                    key: issuer.crt
+              crtKEY:
+                valuesFrom:
+                  secretKeyRef:
+                    name: linkerd-certs
+                    key: issuer.key

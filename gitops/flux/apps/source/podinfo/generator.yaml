@@ -55,7 +55,6 @@ metadata:
   namespace: podinfo
 data:
   urls: |-
-    http://${SERVICE}:${PORT}/busywork
-    http://${SERVICE}:${PORT}/BusyworkService/busyworkGrpc
+    http://${SERVICE}:${PORT}/
     
       
